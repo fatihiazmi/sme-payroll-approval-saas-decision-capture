@@ -280,3 +280,15 @@
 - Backend: Store pack version, run version, checksum, generator, sensitivity markers, source references, and retention-until metadata.
 - Security: Apply sensitive-field policy before packaging and audit generation, denied generation, and download events.
 ---
+
+
+### DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path — PAY-020 practical journal mapping with future COA path
+**Date**: 2026-05-18T00:39:59+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2 with future full COA path
+**Decision**: MVP supports practical company-level payroll journal mapping buckets, while storing stable mapping bucket keys separately from account code labels so the model can later evolve into full chart-of-accounts/COA or accounting package integration.
+**Key argument**: Practical payroll buckets are enough for accountant handoff and journal preview/export, while stable bucket keys avoid an architectural dead end when richer COA integration is needed later.
+**Dissent**: None; full COA management, per-employee account rules, accounting package sync, and complex cost allocation are explicitly deferred.
+**Actions**:
+- Product: Lock PAY-020 acceptance criteria to practical company-level payroll mapping buckets plus future COA guardrail.
+- Backend: Model stable mapping bucket keys separately from company account code/label values and block preview/export when required mappings are missing.
+- Security/Audit: Restrict mapping changes to authorized roles and audit create/update/denied attempts.
+---

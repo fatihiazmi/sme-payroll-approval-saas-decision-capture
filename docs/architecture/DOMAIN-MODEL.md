@@ -202,7 +202,7 @@ These should be bought, reused, or kept thin behind adapters:
 
 **Purpose:** Produces export artifacts after approval and tracks proof upload.
 
-**Primary language:** Payment Export, Payment Listing, Export Artifact, Statutory Summary, Payroll Journal Export, Export Template, Payment Proof.
+**Primary language:** Payment Export, Payment Listing, Export Artifact, Statutory Summary, Payroll Journal Mapping, Mapping Bucket Key, Account Code, Cost Centre, Payroll Journal Preview, Payroll Journal Export, Export Template, Payment Proof.
 
 **Key model:**
 
@@ -210,6 +210,10 @@ These should be bought, reused, or kept thin behind adapters:
 - `ExportArtifact`
 - `PaymentExportFormatVersion`
 - `ExportFileChecksum`
+- `PayrollJournalMapping`
+- `PayrollJournalMappingBucket`
+- `AccountCode`
+- `CostCentreRef`
 - `PayrollJournalPreview`
 - `PaymentProof`
 - `PaymentProofMetadata`
@@ -218,6 +222,9 @@ These should be bought, reused, or kept thin behind adapters:
 **MVP payment export:** per `DEC-2026-05-17-2313-controlled-generic-payment-csv`, generates a controlled generic CSV from an Approved for Payment payroll run version with `employee_identifier`, `employee_name`, `bank_name`, `bank_account`, `payment_reference`, `net_pay_amount`, `currency`, and `pay_date`; records exporter, timestamp, run version, row count, exported total, checksum, and format version.
 
 **MVP payment proof:** per `DEC-2026-05-17-2317-controlled-payment-proof-upload`, captures controlled proof evidence with proof type, payment date, payment reference/note, uploader, timestamp, file name/type/size/checksum, linked payroll run version, linked payment export record if available, authorization-controlled download, and audit logging. It does not assert bank-side payment success.
+
+
+**MVP payroll journal mapping:** per `DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`, stores company-level account code mappings for stable payroll bucket keys: `salary_expense`, `allowance_expense`, `overtime_expense`, `employer_statutory_expense`, `employee_deduction_payable`, `epf_kwsp_payable`, `socso_perkeso_payable`, `eis_payable`, `pcb_mtd_payable`, `net_salary_payable`, `cash_bank_clearing`, `rounding_adjustment`, and optional `department_or_cost_centre`. Required mapping gaps block journal preview/export. The mapping model must separate stable bucket keys from account code labels so future full COA/accounting-system integration can map richer external account records without changing payroll journal generation.
 
 **Integration style:** Consumes `PayrollRunApprovedForPayment`; emits `PaymentExported`, `PaymentProofUploaded`.
 
@@ -579,7 +586,34 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Pack metadata stores file hash/checksum, generator, timestamp, sensitivity markers, source references, and `retention_until = generated_at + 7 years`.
 - Audit pack generation, denied generation, and download must be logged as sensitive evidence/export events.
 
-### 6.7 Aggregate: PaymentExport
+### 6.7 Aggregate: PayrollJournalMapping
+
+**Identity:** `PayrollJournalMappingId`
+
+**Purpose:** Company-scoped payroll accounting handoff configuration for journal preview/export, accepted by `DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`.
+
+**Entities:**
+
+- `PayrollJournalMappingLine`
+- `MappingChangeAuditRef`
+
+**Value objects:**
+
+- `MappingBucketKey`
+- `AccountCode`
+- `AccountLabel`
+- `CostCentreRef`
+- `MappingStatus`
+
+**Invariants:**
+
+- Required payroll bucket keys must be mapped before journal preview/export can proceed.
+- Mapping bucket keys are stable product/domain keys; account codes and labels are company-specific configuration values.
+- Only authorized finance/owner roles can create or change mappings.
+- Mapping changes append audit events and must not silently rewrite historical journal export records.
+- Future full COA integration may reference external account IDs, but MVP does not manage the full chart of accounts.
+
+### 6.8 Aggregate: PaymentExport
 
 **Identity:** `PaymentExportId`
 
@@ -603,7 +637,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Export artifact must store the payroll run version used.
 - Regeneration after correction creates a new export version; old exports are retained and marked superseded where applicable.
 
-### 6.8 Aggregate: PaymentProof
+### 6.9 Aggregate: PaymentProof
 
 **Identity:** `PaymentProofId`
 
@@ -627,7 +661,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Proof upload after closure requires reopen or append-only post-close evidence policy.
 - Proof containing bank details is sensitive and must be access logged.
 
-### 6.9 Aggregate: ServiceProviderTenant
+### 6.10 Aggregate: ServiceProviderTenant
 
 **Identity:** `ServiceProviderTenantId`
 
@@ -902,6 +936,7 @@ classDiagram
   PayrollRun "1" --> "many" ExceptionCase
   PayrollRun "1" --> "1" EvidenceChecklist
   EvidenceChecklist "1" *-- "many" EvidenceItem
+  ServiceProviderTenant "1" --> "many" PayrollJournalMapping
   PayrollRun "1" --> "many" PaymentExport
   PayrollRun "1" --> "many" PaymentProof
   PayrollRun "1" --> "many" AuditPack

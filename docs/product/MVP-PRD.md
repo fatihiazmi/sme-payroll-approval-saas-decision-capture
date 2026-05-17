@@ -48,7 +48,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Maintain a structured append-only audit timeline for payroll lifecycle, sensitive access, export/download, and denied sensitive/lifecycle actions; audit logs must not store raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
 - Enforce sensitive salary/bank visibility as a mandatory default-masked server-side authorization policy, not a tenant/customer feature flag (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
-- Support accountant-ready payroll journal preview/export without becoming the accounting ledger.
+- Support accountant-ready payroll journal preview/export with practical company-level payroll mapping buckets, while keeping a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`).
 
 ### Non-Goals
 
@@ -132,7 +132,11 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Evidence files are versioned, hashed, permissioned, retained for 7 years by default, and event-logged for generation/download.
 
 9. **Payroll journal preview/export**
-   - Limited accounting export mapping, not full chart of accounts.
+   - MVP uses practical company-level payroll journal mapping buckets, not a full chart-of-accounts management module (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`).
+   - Configure required account codes for `salary_expense`, `allowance_expense`, `overtime_expense`, `employer_statutory_expense`, `employee_deduction_payable`, `epf_kwsp_payable`, `socso_perkeso_payable`, `eis_payable`, `pcb_mtd_payable`, `net_salary_payable`, `cash_bank_clearing`, `rounding_adjustment`, and optional `department_or_cost_centre`.
+   - Mappings are company-scoped, versioned enough for audit, editable only by authorized Owner / Approver or Payment / Journal users, and changes are audit-logged.
+   - Journal preview/export must block when required mappings are missing, inactive, or invalid.
+   - The model keeps a future path to full COA/accounting-system mapping by storing stable mapping bucket keys separately from account code labels; full GL/COA management, accounting package sync, and complex cost allocation remain out of MVP.
    - Preview payroll journal lines for salary expense, allowances, OT, employer statutory costs, deductions/payables, net salary payable, statutory payable, and optional cost centre/department.
    - Export CSV/XLSX/PDF for accountant handoff.
 
@@ -150,7 +154,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 ### Explicitly Out of MVP
 
 - Full payroll statutory calculation engine unless narrowed for a pilot.
-- Full GL/accounting ledger, AP/AR, bank reconciliation, financial statements.
+- Full GL/accounting ledger, full chart-of-accounts/COA management, AP/AR, bank reconciliation, financial statements.
 - Attendance device integrations, HRIS integrations, accounting API integrations, banking API integrations.
 - Claims approval workflow, leave workflow, scheduling, employee self-service portal.
 - Multi-level enterprise approval matrix, e-signature workflow, auditor portal.

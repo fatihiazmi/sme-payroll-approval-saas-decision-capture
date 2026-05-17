@@ -410,12 +410,17 @@ Technical risk: Accounting mappings differ by company; MVP should support simple
 
 ### PAY-020: Configure payroll journal account mappings
 
+**Accepted scope:** Practical company-level payroll journal mapping buckets with a future full COA/chart-of-accounts path (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`).
+
 **As a** payment/journal user, **I want to** configure basic payroll journal mappings, **so that** journal exports use our account codes.
 
 **Acceptance Criteria**:
-- **Given** I have finance or owner access, **When** I configure account codes for salary expense, deductions payable, and cash/bank, **Then** the mappings are saved for the company.
-- **Given** required mappings are missing, **When** I preview a journal, **Then** the system identifies missing mappings.
-- **Given** I lack finance configuration permission, **When** I try to change mappings, **Then** the action is denied.
+- **Given** I have authorized owner or payment/journal configuration access, **When** I configure account codes for payroll journal mappings, **Then** the company can map `salary_expense`, `allowance_expense`, `overtime_expense`, `employer_statutory_expense`, `employee_deduction_payable`, `epf_kwsp_payable`, `socso_perkeso_payable`, `eis_payable`, `pcb_mtd_payable`, `net_salary_payable`, `cash_bank_clearing`, `rounding_adjustment`, and optional `department_or_cost_centre`.
+- **Given** mappings are saved, **When** they are stored, **Then** stable payroll mapping bucket keys are stored separately from company-specific account codes/labels so the model can evolve into full COA/chart-of-accounts integration later.
+- **Given** required mappings are missing, inactive, or invalid, **When** I preview or export a journal, **Then** the system identifies the missing/invalid mapping buckets and blocks journal export.
+- **Given** I lack finance configuration permission, **When** I try to create or change mappings, **Then** the action is denied and audit-logged.
+- **Given** a mapping is created or changed, **When** the save succeeds, **Then** an audit event records actor, company, bucket key, old/new account code or label, timestamp, and reason/note where supplied.
+- **Given** MVP scope boundaries, **When** journal mapping is implemented, **Then** full chart-of-accounts management, per-employee account rules, multi-entity consolidation, accounting package sync, multi-currency accounting, and complex cost allocation are not exposed.
 
 **Story Points**: 5  
 **Dependencies**: PAY-016  

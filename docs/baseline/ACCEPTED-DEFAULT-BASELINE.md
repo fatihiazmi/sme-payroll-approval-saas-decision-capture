@@ -32,7 +32,7 @@ Primary wedge:
 - SME owner approval before payment
 - Payment export/proof upload
 - Payroll evidence pack and audit timeline: versioned, permission-filtered ZIP evidence pack with PDF summary plus CSV/JSON attachments, retained for 7 years by default (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`)
-- Payroll journal preview/export, not a full accounting ledger
+- Payroll journal preview/export using practical company-level payroll mapping buckets, not a full accounting ledger or full COA module (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`)
 - Role-based access control with assignment boundaries
 - Audit logging for sensitive payroll actions
 - Sensitive field controls for salary and bank details
@@ -74,7 +74,7 @@ Primary wedge:
 
 - The product is an evidence and approval system first, not accounting software.
 - MVP should produce a payroll audit pack.
-- MVP should support payroll journal preview/export.
+- MVP should support payroll journal preview/export using practical mapping buckets; the mapping model should preserve a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`).
 - Audit timeline should be append-only; corrections should be new events, not silent edits.
 - Payment proof and statutory proof can be uploaded for MVP rather than deeply integrated.
 
@@ -214,6 +214,24 @@ Recommended payroll lifecycle:
 - Generation, denied generation, and download events are audit-logged.
 
 **Out of MVP:** legal hold workflow, automatic purge engine, auditor portal, external e-signature/certification, evidence redaction workflow, and tamper-proof external notarization.
+
+---
+
+## 16. Accepted Payroll Journal Mapping Decision
+
+**Decision:** Use practical company-level payroll journal mapping buckets for PAY-020, with a future path to full chart-of-accounts/COA integration.
+
+**Decision ID:** `DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`
+
+**Scope:**
+
+- MVP supports company-level account code mappings for common payroll journal buckets: `salary_expense`, `allowance_expense`, `overtime_expense`, `employer_statutory_expense`, `employee_deduction_payable`, `epf_kwsp_payable`, `socso_perkeso_payable`, `eis_payable`, `pcb_mtd_payable`, `net_salary_payable`, `cash_bank_clearing`, `rounding_adjustment`, and optional `department_or_cost_centre`.
+- Required mappings must exist before journal preview/export; missing, inactive, or invalid mappings block preview/export with clear reasons.
+- Only authorized Owner / Approver or Payment / Journal users can create or change mappings.
+- Mapping changes are audit-logged with actor, timestamp, company, bucket key, old/new account code or label, and reason/note where supplied.
+- Stable payroll mapping bucket keys must be stored separately from account code labels so the model can later connect to a full COA/chart-of-accounts or accounting package without rewriting journal generation.
+
+**Out of MVP:** full chart-of-accounts/COA management, per-employee account rules, multi-entity consolidation, accounting package sync, multi-currency accounting, and complex cost allocation engine.
 
 ---
 
