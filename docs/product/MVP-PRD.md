@@ -81,6 +81,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Owner return-for-correction uses the accepted structured correction rule (`DEC-2026-05-17-2258-owner-return-structured-correction`): only an authorized SME approver can return a Pending SME Approval run; return requires one reason category plus a required comment; return invalidates the submitted approval snapshot; correction creates a new payroll run version that must be revalidated/reviewed and re-submitted before approval.
    - Owner approval page uses the accepted decision-ready readiness summary (`DEC-2026-05-17-2306-owner-readiness-summary`): employee count, gross total, net total, payment-ready total, validation status, blocking issue count, warning count, OT/exception status, evidence readiness, submitted by, submission time, run version, stale snapshot blocking, and Approve / Return for correction / View details actions.
    - Payment export uses the accepted controlled generic CSV rule (`DEC-2026-05-17-2313-controlled-generic-payment-csv`): export only from Approved for Payment run version; require payment export permission; include employee/payment fields; record checksum, totals, row count, format version, exporter, and timestamp; audit denied export attempts.
+   - Payment proof upload uses the accepted controlled evidence-capture rule (`DEC-2026-05-17-2317-controlled-payment-proof-upload`): require payment/proof permission, proof file, proof type, payment date, payment reference/note, file validation, checksum, linked payroll run version, linked export record if available, and audit logging; it does not verify bank-side payment success.
 
 3. **Payroll data import / manual entry**
    - Employee master import or manual entry.
@@ -147,6 +148,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Native mobile apps.
 - AI automation or AI analysis of payroll data.
 - Maybank/CIMB/bank-specific payment file formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, and encryption/signing of bank files.
+- Maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, and evidence redaction workflow.
 
 ---
 

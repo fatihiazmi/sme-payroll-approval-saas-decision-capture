@@ -124,7 +124,7 @@ Exit condition:
 
 ### `PaymentProofUploaded`
 
-Payment proof or approved placeholder has been attached.
+Controlled payment proof evidence has been attached. MVP proof upload captures evidence metadata and file integrity, but does not verify bank-side payment success (`DEC-2026-05-17-2317-controlled-payment-proof-upload`).
 
 Exit condition:
 
@@ -222,10 +222,16 @@ Rules:
   - Actor: payment/journal user, payroll manager/reviewer, or authorized processor
   - Event: `PaymentExportGenerated`
 
+- `ApprovedForPayment` → `PaymentProofUploaded`
+  - Trigger: `UploadPaymentProof`
+  - Guard: actor has payment/proof permission; proof file and required metadata provided; company policy allows proof capture without generated export; accepted file type/size; checksum and payroll run version captured (`DEC-2026-05-17-2317-controlled-payment-proof-upload`)
+  - Actor: SME admin, service-provider user, or authorized finance/payment user
+  - Event: `PaymentProofSubmitted`
+
 - `PaymentExported` → `PaymentProofUploaded`
   - Trigger: `UploadPaymentProof`
-  - Guard: proof document/reference provided; file passes storage/security checks
-  - Actor: SME admin, service-provider user, or authorized finance user
+  - Guard: actor has payment/proof permission; proof file, proof type, payment date, and payment reference/note provided; accepted file type/size; malware-scan placeholder/status recorded; checksum and linked export record captured (`DEC-2026-05-17-2317-controlled-payment-proof-upload`)
+  - Actor: SME admin, service-provider user, or authorized finance/payment user
   - Event: `PaymentProofSubmitted`
 
 - `PaymentProofUploaded` → `ClosedArchived`
@@ -378,9 +384,12 @@ Every transition requires:
 
 #### Proof Guards
 
-- Payment proof must reference approved/exported payroll facts.
-- Proof file must pass storage/security checks.
+- Payment proof must reference an Approved for Payment or Payment Exported payroll run.
+- Proof upload requires payment/proof permission, proof file, proof type, payment date, and payment reference/note.
+- Proof upload requires accepted file type/size, storage/security checks, malware-scan placeholder/status, and checksum recording (`DEC-2026-05-17-2317-controlled-payment-proof-upload`).
+- Proof download/view requires authorization and is audit-logged where sensitive.
 - Proof may be accepted, rejected, or superseded; it is not silently replaced.
+- MVP proof capture does not assert bank-side payment success.
 
 #### Closure Guards
 
@@ -511,9 +520,11 @@ Emits:
 
 Side effects:
 
-- stores proof document reference;
+- stores proof document reference and metadata;
+- stores proof type, payment date, payment reference/note, file name/type/size/checksum, linked payroll run version, and linked export record if available;
+- records malware-scan placeholder/status;
 - updates evidence checklist;
-- logs sensitive document upload if applicable.
+- logs upload/download, validation failures, and denied attempts where applicable.
 
 ### `ClosePayrollRun`
 

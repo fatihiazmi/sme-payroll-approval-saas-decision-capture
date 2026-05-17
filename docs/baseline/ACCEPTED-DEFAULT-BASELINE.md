@@ -171,6 +171,28 @@ Recommended payroll lifecycle:
 
 ---
 
+
+## 11. Accepted Payment Proof Upload Decision
+
+**Decision:** For MVP, payment proof upload is controlled evidence capture, not bank-side payment verification.
+
+**Decision ID:** `DEC-2026-05-17-2317-controlled-payment-proof-upload`
+
+**Scope:**
+
+- Allow proof upload for Approved for Payment or Payment Exported payroll runs.
+- Require payment/proof permission before upload or download.
+- Require proof file, proof type, payment date, and payment reference or note.
+- Validate accepted file type and size; record malware-scan placeholder/status.
+- Record uploader, timestamp, file name, file type, file size, file checksum, linked payroll run version, and linked payment export record if available.
+- Provide authorized download/view of proof metadata and file.
+- Audit upload, download, validation failure, and denied attempts.
+- Do not claim payment success verification from the bank in MVP.
+
+**Out of MVP:** maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, and evidence redaction workflow.
+
+---
+
 ## 9. Accepted Payroll Import Template Decision
 
 **Decision:** For MVP, use the practical payroll/payment/evidence import template rather than a minimal payroll-only template or a full employee/payroll master template.

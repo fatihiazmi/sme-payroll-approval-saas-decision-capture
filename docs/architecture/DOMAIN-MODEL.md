@@ -195,8 +195,12 @@ These should be bought, reused, or kept thin behind adapters:
 - `ExportFileChecksum`
 - `PayrollJournalPreview`
 - `PaymentProof`
+- `PaymentProofMetadata`
+- `PaymentProofChecksum`
 
 **MVP payment export:** per `DEC-2026-05-17-2313-controlled-generic-payment-csv`, generates a controlled generic CSV from an Approved for Payment payroll run version with `employee_identifier`, `employee_name`, `bank_name`, `bank_account`, `payment_reference`, `net_pay_amount`, `currency`, and `pay_date`; records exporter, timestamp, run version, row count, exported total, checksum, and format version.
+
+**MVP payment proof:** per `DEC-2026-05-17-2317-controlled-payment-proof-upload`, captures controlled proof evidence with proof type, payment date, payment reference/note, uploader, timestamp, file name/type/size/checksum, linked payroll run version, linked payment export record if available, authorization-controlled download, and audit logging. It does not assert bank-side payment success.
 
 **Integration style:** Consumes `PayrollRunApprovedForPayment`; emits `PaymentExported`, `PaymentProofUploaded`.
 
@@ -384,6 +388,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Every state transition must include actor, timestamp, prior state, next state, command, and reason where required.
 - Sensitive data access is not authorized by the aggregate; it must be checked by Tenant and Access before loading/displaying sensitive fields and before creating owner submission snapshots.
 - `GeneratePaymentExport` requires `ApprovedForPayment` status, payment export permission, approved run version binding, and audit capture of checksum/totals/row count/format version (`DEC-2026-05-17-2313-controlled-generic-payment-csv`).
+- `UploadPaymentProof` requires Approved for Payment or Payment Exported status, payment/proof permission, accepted file type/size, required proof metadata, checksum, linked payroll run version, and audit logging (`DEC-2026-05-17-2317-controlled-payment-proof-upload`).
 - Closing requires either payment proof uploaded or an explicit authorized proof waiver/placeholder, depending on configured evidence policy.
 - Reopening requires reason, authority, and audit event; previous approved/exported artifacts remain retained and are superseded, not deleted.
 

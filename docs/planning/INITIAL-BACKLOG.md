@@ -293,15 +293,22 @@ Technical risk: Bank/payment file formats vary; MVP should use a configurable CS
 
 ### PAY-015: Upload payment proof
 
-**As a** payment/journal user, **I want to** upload payment proof, **so that** the payroll run has evidence that payment was made.
+**As a** payment/journal user, **I want to** upload controlled payment proof evidence, **so that** the payroll run has auditable evidence that payment was handled outside the system.
+
+**Accepted Decision:** `DEC-2026-05-17-2317-controlled-payment-proof-upload`
 
 **Acceptance Criteria**:
-- **Given** a payroll run is Approved, **When** I upload an accepted proof file, **Then** the proof is attached to the payroll run with uploader and timestamp.
-- **Given** a proof file is uploaded, **When** I open the payroll run, **Then** I can view file name, upload time, uploader, and download link if authorized.
-- **Given** payment proof is uploaded, **When** the audit timeline is viewed, **Then** the upload event is recorded.
+- **Given** a payroll run is Approved for Payment or Payment Exported, **When** an authorized payment/proof user uploads payment proof, **Then** proof file, proof type, payment date, and payment reference or note are required.
+- **Given** a proof file is uploaded, **When** validation runs, **Then** only accepted file types and file sizes are allowed and a malware-scan placeholder/status is recorded.
+- **Given** payment proof is accepted, **When** it is attached, **Then** uploader, timestamp, file name, file type, file size, file checksum, linked payroll run version, and linked payment export record if available are recorded.
+- **Given** a proof file is uploaded, **When** I open the payroll run, **Then** I can view proof metadata and download the file only if authorized.
+- **Given** the actor lacks payment/proof permission or file validation fails, **When** upload/download is attempted, **Then** the action is denied, no unsafe file is attached, and the denied attempt is audit-logged.
+- **Given** payment proof is uploaded, **When** the audit timeline is viewed, **Then** the proof upload event and metadata are recorded without claiming bank-side payment verification.
+
+**Out of MVP**: maker-checker proof verification, OCR reading of bank receipt, automatic bank reconciliation, payment success validation from bank, multiple proof approval workflow, evidence redaction workflow.
 
 **Story Points**: 5  
-**Dependencies**: PAY-011, PAY-018, PAY-016  
+**Dependencies**: PAY-011, PAY-014, PAY-016, PAY-018  
 **Priority**: P0  
 **GitHub Issue**: Yes
 

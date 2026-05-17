@@ -215,3 +215,17 @@
 - Security Auditor: Enforce payment export permission and audit denied/pre-approval attempts.
 **Out of MVP**: Maybank/CIMB/bank-specific formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, encryption/signing of bank files.
 ---
+
+
+### DEC-2026-05-17-2317-controlled-payment-proof-upload — PAY-015 controlled payment proof upload scope
+**Date**: 2026-05-17T23:17:50+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: 4/0/0
+**Decision**: Use controlled payment proof upload as evidence capture, not bank-side payment verification.
+**Key argument**: Controlled evidence capture gives audit value and safe file handling without adding a full payment verification or reconciliation workflow to MVP.
+**Dissent**: None
+**Actions**:
+- Sprint Planner: Update PAY-015 backlog and GitHub issue acceptance criteria.
+- Domain Expert: Keep proof upload as evidence of manual payment handling, not confirmation that the bank paid successfully.
+- Tech Lead: Link proof to payroll run version and payment export record when available; capture checksum and metadata.
+- Security Auditor: Enforce file type/size validation, malware-scan placeholder/status, permission checks, and audit denied attempts.
+**Out of MVP**: maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, evidence redaction workflow.
+---
