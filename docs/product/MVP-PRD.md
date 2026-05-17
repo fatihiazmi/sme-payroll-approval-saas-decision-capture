@@ -85,6 +85,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Import flow uses a two-step preview then confirm pattern: upload file → validate and show valid/error rows → commit rows only after user confirmation.
    - Manual payroll row add/edit is allowed only while the payroll run is in Draft / Imported; after validation/review/approval starts, edits require returning/reopening the run to Draft / Imported with an audit reason.
    - Payroll components for salary, allowance, deduction, unpaid leave, OT, bonus/commission, and approved claims totals.
+   - Payroll run summary shows employee count, basic pay total, allowances total, overtime total, gross pay total, deductions total, net pay total, payment-ready total, and rows with issues count.
    - Validation report for missing fields, unsupported categories, duplicate employees, invalid bank details, or inconsistent totals.
 
 4. **Verification checklist**

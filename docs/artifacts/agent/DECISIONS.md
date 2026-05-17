@@ -113,3 +113,15 @@
 - Backend: Enforce edit permissions by payroll run state, not just UI controls.
 - Audit: Log correction edits after return/reopen with actor, timestamp, changed fields, and reason where applicable.
 ---
+
+
+### DEC-2026-05-17-2016-payroll-summary-totals — MVP payroll run summary totals
+**Date**: 2026-05-17T20:16:47+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: PAY-007 will show the practical MVP totals set: employee count, basic pay total, allowances total, overtime total, gross pay total, deductions total, net pay total, payment-ready total, and rows with issues count.
+**Key argument**: These totals explain payroll composition, support owner/accountant review, and prepare for payment export reconciliation without expanding MVP into full statutory or finance reporting.
+**Dissent**: Full statutory/finance breakdown is deferred unless required by a pilot.
+**Actions**:
+- Product: Update PAY-007 acceptance criteria and PRD summary scope.
+- Backend: Add/derive `PayrollRunSummary` totals from payroll rows and validation issue state.
+- Security: Apply salary/payment masking to monetary totals while keeping non-sensitive counts/issue indicators visible.
+---

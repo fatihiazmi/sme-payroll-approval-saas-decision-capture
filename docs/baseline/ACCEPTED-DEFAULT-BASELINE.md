@@ -189,3 +189,28 @@ Recommended payroll lifecycle:
 - Correction edits are audit-logged with actor, timestamp, changed fields, and reason where applicable.
 - Anytime edit with correction versioning is deferred.
 
+---
+
+## 12. Accepted Payroll Summary Totals Decision
+
+**Decision:** For MVP, PAY-007 uses the practical payroll summary totals set rather than minimal totals or full statutory/finance breakdown.
+
+**Required summary totals:**
+
+- employee count
+- basic pay total
+- allowances total
+- overtime total
+- gross pay total
+- deductions total
+- net pay total
+- payment-ready total
+- rows with issues count
+
+**Scope:**
+
+- Summary totals support payroll operator review, owner confidence, and later payment export reconciliation.
+- `payment-ready total` is the amount expected to flow into payment export once the run is approved.
+- Full EPF/SOCSO/EIS/PCB/employer contribution/cost-centre breakdown remains deferred unless a pilot requires it.
+- Sensitive salary/payment amounts remain subject to role-based masking.
+

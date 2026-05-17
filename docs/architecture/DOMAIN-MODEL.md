@@ -106,10 +106,13 @@ These should be bought, reused, or kept thin behind adapters:
 
 - `PayrollRun` aggregate root
 - `PayrollRunLine`
+- `PayrollRunSummary`
 - `ApprovalRequest`
 - `ReviewDecision`
 - `WorkflowTransition`
 - `PayrollRunStatus`
+
+**MVP summary totals:** employee count, basic pay total, allowances total, overtime total, gross pay total, deductions total, net pay total, payment-ready total, and rows with issues count. Sensitive salary/payment totals are masked according to authorization policy.
 
 **Integration style:** Publishes domain events consumed by Evidence, Export, Notification, and Portfolio Dashboard contexts.
 

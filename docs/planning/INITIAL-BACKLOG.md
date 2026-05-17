@@ -141,9 +141,10 @@ Technical risk: Imported spreadsheets may vary across SMEs; the MVP must support
 **As a** payroll operator, **I want to** view payroll totals and employee rows, **so that** I can verify the run before submission.
 
 **Acceptance Criteria**:
-- **Given** a payroll run has rows, **When** I open the run summary, **Then** I see employee count, gross total, total deductions, overtime total, and net pay total.
-- **Given** a payroll row has missing or invalid fields, **When** I view the summary, **Then** the row is marked as requiring attention.
-- **Given** salary-sensitive values are displayed, **When** a user lacks salary access, **Then** amounts are masked or hidden according to their role.
+- **Given** a payroll run has rows, **When** I open the run summary, **Then** I see employee count, basic pay total, allowances total, overtime total, gross pay total, deductions total, net pay total, payment-ready total, and rows with issues count.
+- **Given** payroll rows include allowances, overtime, or deductions, **When** totals are calculated, **Then** gross pay total and net pay total are derived consistently from the row amounts.
+- **Given** a payroll row has missing or invalid fields, **When** I view the summary, **Then** the row is marked as requiring attention and the rows with issues count includes it.
+- **Given** salary-sensitive values are displayed, **When** a user lacks salary access, **Then** salary/payment amounts are masked or hidden according to their role while non-sensitive counts and issue indicators remain visible.
 
 **Story Points**: 5  
 **Dependencies**: PAY-005, PAY-006, PAY-016  
