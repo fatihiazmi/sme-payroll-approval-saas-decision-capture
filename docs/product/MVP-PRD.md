@@ -71,6 +71,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 
 1. **Multi-company workspace**
    - Provider tenant and multiple SME company workspaces.
+   - MVP company workspaces are created by Service Provider Admin users; SME owner self-service registration is deferred.
    - Company/payroll-period dashboard with status, blockers, pending approver, exception count, and evidence completeness.
 
 2. **Payroll run setup and lifecycle**

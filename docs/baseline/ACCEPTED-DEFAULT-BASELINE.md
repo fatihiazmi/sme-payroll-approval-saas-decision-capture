@@ -57,6 +57,7 @@ Primary wedge:
   - Platform account
   - Service-provider/CoSec-style tenant
   - SME company workspace
+- MVP company workspaces are created by Service Provider Admin users; SME owner self-service registration is deferred to Phase 2.
 - Every request must carry explicit tenant and company context.
 - Use logical tenant isolation for MVP with strict authorization and audit controls.
 - Restrict service-provider staff to assigned SMEs only.

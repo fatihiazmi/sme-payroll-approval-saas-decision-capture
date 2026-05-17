@@ -41,12 +41,14 @@ Technical risk: Tenant isolation must be enforced consistently across all payrol
 
 ### PAY-001: Create a company workspace
 
-**As a** SME owner, **I want to** create a company workspace, **so that** payroll data is separated by company.
+**As a** Service Provider Admin, **I want to** create SME company workspaces, **so that** each client's payroll data, users, exports, and evidence are separated by company.
 
 **Acceptance Criteria**:
-- **Given** I am a signed-in owner without a company workspace, **When** I create a company with required name and registration identifier, **Then** the company workspace is created and I become its owner.
+- **Given** I am a Service Provider Admin, **When** I create a company with required name and registration identifier, **Then** the SME company workspace is created under my service-provider tenant.
+- **Given** I create a company workspace, **When** I assign the SME owner/approver and optional payroll operator/payment roles, **Then** those memberships are scoped to that company.
 - **Given** I belong to one company, **When** I view the company switcher or settings, **Then** I only see companies where I have membership.
 - **Given** a company exists, **When** another unrelated user requests company data, **Then** no company payroll data is returned.
+- **Given** an SME owner without service-provider admin access, **When** they attempt to self-create a company workspace in MVP, **Then** the action is not available or is denied.
 
 **Story Points**: 5  
 **Dependencies**: None  

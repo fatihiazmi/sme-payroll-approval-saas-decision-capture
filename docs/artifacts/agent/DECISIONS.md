@@ -44,3 +44,14 @@
 - Backend: Store evidence pack record with file hash, sensitivity markers, generator, timestamp, and retention-until date.
 - Security: Apply sensitive-field policy to generated pack and audit generation/download events.
 ---
+
+### DEC-2026-05-17-1837-workspace-creation — MVP company workspace creator
+**Date**: 2026-05-17T18:37:16+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik
+**Decision**: For MVP, Service Provider Admin creates SME company workspaces; SME owner self-service company registration is deferred to Phase 2.
+**Key argument**: The first wedge targets service-provider/CoSec-style multi-company operations, so admin-created workspaces reduce onboarding scope while preserving tenant isolation.
+**Dissent**: None.
+**Actions**:
+- Product: Update PAY-001 acceptance criteria to Service Provider Admin creation.
+- Backend: Scope created companies under service-provider tenant and enforce company membership boundaries.
+- Product: Defer SME self-service registration to Phase 2.
+---
