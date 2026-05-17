@@ -37,6 +37,7 @@ Primary wedge:
 - Audit logging for sensitive payroll actions
 - Sensitive field controls for salary and bank details
 - Owner analytics dashboard for payroll readiness, approval status, urgency, trends, variance, cashflow forecast, and advisory risk/AI alerts (`DEC-2026-05-18-0059-owner-analytics-dashboard`)
+- Payroll operator operations dashboard/work queue with team workload, SLA/aging, filters, and risk/blocked signals (`DEC-2026-05-18-0108-operator-operations-dashboard`)
 
 ### Deferred from MVP
 
@@ -291,6 +292,25 @@ Recommended payroll lifecycle:
 - Customer payroll data is not used to train AI models by default.
 
 **Out of MVP:** auto-approval, automatic payroll changes, AI-generated statutory/accounting advice, external BI warehouse, customizable dashboard builder, and mobile push notification engine.
+
+---
+
+## 20. Accepted Payroll Operator Operations Dashboard Decision
+
+**Decision:** Use full operations dashboard scope for PAY-024.
+
+**Decision ID:** `DEC-2026-05-18-0108-operator-operations-dashboard`
+
+**Scope:**
+
+- Operator dashboard shows all accessible company payroll runs needing preparation, correction, approval follow-up, payment proof follow-up, or closure.
+- Dashboard includes team workload, SLA/aging buckets, blocked/at-risk counts, pay-date urgency, validation errors, owner comments, missing evidence/proof, assigned operator, latest activity, and quick links.
+- Filters include company, operator, status, pay period, due/pay date, risk level, validation state, evidence/proof state, and owner action state.
+- Priority ordering: overdue/near pay date, blocking validation issues, changes requested, owner waiting time, missing proof/evidence, and oldest activity.
+- Sensitive values follow role/permission masking. Denied access is audit-logged.
+- Dashboard is operational visibility only; it does not auto-fix, auto-assign, auto-approve, or mutate payroll state.
+
+**Out of MVP:** automatic workload balancing, calendar/resource scheduling, SLA contract management engine, in-dashboard payroll editing, chat inbox replacement, mobile push operations app, and BI/custom dashboard builder.
 
 ---
 

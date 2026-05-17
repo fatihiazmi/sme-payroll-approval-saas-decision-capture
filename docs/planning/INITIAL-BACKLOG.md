@@ -12,7 +12,7 @@ Accepted MVP baseline:
 - Audit evidence pack and timeline.
 - Journal preview/export.
 - RBAC, audit logs, sensitive salary/bank controls.
-- Owner analytics dashboard and payroll operator work queue.
+- Owner analytics dashboard and payroll operator operations dashboard/work queue.
 
 Explicitly deferred:
 - Full ERP/accounting suite.
@@ -492,15 +492,23 @@ Technical risk: Dashboard counts must reflect permission scope and payroll statu
 
 ### PAY-024: Show payroll operator work queue
 
-**As a** payroll operator, **I want to** see payroll runs needing preparation or correction, **so that** I can prioritize my work.
+**Accepted scope:** Full operations dashboard with team workload, SLA/aging, filters, and risk/blocked signals (`DEC-2026-05-18-0108-operator-operations-dashboard`).
+
+**As a** payroll operator or service-provider lead, **I want to** see all payroll work, blockers, risk, and team workload in one dashboard, **so that** I can prioritize work before pay day and prevent missed follow-ups.
 
 **Acceptance Criteria**:
-- **Given** I am a payroll operator, **When** I open my work queue, **Then** I see Draft and Changes Requested payroll runs for companies I can access.
-- **Given** a run has validation errors or owner comments, **When** it appears in the queue, **Then** the issue count or latest comment is visible.
-- **Given** I select a work queue item, **When** I click it, **Then** I am taken to the run detail page.
+- **Given** I am a payroll operator or service-provider lead, **When** I open the operations dashboard, **Then** I see only payroll runs for companies I can access.
+- **Given** accessible payroll runs exist, **When** the dashboard loads, **Then** it shows runs needing preparation, correction, approval follow-up, payment proof follow-up, or closure.
+- **Given** work exists across companies/operators, **When** I view summary cards, **Then** I see team workload counts, SLA/aging buckets, blocked/at-risk counts, pay-date urgency, and runs waiting on owner action.
+- **Given** a run appears in the dashboard, **When** I view the row/card, **Then** I see company, period, pay date, status, assigned operator, latest activity, validation issue count, owner latest comment, evidence/proof state, and risk/blocked reason.
+- **Given** many runs exist, **When** I filter the dashboard, **Then** I can filter by company, assigned operator, status, pay period, due/pay date, risk level, validation state, evidence/proof state, and owner action state.
+- **Given** multiple runs need attention, **When** the dashboard sorts priority, **Then** overdue/near pay date, blocking validation issues, changes requested, owner waiting time, missing proof/evidence, and oldest activity appear first.
+- **Given** I select a dashboard item, **When** I click it, **Then** I am taken to the payroll run detail page or relevant action page.
+- **Given** a user lacks permission to see sensitive totals or employee details, **When** dashboard rows, filters, counts, or risk cards include sensitive data, **Then** values are masked/omitted or access is denied according to server-side sensitive-field policy, and denied attempts are audit-logged.
+- **Given** MVP boundaries, **When** the operations dashboard is used, **Then** it does not auto-fix validation issues, auto-assign work, auto-approve payroll, edit payroll inline, replace chat/email inboxes, or enforce contractual SLA penalties.
 
-**Story Points**: 3  
-**Dependencies**: PAY-003, PAY-008, PAY-012, PAY-016  
+**Story Points**: 8  
+**Dependencies**: PAY-003, PAY-008, PAY-010, PAY-012, PAY-015, PAY-016, PAY-017, PAY-018, PAY-023
 **Priority**: P1  
 **GitHub Issue**: Yes
 
@@ -633,7 +641,7 @@ Suggested first batch:
 23. PAY-022 — Export payroll journal CSV — P1 — 3 pts
 24. PAY-019 — Generate audit evidence pack — P1 — 8 pts
 25. PAY-023 — Show owner payroll approval dashboard — P1 — 8 pts
-26. PAY-024 — Show payroll operator work queue — P1 — 3 pts
+26. PAY-024 — Show payroll operator work queue — P1 — 8 pts
 27. SPIKE-002 — Confirm evidence pack format and retention expectation — P1
 
 ## Backlog Health Check

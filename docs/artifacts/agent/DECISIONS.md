@@ -328,3 +328,15 @@
 - Backend/UI: Build dashboard read model with assigned-company scope, deterministic urgency ranking, trend/variance/forecast cards, and risk alerts.
 - Security/Audit: Apply sensitive-field policy to totals/charts/alerts and audit denied access.
 ---
+
+
+### DEC-2026-05-18-0108-operator-operations-dashboard — PAY-024 operator operations dashboard
+**Date**: 2026-05-18T01:08:37+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 3
+**Decision**: MVP payroll operator work queue becomes a full operations dashboard with team workload, SLA/aging, filters, blocked/risk signals, and priority ordering.
+**Key argument**: Operators and service-provider leads need operational visibility across many company payroll runs, not just a simple Draft/Changes Requested list.
+**Dissent**: Scope risk accepted. Guardrail: dashboard is visibility and navigation only; it must not auto-fix, auto-assign, auto-approve, edit payroll inline, or replace chat/email workflows in MVP.
+**Actions**:
+- Product: Lock PAY-024 acceptance criteria to full operations dashboard scope and increase story points to 8.
+- Backend/UI: Build permission-scoped operations read model with workload summaries, SLA/aging buckets, filters, and deterministic priority ranking.
+- Security/Audit: Apply sensitive-field policy to operational rows/cards and audit denied access.
+---

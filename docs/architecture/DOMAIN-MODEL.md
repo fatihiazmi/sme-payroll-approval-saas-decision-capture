@@ -745,7 +745,37 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Risk/AI alerts are advisory signals only; they cannot mutate payroll state or replace owner/accountant judgment.
 - Customer payroll data must not be used for AI model training by default.
 
-### 6.13 Aggregate: ServiceProviderTenant
+### 6.13 Aggregate: OperatorOperationsDashboard
+
+**Identity:** `OperatorOperationsDashboardId`
+
+**Purpose:** Permission-filtered operations dashboard read model for payroll operator workload, SLA/aging, blockers, risk, filters, and priority ordering, accepted by `DEC-2026-05-18-0108-operator-operations-dashboard`.
+
+**Entities:**
+
+- `OperatorWorkItem`
+- `WorkloadSummaryCard`
+- `SlaAgingBucket`
+- `OperationsRiskSignal`
+- `DashboardFilterSet`
+
+**Value objects:**
+
+- `OperatorDashboardScope`
+- `WorkItemPriorityRank`
+- `AgingBucket`
+- `RiskSignalType`
+- `MaskedOperationsValue`
+
+**Invariants:**
+
+- Dashboard data is scoped to assigned companies and role permissions.
+- Sensitive totals and employee-level values must be masked/omitted before rendering when permission is missing.
+- Priority ordering must be deterministic and based on pay date urgency, blocking validation issues, changes requested, owner waiting time, missing proof/evidence, and oldest activity.
+- Dashboard records are operational read models; they cannot directly mutate payroll state, auto-assign work, or auto-approve payroll.
+- Denied access to sensitive operational data must be audit-logged.
+
+### 6.14 Aggregate: ServiceProviderTenant
 
 **Identity:** `ServiceProviderTenantId`
 
@@ -770,7 +800,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Privileged role changes must be audited.
 - Disabled memberships cannot approve, export, or view sensitive data.
 
-### 6.14 Aggregate: SmeCompany
+### 6.15 Aggregate: SmeCompany
 
 **Identity:** `SmeCompanyId`
 
@@ -848,6 +878,8 @@ Events are past-tense facts. They should be written via an outbox in the same tr
 - `SensitivePayrollDataExported`
 - `OwnerDashboardViewed`
 - `DashboardRiskAlertGenerated`
+- `OperatorDashboardViewed`
+- `OperatorWorkItemPrioritized`
 
 ### Export and Payment Events
 

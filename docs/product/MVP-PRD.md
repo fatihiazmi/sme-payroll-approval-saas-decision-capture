@@ -74,7 +74,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 1. **Multi-company workspace**
    - Provider tenant and multiple SME company workspaces.
    - MVP company workspaces are created by Service Provider Admin users; SME owner self-service registration is deferred.
-   - Company/payroll-period dashboard with status, blockers, pending approver, exception count, evidence completeness, owner analytics, variance trends, cashflow forecast, and risk/AI alerts (`DEC-2026-05-18-0059-owner-analytics-dashboard`).
+   - Company/payroll-period dashboards with owner analytics (`DEC-2026-05-18-0059-owner-analytics-dashboard`) and payroll operator operations dashboard/work queue (`DEC-2026-05-18-0108-operator-operations-dashboard`) covering status, blockers, pending approver, exception count, evidence completeness, workload, SLA/aging, filters, and risk signals.
 
 2. **Payroll run setup and lifecycle**
    - Create/import payroll run by company and pay period; MVP displays a simple month/year label while storing explicit `period_start`, `period_end`, and `pay_date`.
@@ -165,6 +165,14 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
     - AI/risk alerts are advisory only. They do not approve, reject, edit, or replace human/accountant judgment.
     - Customer payroll data is not used to train AI models by default.
 
+12. **Payroll operator operations dashboard**
+    - Operator dashboard uses the accepted full operations dashboard rule (`DEC-2026-05-18-0108-operator-operations-dashboard`): show all accessible company payroll runs needing preparation, correction, approval follow-up, payment proof follow-up, or closure.
+    - Dashboard includes team workload cards, SLA/aging buckets, blocked/at-risk counts, pay-date urgency, validation error counts, owner comments, missing evidence/proof, assigned operator, and latest activity.
+    - Operators can filter by company, assigned operator, status, pay period, due/pay date, risk level, validation state, evidence/proof state, and owner action state.
+    - Priority ordering is deterministic: overdue/near pay date, blocking validation issues, changes requested, owner waiting time, missing proof/evidence, and oldest activity.
+    - Operators can click through to the payroll run detail page; dashboard itself does not auto-fix, auto-assign, auto-approve, or mutate payroll state.
+    - Dashboard data is scoped by company assignment and role permissions; sensitive totals/employee data are masked or denied when permission is missing.
+
 ### Explicitly Out of MVP
 
 - Full payroll statutory calculation engine unless narrowed for a pilot.
@@ -175,7 +183,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Line-by-line approval annotations, chat thread per payroll correction, multi-round dispute workflow, formal rejection letter/PDF, and owner-side payroll editing.
 - Full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, and evidence file previewer. PAY-023 owns analytics/risk dashboard scope.
 - Native mobile apps.
-- AI automation that replaces human approval or statutory/accountant judgment; AI/risk alerts in PAY-023 are advisory only and must not approve, reject, or change payroll automatically.
+- AI automation that replaces human approval or statutory/accountant judgment; AI/risk alerts in PAY-023/PAY-024 are advisory only and must not approve, reject, assign, edit, or change payroll automatically.
 - Maybank/CIMB/bank-specific payment file formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, and encryption/signing of bank files.
 - Maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, and evidence redaction workflow.
 - Full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, and audit event redaction workflow.
