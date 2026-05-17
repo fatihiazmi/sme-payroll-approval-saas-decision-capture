@@ -191,8 +191,12 @@ These should be bought, reused, or kept thin behind adapters:
 
 - `PaymentExport`
 - `ExportArtifact`
+- `PaymentExportFormatVersion`
+- `ExportFileChecksum`
 - `PayrollJournalPreview`
 - `PaymentProof`
+
+**MVP payment export:** per `DEC-2026-05-17-2313-controlled-generic-payment-csv`, generates a controlled generic CSV from an Approved for Payment payroll run version with `employee_identifier`, `employee_name`, `bank_name`, `bank_account`, `payment_reference`, `net_pay_amount`, `currency`, and `pay_date`; records exporter, timestamp, run version, row count, exported total, checksum, and format version.
 
 **Integration style:** Consumes `PayrollRunApprovedForPayment`; emits `PaymentExported`, `PaymentProofUploaded`.
 
@@ -379,6 +383,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Payroll lines cannot be changed after `ReadyForReview`, `OtExceptionReview`, or `PendingSmeApproval` except through the controlled return/reopen correction path.
 - Every state transition must include actor, timestamp, prior state, next state, command, and reason where required.
 - Sensitive data access is not authorized by the aggregate; it must be checked by Tenant and Access before loading/displaying sensitive fields and before creating owner submission snapshots.
+- `GeneratePaymentExport` requires `ApprovedForPayment` status, payment export permission, approved run version binding, and audit capture of checksum/totals/row count/format version (`DEC-2026-05-17-2313-controlled-generic-payment-csv`).
 - Closing requires either payment proof uploaded or an explicit authorized proof waiver/placeholder, depending on configured evidence policy.
 - Reopening requires reason, authority, and audit event; previous approved/exported artifacts remain retained and are superseded, not deleted.
 

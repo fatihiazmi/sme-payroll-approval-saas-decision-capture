@@ -218,8 +218,8 @@ Rules:
 
 - `ApprovedForPayment` → `PaymentExported`
   - Trigger: `GeneratePaymentExport`
-  - Guard: actor has export permission; run is approved; export template/mapping valid
-  - Actor: payroll manager/reviewer/authorized processor
+  - Guard: actor has payment export permission; run is Approved for Payment; export is generated from the approved run version; generic CSV format version is valid; checksum/totals/row count can be recorded (`DEC-2026-05-17-2313-controlled-generic-payment-csv`)
+  - Actor: payment/journal user, payroll manager/reviewer, or authorized processor
   - Event: `PaymentExportGenerated`
 
 - `PaymentExported` → `PaymentProofUploaded`
@@ -370,9 +370,11 @@ Every transition requires:
 
 #### Export Guards
 
-- Payment export requires `ApprovedForPayment` or later state.
-- Export requires sensitive export permission and audit logging.
-- Export must record template/mapping version and checksum.
+- Payment export requires `ApprovedForPayment` state for the first export.
+- Export requires sensitive payment export permission and audit logging.
+- Export must be generated from the approved payroll run version and the controlled generic CSV format (`DEC-2026-05-17-2313-controlled-generic-payment-csv`).
+- Export must record exporter, timestamp, run version, row count, exported total, format version, and checksum.
+- Unauthorized or pre-approval export attempts are blocked and audit-logged.
 
 #### Proof Guards
 
@@ -495,7 +497,9 @@ Emits:
 Side effects:
 
 - stores generated artifact checksum/version;
-- logs sensitive export;
+- stores row count and exported total;
+- binds export artifact to approved payroll run version;
+- logs sensitive export and denied attempts where applicable;
 - updates audit timeline.
 
 ### `UploadPaymentProof`

@@ -272,16 +272,22 @@ Technical risk: Bank/payment file formats vary; MVP should use a configurable CS
 
 ### PAY-014: Export approved payment file
 
-**As a** payment/journal user, **I want to** export an approved payroll payment file, **so that** payments can be uploaded to banking software.
+**As a** payment/journal user, **I want to** export a controlled generic CSV payment file from an approved payroll run, **so that** payments can be uploaded manually to banking software with audit evidence.
+
+**Accepted Decision:** `DEC-2026-05-17-2313-controlled-generic-payment-csv`
 
 **Acceptance Criteria**:
-- **Given** a payroll run is Approved, **When** I export payment CSV, **Then** the file includes employee name, bank name, bank account, payment reference, and net pay amount.
-- **Given** a payroll run is not Approved, **When** I attempt payment export, **Then** the export is blocked.
-- **Given** payment export is generated, **When** the audit timeline is viewed, **Then** exporter, timestamp, and exported total are recorded.
-- **Given** the MVP export is generated, **When** I inspect the file, **Then** it uses the generic CSV format rather than a bank-specific integration format.
+- **Given** a payroll run is Approved for Payment, **When** an authorized payment export user exports payment CSV, **Then** the file is generated from the approved payroll run version only.
+- **Given** the MVP CSV is generated, **When** I inspect the file, **Then** it includes `employee_identifier`, `employee_name`, `bank_name`, `bank_account`, `payment_reference`, `net_pay_amount`, `currency`, and `pay_date`.
+- **Given** a payroll run is not Approved for Payment, **When** export is attempted, **Then** export is blocked, no file is generated, and the denied attempt is audit-logged.
+- **Given** the actor lacks payment export permission, **When** export is attempted, **Then** sensitive bank/salary data is denied and the denied attempt is audit-logged.
+- **Given** payment export is generated, **When** the audit timeline is viewed, **Then** exporter, timestamp, run version, row count, exported total, file checksum, and export format version are recorded.
+- **Given** the MVP export is generated, **When** I inspect the format, **Then** it uses the controlled generic CSV format rather than a bank-specific integration format.
+
+**Out of MVP**: Maybank/CIMB/bank-specific formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, encryption/signing of bank files.
 
 **Story Points**: 5  
-**Dependencies**: PAY-011, PAY-018  
+**Dependencies**: PAY-011, PAY-016, PAY-018  
 **Priority**: P0  
 **GitHub Issue**: Yes
 

@@ -43,7 +43,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Support payroll import or manual entry sufficient for payroll verification and approval.
 - Highlight OT and payroll exceptions before SME approval.
 - Enforce SME owner approval before payment export by default.
-- Capture payment export records and payment proof. MVP payment export is a configurable generic CSV for manual bank upload; bank-specific formats and direct bank integration are deferred.
+- Capture payment export records and payment proof. MVP payment export is a controlled generic CSV for manual bank upload (`DEC-2026-05-17-2313-controlled-generic-payment-csv`); bank-specific formats and direct bank integration are deferred.
 - Generate a payroll audit evidence pack per payroll run.
 - Maintain append-only audit timeline for sensitive payroll actions.
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
@@ -80,6 +80,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Controlled Reopened / Correction Required path with mandatory reason and audit trail.
    - Owner return-for-correction uses the accepted structured correction rule (`DEC-2026-05-17-2258-owner-return-structured-correction`): only an authorized SME approver can return a Pending SME Approval run; return requires one reason category plus a required comment; return invalidates the submitted approval snapshot; correction creates a new payroll run version that must be revalidated/reviewed and re-submitted before approval.
    - Owner approval page uses the accepted decision-ready readiness summary (`DEC-2026-05-17-2306-owner-readiness-summary`): employee count, gross total, net total, payment-ready total, validation status, blocking issue count, warning count, OT/exception status, evidence readiness, submitted by, submission time, run version, stale snapshot blocking, and Approve / Return for correction / View details actions.
+   - Payment export uses the accepted controlled generic CSV rule (`DEC-2026-05-17-2313-controlled-generic-payment-csv`): export only from Approved for Payment run version; require payment export permission; include employee/payment fields; record checksum, totals, row count, format version, exporter, and timestamp; audit denied export attempts.
 
 3. **Payroll data import / manual entry**
    - Employee master import or manual entry.
@@ -145,6 +146,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, and AI risk scoring.
 - Native mobile apps.
 - AI automation or AI analysis of payroll data.
+- Maybank/CIMB/bank-specific payment file formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, and encryption/signing of bank files.
 
 ---
 

@@ -154,14 +154,19 @@ Recommended payroll lifecycle:
 
 ## 10. Accepted Payment Export Decision
 
-**Decision:** For MVP, export a configurable generic CSV payment file after payroll approval, then require manual payment proof upload.
+**Decision:** For MVP, export a controlled generic CSV payment file after payroll approval, then require manual payment proof upload.
+
+**Decision ID:** `DEC-2026-05-17-2313-controlled-generic-payment-csv`
 
 **Scope:**
 
-- Include employee name, bank name, bank account number, net pay amount, and payment reference.
+- Generate export only from an Approved for Payment payroll run version.
+- Require payment export permission before exposing bank/salary payment data.
+- Include `employee_identifier`, `employee_name`, `bank_name`, `bank_account`, `payment_reference`, `net_pay_amount`, `currency`, and `pay_date`.
+- Record exporter, timestamp, run version, row count, exported total, file checksum, and export format version in the audit timeline.
 - Block export until the payroll run is approved.
-- Record exporter, timestamp, row count, and exported total in the audit timeline.
-- Do not build direct bank integration or bank-specific file formats in MVP.
+- Audit denied export attempts for pre-approval or unauthorized users.
+- Do not build Maybank/CIMB/bank-specific formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, or encryption/signing of bank files in MVP.
 - Expand to specific Malaysian bank formats after pilot validation.
 
 ---

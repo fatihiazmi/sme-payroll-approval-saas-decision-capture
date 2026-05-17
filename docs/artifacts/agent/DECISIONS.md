@@ -201,3 +201,17 @@
 - Security Auditor: Mask or deny sensitive totals/details based on role policy and audit denied access.
 **Out of MVP**: full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, owner-side editing, AI risk scoring.
 ---
+
+
+### DEC-2026-05-17-2313-controlled-generic-payment-csv — PAY-014 controlled generic payment CSV export scope
+**Date**: 2026-05-17T23:13:30+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: 4/0/0
+**Decision**: Use a controlled generic CSV payment export generated only from an Approved for Payment payroll run version.
+**Key argument**: Controlled generic CSV provides a practical MVP handoff while preserving auditability and avoiding bank-specific integration risk.
+**Dissent**: None
+**Actions**:
+- Sprint Planner: Update PAY-014 backlog and GitHub issue acceptance criteria.
+- Domain Expert: Keep payment export as manual bank upload handoff, not bank execution.
+- Tech Lead: Bind export artifact to approved run version and record checksum/format/totals.
+- Security Auditor: Enforce payment export permission and audit denied/pre-approval attempts.
+**Out of MVP**: Maybank/CIMB/bank-specific formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, encryption/signing of bank files.
+---
