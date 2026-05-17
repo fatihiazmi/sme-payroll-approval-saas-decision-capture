@@ -304,3 +304,15 @@
 - Backend: Generate preview lines from payroll totals plus active PAY-020 mappings and enforce debit/credit balance before export.
 - Security/Audit: Apply sensitive-field policy to preview/export and audit denied sensitive access attempts.
 ---
+
+
+### DEC-2026-05-18-0055-controlled-journal-csv-export — PAY-022 controlled payroll journal CSV export
+**Date**: 2026-05-18T00:55:49+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: MVP exports journal CSV only from a locked valid balanced PAY-021 preview; stale, invalid, missing-mapping, or imbalanced previews block export; export stores payroll run version, preview version, exporter, timestamp, checksum, and format version.
+**Key argument**: Locked-preview export gives accountant-friendly CSV plus audit traceability without building package-specific accounting integrations.
+**Dissent**: None; Xero/QuickBooks/SQL Accounting/AutoCount formats, direct accounting API sync, GL posting, and package-specific validation are deferred.
+**Actions**:
+- Product: Lock PAY-022 acceptance criteria to controlled CSV export from valid preview.
+- Backend: Generate CSV artifact from preview version and store checksum/format/version metadata.
+- Security/Audit: Apply sensitive-field policy and audit export/denied attempts.
+---

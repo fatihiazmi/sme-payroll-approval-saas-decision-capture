@@ -48,7 +48,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Maintain a structured append-only audit timeline for payroll lifecycle, sensitive access, export/download, and denied sensitive/lifecycle actions; audit logs must not store raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
 - Enforce sensitive salary/bank visibility as a mandatory default-masked server-side authorization policy, not a tenant/customer feature flag (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
-- Support accountant-ready payroll journal preview/export with practical company-level payroll mapping buckets, while keeping a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`) and enforcing controlled balanced journal preview before export (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`).
+- Support accountant-ready payroll journal preview/export with practical company-level payroll mapping buckets, while keeping a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`), enforcing controlled balanced journal preview before export (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`), and exporting CSV only from a locked valid preview (`DEC-2026-05-18-0055-controlled-journal-csv-export`).
 
 ### Non-Goals
 
@@ -142,7 +142,9 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Preview/export must block when required mappings are missing, inactive, invalid, or when total debits do not equal total credits; imbalance reasons and amounts are shown before export.
    - Preview values are tied to the payroll run version: draft/status-appropriate totals are used before approval where permitted, and the approved run version is used after approval/payment handoff. Refreshing a preview must recalculate against the latest valid run version for the current state.
    - Sensitive totals and line details follow the server-side sensitive-field policy; unauthorized users see masked/omitted amounts or are denied, and denied attempts are audit-logged.
-   - Export CSV/XLSX/PDF for accountant handoff uses the previewed balanced version.
+   - Journal CSV export uses the accepted controlled export rule (`DEC-2026-05-18-0055-controlled-journal-csv-export`): export only from a valid balanced PAY-021 preview and include export ID, payroll run/version, preview ID/version, company, payroll period, journal date, account code, account description, debit, credit, currency, mapping bucket, line description, exported by/at, file checksum, and format version.
+   - Stale, invalid, missing-mapping, or imbalanced previews block export. Export events are audit-logged and use the previewed balanced version.
+   - Accounting-package-specific formats such as Xero, QuickBooks, SQL Accounting, AutoCount, and direct accounting API sync are out of MVP.
    - Manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, entity consolidation, and ledger posting are out of MVP.
 
 10. **RBAC, tenancy, and PDPA-aware controls**
@@ -159,7 +161,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 ### Explicitly Out of MVP
 
 - Full payroll statutory calculation engine unless narrowed for a pilot.
-- Full GL/accounting ledger, full chart-of-accounts/COA management, AP/AR, bank reconciliation, financial statements, manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, entity consolidation, and ledger posting.
+- Full GL/accounting ledger, full chart-of-accounts/COA management, AP/AR, bank reconciliation, financial statements, manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, entity consolidation, ledger posting, accounting-package-specific export formats, and direct accounting API sync.
 - Attendance device integrations, HRIS integrations, accounting API integrations, banking API integrations.
 - Claims approval workflow, leave workflow, scheduling, employee self-service portal.
 - Multi-level enterprise approval matrix, e-signature workflow, auditor portal.

@@ -642,7 +642,33 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Sensitive line amounts and payroll/payment details must be filtered through the server-side sensitive-field policy before display or export.
 - MVP journal preview does not allow manual journal adjustments, posting period management, reversal/accrual entries, multi-currency accounting, entity consolidation, or direct GL posting.
 
-### 6.9 Aggregate: PaymentExport
+### 6.9 Aggregate: PayrollJournalExport
+
+**Identity:** `PayrollJournalExportId`
+
+**Purpose:** Auditable CSV artifact generated from a locked valid payroll journal preview, accepted by `DEC-2026-05-18-0055-controlled-journal-csv-export`.
+
+**Entities:**
+
+- `JournalExportArtifact`
+- `JournalExportAttempt`
+
+**Value objects:**
+
+- `JournalExportFormatVersion`
+- `JournalExportChecksum`
+- `JournalPreviewVersionRef`
+- `JournalExportLine`
+
+**Invariants:**
+
+- Export can only be generated from a valid, balanced, non-stale `PayrollJournalPreview`.
+- Export artifact must reference payroll run ID/version and preview ID/version.
+- Stale, invalid, missing-mapping, or imbalanced previews block export and create denied/blocked audit events where applicable.
+- Export lines and generated files follow sensitive-field policy before file creation.
+- MVP exports generic CSV only; package-specific formats and direct accounting API sync are deferred.
+
+### 6.10 Aggregate: PaymentExport
 
 **Identity:** `PaymentExportId`
 
@@ -666,7 +692,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Export artifact must store the payroll run version used.
 - Regeneration after correction creates a new export version; old exports are retained and marked superseded where applicable.
 
-### 6.10 Aggregate: PaymentProof
+### 6.11 Aggregate: PaymentProof
 
 **Identity:** `PaymentProofId`
 
@@ -690,7 +716,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Proof upload after closure requires reopen or append-only post-close evidence policy.
 - Proof containing bank details is sensitive and must be access logged.
 
-### 6.11 Aggregate: ServiceProviderTenant
+### 6.12 Aggregate: ServiceProviderTenant
 
 **Identity:** `ServiceProviderTenantId`
 
@@ -715,7 +741,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Privileged role changes must be audited.
 - Disabled memberships cannot approve, export, or view sensitive data.
 
-### 6.12 Aggregate: SmeCompany
+### 6.13 Aggregate: SmeCompany
 
 **Identity:** `SmeCompanyId`
 

@@ -448,15 +448,20 @@ Technical risk: Accounting mappings differ by company; MVP should support simple
 
 ### PAY-022: Export payroll journal CSV
 
+**Accepted scope:** Controlled CSV export from locked valid PAY-021 preview (`DEC-2026-05-18-0055-controlled-journal-csv-export`).
+
 **As a** payment/journal user, **I want to** export journal entries as CSV, **so that** I can import them into accounting software manually.
 
 **Acceptance Criteria**:
-- **Given** a journal preview is balanced, **When** I export journal CSV, **Then** the CSV includes date, account code, description, debit, credit, company, and payroll period.
-- **Given** a journal preview has missing mappings or imbalance, **When** I attempt export, **Then** the export is blocked with reasons.
-- **Given** journal export is generated, **When** the audit timeline is viewed, **Then** exporter and timestamp are recorded.
+- **Given** a PAY-021 journal preview is valid, balanced, and not stale, **When** I export journal CSV, **Then** the export is generated from that locked preview version only.
+- **Given** the CSV is generated, **When** I inspect the header and rows, **Then** it includes `export_id`, `payroll_run_id`, `payroll_run_version`, `preview_id`, `preview_version`, `company`, `payroll_period`, `journal_date`, `account_code`, `account_description`, `debit`, `credit`, `currency`, `mapping_bucket`, `line_description`, `exported_by`, `exported_at`, `file_checksum`, and `format_version`.
+- **Given** the preview is stale, invalid, missing required mappings, or imbalanced, **When** I attempt export, **Then** export is blocked with reasons and no file is generated.
+- **Given** journal export is generated, **When** the audit timeline is viewed, **Then** exporter, timestamp, payroll run version, preview version, row count, debit total, credit total, file checksum, and format version are recorded.
+- **Given** exported lines contain sensitive payroll/payment values, **When** the CSV is generated, **Then** only permitted fields are included according to the server-side sensitive-field policy, and denied export attempts are audit-logged.
+- **Given** MVP scope boundaries, **When** journal export is implemented, **Then** Xero/QuickBooks/SQL Accounting/AutoCount-specific formats, direct accounting API sync, posting into GL, multi-format export builder, and package-specific validation rules are not exposed.
 
 **Story Points**: 3  
-**Dependencies**: PAY-018, PAY-021  
+**Dependencies**: PAY-016, PAY-018, PAY-021
 **Priority**: P1  
 **GitHub Issue**: Yes
 

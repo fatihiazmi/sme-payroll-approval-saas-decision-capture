@@ -32,7 +32,7 @@ Primary wedge:
 - SME owner approval before payment
 - Payment export/proof upload
 - Payroll evidence pack and audit timeline: versioned, permission-filtered ZIP evidence pack with PDF summary plus CSV/JSON attachments, retained for 7 years by default (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`)
-- Payroll journal preview/export using practical company-level payroll mapping buckets, not a full accounting ledger or full COA module (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`); preview is controlled, balanced, version-bound, and export-blocking when invalid (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`)
+- Payroll journal preview/export using practical company-level payroll mapping buckets, not a full accounting ledger or full COA module (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`); preview is controlled, balanced, version-bound, and export-blocking when invalid (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`); CSV export is generated only from a locked valid preview (`DEC-2026-05-18-0055-controlled-journal-csv-export`)
 - Role-based access control with assignment boundaries
 - Audit logging for sensitive payroll actions
 - Sensitive field controls for salary and bank details
@@ -74,7 +74,7 @@ Primary wedge:
 
 - The product is an evidence and approval system first, not accounting software.
 - MVP should produce a payroll audit pack.
-- MVP should support payroll journal preview/export using practical mapping buckets; the mapping model should preserve a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`). Journal preview must be balanced, tied to a payroll run version, permission-filtered, and block export when invalid (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`).
+- MVP should support payroll journal preview/export using practical mapping buckets; the mapping model should preserve a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`). Journal preview must be balanced, tied to a payroll run version, permission-filtered, and block export when invalid (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`). Journal CSV export must come from a locked valid preview and record checksum/format/version metadata (`DEC-2026-05-18-0055-controlled-journal-csv-export`).
 - Audit timeline should be append-only; corrections should be new events, not silent edits.
 - Payment proof and statutory proof can be uploaded for MVP rather than deeply integrated.
 
@@ -252,6 +252,25 @@ Recommended payroll lifecycle:
 - Journal export must use the previewed balanced version.
 
 **Out of MVP:** manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, branch/entity consolidation, direct GL ledger posting, and full accounting journal engine behavior.
+
+---
+
+## 18. Accepted Payroll Journal CSV Export Decision
+
+**Decision:** Export payroll journal CSV only from a locked valid PAY-021 preview.
+
+**Decision ID:** `DEC-2026-05-18-0055-controlled-journal-csv-export`
+
+**Scope:**
+
+- CSV export is allowed only from a valid balanced journal preview.
+- Export is blocked if the preview is stale, invalid, missing required mappings, or imbalanced.
+- Export records `export_id`, `payroll_run_id`, `payroll_run_version`, `preview_id`, `preview_version`, company, payroll period, journal date, currency, exported by/at, file checksum, and format version.
+- CSV lines include account code, account description, debit, credit, mapping bucket, and line description.
+- Export follows sensitive-field permissions and is audit-logged.
+- Evidence packs reference the exported file/checksum/version where available.
+
+**Out of MVP:** Xero/QuickBooks/SQL Accounting/AutoCount-specific formats, direct accounting API sync, posting into GL, multi-format export builder, and package-specific validation rules.
 
 ---
 
