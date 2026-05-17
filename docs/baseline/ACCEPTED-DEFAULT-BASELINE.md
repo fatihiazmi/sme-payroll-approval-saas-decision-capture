@@ -61,6 +61,7 @@ Primary wedge:
 - Every request must carry explicit tenant and company context.
 - Use logical tenant isolation for MVP with strict authorization and audit controls.
 - Restrict service-provider staff to assigned SMEs only.
+- MVP user onboarding supports both email invites and Service Provider Admin manual user creation; manually created users remain pending until activation/password setup and all role assignments are company-scoped and audited.
 - Sensitive salary, bank, identity, and payroll evidence fields require explicit permission and audit logging.
 - Salary visibility defaults to Owner + Payroll Operator; bank/payment visibility defaults to Owner + Payment/Journal role for approved payment workflows; customer/tenant feature flags must not disable masking.
 - MFA should be mandatory for privileged users and strongly encouraged/required for sensitive roles.

@@ -57,12 +57,15 @@ Technical risk: Tenant isolation must be enforced consistently across all payrol
 
 ### PAY-002: Invite team members and assign payroll roles
 
-**As a** SME owner, **I want to** invite optional team members and assign payroll roles, **so that** payroll preparation, payment export, and evidence review can be delegated only when needed.
+**As a** Service Provider Admin or SME owner, **I want to** invite or manually create company users and assign payroll roles, **so that** payroll preparation, payment export, and evidence review can be delegated only when needed.
 
 **Acceptance Criteria**:
-- **Given** I am a company owner, **When** I invite a user by email and assign a role, **Then** the invitation is recorded with that role and company.
+- **Given** I am a Service Provider Admin or authorized company owner, **When** I invite a user by email and assign one or more roles, **Then** the invitation is recorded with those roles and company.
 - **Given** an invited user accepts the invitation, **When** they sign in, **Then** they can access only the invited company.
-- **Given** I am not an owner or admin, **When** I try to invite a user, **Then** the system denies the action.
+- **Given** I am a Service Provider Admin, **When** I manually create a user record for a company, **Then** the user is created in pending activation status with assigned company roles and cannot access the system until activation/password setup is completed.
+- **Given** a user needs multiple responsibilities, **When** I assign roles, **Then** the user can hold multiple roles in the same company, such as SME Owner plus Payment/Journal User.
+- **Given** I am not an authorized owner or admin, **When** I try to invite, manually create, or assign a user role, **Then** the system denies the action.
+- **Given** any invitation, manual creation, activation, or role assignment occurs, **When** the action completes, **Then** an audit event records actor, target user, company, roles, timestamp, and action type.
 
 **Story Points**: 5  
 **Dependencies**: PAY-001  

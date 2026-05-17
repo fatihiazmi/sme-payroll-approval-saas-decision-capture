@@ -55,3 +55,14 @@
 - Backend: Scope created companies under service-provider tenant and enforce company membership boundaries.
 - Product: Defer SME self-service registration to Phase 2.
 ---
+
+### DEC-2026-05-17-1842-user-onboarding — MVP user invitation and manual creation model
+**Date**: 2026-05-17T18:42:59+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 3
+**Decision**: MVP supports both email invitations and Service Provider Admin manual user creation; manual users remain pending activation until account/password setup, and all role assignments are company-scoped and audited.
+**Key argument**: Supporting both paths gives service providers practical onboarding flexibility while preserving security through pending activation, scoped roles, and audit logging.
+**Dissent**: Security guardrail: manual creation must not create active accounts without user activation/password setup.
+**Actions**:
+- Product: Update PAY-002 acceptance criteria for invite plus manual creation.
+- Backend: Model pending_activation users and multi-role company memberships.
+- Security: Audit invite, manual creation, activation, and role assignment events.
+---

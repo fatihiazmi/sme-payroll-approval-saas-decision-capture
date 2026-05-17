@@ -118,6 +118,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 
 10. **RBAC, tenancy, and PDPA-aware controls**
     - Provider Admin, Payroll Manager/Reviewer, Payroll Processor, SME Approver, SME Viewer.
+    - MVP supports both email invitations and Service Provider Admin-created user records for controlled onboarding; manual users must be scoped to company roles and require account activation/password setup before access.
     - Users restricted by tenant, assigned company, role, and sensitive-field permissions.
     - Audit logs for sensitive view/export/edit/approval/evidence actions.
     - MFA required for privileged roles and strongly encouraged for all approvers.
