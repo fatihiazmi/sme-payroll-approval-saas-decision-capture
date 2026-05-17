@@ -83,6 +83,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Employee master import or manual entry.
    - MVP payroll import template uses practical approval/payment/evidence columns: `employee_identifier`, `employee_name`, `ic_or_passport_last4`, `department`, `basic_pay`, `allowances`, `deductions`, `overtime_amount`, `net_pay`, `bank_name`, `bank_account`, `payment_reference`, and `remarks`.
    - Import flow uses a two-step preview then confirm pattern: upload file → validate and show valid/error rows → commit rows only after user confirmation.
+   - Manual payroll row add/edit is allowed only while the payroll run is in Draft / Imported; after validation/review/approval starts, edits require returning/reopening the run to Draft / Imported with an audit reason.
    - Payroll components for salary, allowance, deduction, unpaid leave, OT, bonus/commission, and approved claims totals.
    - Validation report for missing fields, unsupported categories, duplicate employees, invalid bank details, or inconsistent totals.
 

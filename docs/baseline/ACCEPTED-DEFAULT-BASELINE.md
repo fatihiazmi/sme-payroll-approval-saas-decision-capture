@@ -175,3 +175,17 @@ Recommended payroll lifecycle:
 - Canceling the preview commits nothing.
 - Partial import is deferred; the MVP prioritizes clear user review and audit-safe commitment.
 
+---
+
+## 11. Accepted Manual Payroll Row Edit Decision
+
+**Decision:** For MVP, manual payroll row add/edit is allowed only while the payroll run is in Draft / Imported.
+
+**Scope:**
+
+- Payroll operators may add or edit rows only before validation/review/approval workflow has started.
+- Once the run leaves Draft / Imported, row edits are blocked.
+- To correct data later, the run must be returned or reopened to Draft / Imported through the controlled correction path.
+- Correction edits are audit-logged with actor, timestamp, changed fields, and reason where applicable.
+- Anytime edit with correction versioning is deferred.
+

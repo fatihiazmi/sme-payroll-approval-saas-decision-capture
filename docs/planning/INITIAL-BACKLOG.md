@@ -126,9 +126,10 @@ Technical risk: Imported spreadsheets may vary across SMEs; the MVP must support
 **As a** payroll operator, **I want to** add or edit payroll rows manually, **so that** exceptions and small payrolls can be handled without a spreadsheet.
 
 **Acceptance Criteria**:
-- **Given** a payroll run is in Draft status, **When** I add a payroll row with required employee and pay fields, **Then** the row appears in the run totals.
-- **Given** a payroll row exists in Draft status, **When** I edit pay or bank fields, **Then** the row and run totals are recalculated.
-- **Given** a payroll run is submitted for approval, **When** I attempt to edit a payroll row, **Then** the system prevents edits unless the run is returned to Draft.
+- **Given** a payroll run is in Draft / Imported status, **When** I add a payroll row with required employee and pay fields, **Then** the row appears in the run totals.
+- **Given** a payroll row exists in Draft / Imported status, **When** I edit pay or bank fields, **Then** the row and run totals are recalculated.
+- **Given** a payroll run is in Validation Issues, Ready for Review, OT / Exception Review, Pending SME Approval, Approved for Payment, Payment Exported, Payment Proof Uploaded, or Closed / Archived status, **When** I attempt to add or edit a payroll row, **Then** the system blocks the edit and explains that the run must be returned/reopened to Draft / Imported.
+- **Given** a non-Draft payroll run is returned/reopened to Draft / Imported for correction, **When** a payroll row is added or edited, **Then** the edit is audit-logged with actor, timestamp, changed fields, and reason where applicable.
 
 **Story Points**: 5  
 **Dependencies**: PAY-003  

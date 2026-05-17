@@ -101,3 +101,15 @@
 - Backend: Model import preview as a validation artifact and commit payroll rows only after confirmation.
 - UX: Show valid/error row counts, blocking errors, and calculated totals before confirmation.
 ---
+
+
+### DEC-2026-05-17-2003-manual-edit-draft-only — MVP manual payroll row edit rule
+**Date**: 2026-05-17T20:03:28+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 1
+**Decision**: Allow manual payroll row add/edit only while the payroll run is in Draft / Imported; once validation/review/approval starts, edits are blocked unless the run is returned or reopened to Draft / Imported through the controlled correction path.
+**Key argument**: Draft-only editing is the safest MVP control because it prevents silent payroll changes after review/approval begins while still allowing corrections through an explicit audited workflow.
+**Dissent**: Less flexible than editing until SME approval, but keeps audit/control simple for MVP; richer correction versioning is deferred.
+**Actions**:
+- Product: Update PAY-006 acceptance criteria to enforce Draft / Imported-only edits.
+- Backend: Enforce edit permissions by payroll run state, not just UI controls.
+- Audit: Log correction edits after return/reopen with actor, timestamp, changed fields, and reason where applicable.
+---

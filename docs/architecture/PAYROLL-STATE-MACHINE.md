@@ -28,6 +28,12 @@ It intentionally models a **workflow and evidence system**, not a full ERP/accou
 
 Payroll run exists for a company/period. Data may have been manually entered or imported, but validation is not yet complete.
 
+Manual add/edit rule:
+
+- Payroll rows may be added or edited only in `DraftImported`.
+- Once the run leaves `DraftImported`, row edits are blocked unless the run is returned/reopened to `DraftImported` through a controlled correction transition.
+- Correction edits after a return/reopen require audit metadata such as actor, timestamp, changed fields, and reason where applicable.
+
 Typical actors:
 
 - Service-provider payroll processor
