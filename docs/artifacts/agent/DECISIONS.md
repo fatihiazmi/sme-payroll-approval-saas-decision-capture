@@ -187,3 +187,17 @@
 - Security Auditor: Preserve denied/unauthorized return attempts and sensitive correction events in audit logging.
 **Out of MVP**: line-by-line annotation, chat thread per correction, multi-round dispute workflow, formal rejection letter/PDF, owner editing payroll directly.
 ---
+
+
+### DEC-2026-05-17-2306-owner-readiness-summary — PAY-013 owner approval readiness summary scope
+**Date**: 2026-05-17T23:06:21+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: 4/0/0
+**Decision**: Use a decision-ready owner readiness summary bound to the submitted payroll run version for MVP.
+**Key argument**: Owner needs enough facts to approve or return safely, but MVP should avoid duplicating evidence pack and analytics features on the approval page.
+**Dissent**: None
+**Actions**:
+- Sprint Planner: Update PAY-013 backlog and GitHub issue acceptance criteria.
+- Domain Expert: Ensure summary supports approve/return decisions without requiring owner payroll editing.
+- Tech Lead: Bind summary to submitted run version and block stale approvals.
+- Security Auditor: Mask or deny sensitive totals/details based on role policy and audit denied access.
+**Out of MVP**: full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, owner-side editing, AI risk scoring.
+---

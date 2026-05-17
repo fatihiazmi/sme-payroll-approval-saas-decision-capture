@@ -117,7 +117,25 @@ Recommended payroll lifecycle:
 
 ---
 
-## 7. Next Artifacts to Produce
+## 7. Accepted Owner Readiness Summary Decision
+
+**Decision:** For MVP, the owner approval page shows a decision-ready readiness summary bound to the submitted payroll run version.
+
+**Decision ID:** `DEC-2026-05-17-2306-owner-readiness-summary`
+
+**Scope:**
+
+- Summary shows employee count, gross total, net total, payment-ready total, validation status, blocking issue count, warning count, OT/exception status, evidence readiness, submitted by, submission time, and run version.
+- Summary provides clear Approve, Return for correction, and View details actions for authorized approvers.
+- Warnings, exceptions, and incomplete evidence show counts and links to detail pages.
+- If the current payroll run version differs from the submitted approval snapshot, approval is blocked until the latest submitted snapshot is viewed.
+- Sensitive totals and row details remain protected by role and sensitive-field policy.
+
+**Out of MVP:** full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, owner-side editing, and AI risk scoring.
+
+---
+
+## 8. Next Artifacts to Produce
 
 1. MVP PRD
 2. Domain model and ubiquitous language
@@ -128,13 +146,13 @@ Recommended payroll lifecycle:
 
 ---
 
-## 8. Source Decision Documents
+## 9. Source Decision Documents
 
 - `docs/decision-capture/payroll-cosec-workflow.md`
 - `docs/decision-capture/finance-audit-evidence.md`
 - `docs/decision-capture/saas-product-architecture.md`
 
-## 9. Accepted Payment Export Decision
+## 10. Accepted Payment Export Decision
 
 **Decision:** For MVP, export a configurable generic CSV payment file after payroll approval, then require manual payment proof upload.
 

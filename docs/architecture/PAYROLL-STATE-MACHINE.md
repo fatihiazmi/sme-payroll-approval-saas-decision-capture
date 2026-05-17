@@ -364,7 +364,8 @@ Every transition requires:
 
 - SME approval requires an authorized SME-side approver, not only a service-provider processor.
 - Approval must bind to a specific payroll run version and approval summary.
-- If payroll data changes after submission, prior SME approval request is invalidated.
+- Approval readiness summary must be decision-ready and bound to the submitted payroll run version (`DEC-2026-05-17-2306-owner-readiness-summary`).
+- If payroll data changes after submission, prior SME approval request is invalidated and approval is blocked until the latest submitted snapshot is viewed.
 - Owner return-for-correction requires the run to be Pending SME Approval, an authorized SME approver, one MVP return reason category, a required owner comment, and audit capture of the prior submitted version (`DEC-2026-05-17-2258-owner-return-structured-correction`).
 
 #### Export Guards
@@ -453,7 +454,8 @@ Side effects:
 
 - creates approval request;
 - notifies SME approver;
-- records approval summary/version.
+- records approval summary/version;
+- materializes owner readiness summary fields required by `DEC-2026-05-17-2306-owner-readiness-summary` for the submitted run version.
 
 ### `ApprovePayroll`
 

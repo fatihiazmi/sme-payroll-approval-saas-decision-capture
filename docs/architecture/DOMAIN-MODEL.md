@@ -108,6 +108,7 @@ These should be bought, reused, or kept thin behind adapters:
 - `PayrollRunLine`
 - `PayrollRunSummary`
 - `ApprovalRequest`
+- `ApprovalReadinessSummary`
 - `ReviewDecision`
 - `ReturnReasonCategory`
 - `OwnerReturnComment`
@@ -115,6 +116,8 @@ These should be bought, reused, or kept thin behind adapters:
 - `PayrollRunStatus`
 
 **MVP summary totals:** employee count, basic pay total, allowances total, overtime total, gross pay total, deductions total, net pay total, payment-ready total, and rows with issues count. Sensitive salary/payment totals are masked according to authorization policy.
+
+**Owner approval readiness summary:** per `DEC-2026-05-17-2306-owner-readiness-summary`, the submitted approval view must bind to a payroll run version and expose only decision-ready facts: employee count, gross/net/payment-ready totals, validation status, blocking/warning counts, OT/exception status, evidence readiness, submitted by/time, run version, and stale-snapshot blocking state.
 
 **Integration style:** Publishes domain events consumed by Evidence, Export, Notification, and Portfolio Dashboard contexts.
 
@@ -371,6 +374,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Payroll amounts cannot be exported before SME approval.
 - `SubmitForSmeApproval` requires approval-readiness: latest validation report has zero blocking issues, blocking OT exceptions are resolved or explicitly escalated, required pre-approval evidence placeholders/checklist items are present or formally waived, payroll totals snapshot is generated, sensitive salary/bank access is checked server-side, and submission audit event is recorded.
 - `ApprovePayrollForPayment` requires an authorized SME approver, `PendingSmeApproval` status, unchanged run version since submission, visible locked totals/exception/evidence summary, and accepted approval statement.
+- `ViewApprovalReadinessSummary` requires authorization to the company/payroll run and must mask or deny sensitive salary/payment fields according to role policy; the summary must be bound to the submitted run version (`DEC-2026-05-17-2306-owner-readiness-summary`).
 - `ReturnPayrollForCorrection` requires an authorized SME approver, `PendingSmeApproval` status, a structured reason category, and required owner comment; it invalidates the submitted approval snapshot and records `DEC-2026-05-17-2258-owner-return-structured-correction` scope rules.
 - Payroll lines cannot be changed after `ReadyForReview`, `OtExceptionReview`, or `PendingSmeApproval` except through the controlled return/reopen correction path.
 - Every state transition must include actor, timestamp, prior state, next state, command, and reason where required.

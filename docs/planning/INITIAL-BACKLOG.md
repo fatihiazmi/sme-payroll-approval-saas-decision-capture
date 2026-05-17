@@ -247,15 +247,22 @@ Technical risk: Approval records must be immutable enough for audit evidence whi
 
 ### PAY-013: Show approval readiness summary to owner
 
-**As a** SME owner, **I want to** see a concise readiness summary, **so that** I can make an informed approval decision quickly.
+**As a** SME owner, **I want to** see a decision-ready readiness summary, **so that** I can approve or return payroll without digging through every detail.
+
+**Accepted Decision:** `DEC-2026-05-17-2306-owner-readiness-summary`
 
 **Acceptance Criteria**:
-- **Given** a payroll run is Pending Approval, **When** I open the approval page, **Then** I see employee count, gross total, net total, validation status, overtime exception status, and last submission time.
-- **Given** validation warnings exist, **When** I view the readiness summary, **Then** warning counts and links to details are shown.
-- **Given** the run was changed after a previous submission, **When** I view the summary, **Then** the latest submission snapshot is shown.
+- **Given** a payroll run is Pending SME Approval, **When** I open the approval page, **Then** I see a decision-ready summary bound to the submitted payroll run version.
+- **Given** I view the summary, **When** the page loads, **Then** it shows employee count, gross total, net total, payment-ready total, validation status, blocking issue count, warning count, OT/exception status, evidence readiness, submitted by, submission time, and run version.
+- **Given** warnings, exceptions, or incomplete evidence exist, **When** I view the summary, **Then** counts and links to details are shown without exposing unauthorized sensitive rows.
+- **Given** the current payroll run version differs from the submitted approval snapshot, **When** I open the approval page, **Then** approval is blocked and I must view the latest submitted snapshot.
+- **Given** I am authorized to decide, **When** the summary is decision-ready, **Then** I can choose Approve, Return for correction, or View details.
+- **Given** I am not authorized to view sensitive payroll totals, **When** I open the summary, **Then** sensitive totals/actions are masked or denied according to role policy and the access attempt is audit-logged.
+
+**Out of MVP**: full approval pack PDF, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, owner-side editing, AI risk scoring.
 
 **Story Points**: 5  
-**Dependencies**: PAY-007, PAY-008, PAY-009, PAY-010  
+**Dependencies**: PAY-007, PAY-008, PAY-009, PAY-010, PAY-011, PAY-012, PAY-016, PAY-018  
 **Priority**: P0  
 **GitHub Issue**: Yes
 
