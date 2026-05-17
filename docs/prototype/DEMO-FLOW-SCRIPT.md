@@ -10,7 +10,7 @@ An SME owner needs to approve monthly payroll confidently. A payroll operator im
 
 - **Payroll Operator:** prepares and submits payroll.
 - **SME Owner / Approver:** reviews totals, exceptions, and approves payment.
-- **Finance User:** exports payment file and uploads proof.
+- **Payment / Journal User:** optional role; exports payment file and uploads proof. In a small SME, this can be the owner.
 - **Auditor:** views closed evidence pack.
 
 ## End-to-End Demo Path

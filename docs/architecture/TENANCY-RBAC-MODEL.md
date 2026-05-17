@@ -32,15 +32,17 @@ flowchart TD
 
 ## 4. MVP Roles
 
+Roles are capability bundles, not assumptions that every SME has separate departments. The first MVP can support a solo owner using all capabilities, while still allowing delegation later.
+
 - **Owner / Approver**: owns company workspace, invites users, approves or rejects payroll runs.
-- **Payroll Operator**: creates payroll runs, imports rows, resolves validation issues, prepares runs for approval.
-- **Finance User**: exports payment files, uploads payment proof, views journal preview/export.
+- **Payroll Operator**: creates payroll runs, imports rows, resolves validation issues, prepares runs for approval. This may be the SME owner in a solo/small company setup.
+- **Payment / Journal User**: optional role for exporting payment files, uploading payment proof, and viewing journal preview/export. In many SMEs this may be the same person as the owner or payroll operator.
 - **Auditor / Read-only Reviewer**: views closed payroll runs, evidence packs, and audit timeline.
 - **Platform Admin**: manages support/configuration with restricted and audited access.
 
 ## 5. Permission Matrix
 
-| Capability | Owner | Payroll Operator | Finance User | Auditor | Platform Admin |
+| Capability | Owner | Payroll Operator | Payment / Journal User | Auditor | Platform Admin |
 |---|---:|---:|---:|---:|---:|
 | Create company workspace | Yes | No | No | No | Support only |
 | Invite company users | Yes | No | No | No | Support only |

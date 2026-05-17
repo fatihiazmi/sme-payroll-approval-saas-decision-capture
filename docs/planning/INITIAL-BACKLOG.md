@@ -23,9 +23,11 @@ Explicitly deferred:
 ## Personas
 
 - **SME Owner / Approver**: legally or operationally responsible for approving payroll and payments.
-- **Payroll Operator**: HR/payroll staff preparing payroll runs for review.
-- **Finance User**: finance staff exporting payment and journal files.
+- **Payroll Operator**: HR/payroll staff, outsourced payroll preparer, or the SME owner themselves when operating solo.
+- **Payment / Journal User**: optional role for whoever exports payment files, uploads proof, or exports journal entries. In a small SME this can be the same person as the owner or payroll operator.
 - **Auditor / Admin**: user who needs controlled access to evidence and audit history.
+
+**Role note:** These are capabilities, not mandatory separate people. For the first MVP/pilot, one SME owner may perform all roles. The invitation story exists so the product can support delegation once a company has staff, outsourced payroll, or accountant involvement.
 
 ## Priorities
 
@@ -51,9 +53,9 @@ Technical risk: Tenant isolation must be enforced consistently across all payrol
 **Priority**: P0  
 **GitHub Issue**: Yes
 
-### PAY-002: Invite payroll and finance users to a company
+### PAY-002: Invite team members and assign payroll roles
 
-**As a** SME owner, **I want to** invite staff to a company workspace, **so that** payroll preparation can be delegated.
+**As a** SME owner, **I want to** invite optional team members and assign payroll roles, **so that** payroll preparation, payment export, and evidence review can be delegated only when needed.
 
 **Acceptance Criteria**:
 - **Given** I am a company owner, **When** I invite a user by email and assign a role, **Then** the invitation is recorded with that role and company.
@@ -236,7 +238,7 @@ Technical risk: Bank/payment file formats vary; MVP should use a configurable CS
 
 ### PAY-014: Export approved payment file
 
-**As a** finance user, **I want to** export an approved payroll payment file, **so that** payments can be uploaded to banking software.
+**As a** payment/journal user, **I want to** export an approved payroll payment file, **so that** payments can be uploaded to banking software.
 
 **Acceptance Criteria**:
 - **Given** a payroll run is Approved, **When** I export payment CSV, **Then** the file includes employee name, bank name, bank account, payment reference, and net pay amount.
@@ -250,7 +252,7 @@ Technical risk: Bank/payment file formats vary; MVP should use a configurable CS
 
 ### PAY-015: Upload payment proof
 
-**As a** finance user, **I want to** upload payment proof, **so that** the payroll run has evidence that payment was made.
+**As a** payment/journal user, **I want to** upload payment proof, **so that** the payroll run has evidence that payment was made.
 
 **Acceptance Criteria**:
 - **Given** a payroll run is Approved, **When** I upload an accepted proof file, **Then** the proof is attached to the payroll run with uploader and timestamp.
@@ -329,7 +331,7 @@ Technical risk: Accounting mappings differ by company; MVP should support simple
 
 ### PAY-020: Configure payroll journal account mappings
 
-**As a** finance user, **I want to** configure basic payroll journal mappings, **so that** journal exports use our account codes.
+**As a** payment/journal user, **I want to** configure basic payroll journal mappings, **so that** journal exports use our account codes.
 
 **Acceptance Criteria**:
 - **Given** I have finance or owner access, **When** I configure account codes for salary expense, deductions payable, and cash/bank, **Then** the mappings are saved for the company.
@@ -343,7 +345,7 @@ Technical risk: Accounting mappings differ by company; MVP should support simple
 
 ### PAY-021: Preview payroll journal entries
 
-**As a** finance user, **I want to** preview journal entries for a payroll run, **so that** I can check accounting impact before export.
+**As a** payment/journal user, **I want to** preview journal entries for a payroll run, **so that** I can check accounting impact before export.
 
 **Acceptance Criteria**:
 - **Given** a payroll run has payroll totals and account mappings, **When** I preview the journal, **Then** debit and credit lines are displayed with account code, description, and amount.
@@ -357,7 +359,7 @@ Technical risk: Accounting mappings differ by company; MVP should support simple
 
 ### PAY-022: Export payroll journal CSV
 
-**As a** finance user, **I want to** export journal entries as CSV, **so that** I can import them into accounting software manually.
+**As a** payment/journal user, **I want to** export journal entries as CSV, **so that** I can import them into accounting software manually.
 
 **Acceptance Criteria**:
 - **Given** a journal preview is balanced, **When** I export journal CSV, **Then** the CSV includes date, account code, description, debit, credit, company, and payroll period.
@@ -442,7 +444,7 @@ Candidate issues:
 - SPIKE-001: Confirm payment export format for first target bank(s)
 - SPIKE-003: Confirm salary/bank masking policy by role
 - PAY-001: Create a company workspace
-- PAY-002: Invite payroll and finance users to a company
+- PAY-002: Invite team members and assign payroll roles
 - PAY-016: Enforce role-based access to payroll actions
 - PAY-018: Record audit events for payroll lifecycle
 
@@ -500,7 +502,7 @@ Create issues for all P0/P1 user-visible stories and planning spikes. Suggested 
 
 Suggested first batch:
 1. PAY-001 — Create a company workspace — P0 — 5 pts
-2. PAY-002 — Invite payroll and finance users to a company — P0 — 5 pts
+2. PAY-002 — Invite team members and assign payroll roles — P0 — 5 pts
 3. PAY-016 — Enforce role-based access to payroll actions — P0 — 8 pts
 4. PAY-018 — Record audit events for payroll lifecycle — P0 — 8 pts
 5. SPIKE-001 — Confirm payment export format for first target bank(s) — P0
