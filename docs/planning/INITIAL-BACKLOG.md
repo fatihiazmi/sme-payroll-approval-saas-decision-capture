@@ -429,9 +429,11 @@ These are not user stories but should be tracked as planning issues before imple
 **Priority**: P1  
 **GitHub Issue**: Yes
 
-### SPIKE-003: Confirm salary/bank masking policy by role
+### SPIKE-003: Confirm salary/bank masking policy by role — Resolved
 
 **Goal**: Confirm exact masking rules and export permissions for owner, operator, finance, and auditor roles.
+
+**SPIKE-003 decision:** Use Option 3. Owner and Payroll Operator can see salary/payroll details required for preparation. Payment/Journal User can see approved bank/payment details required for payment export and journal workflow. Access is enforced by server-side role/permission policy with audit logging. Do not provide a customer- or tenant-facing feature flag to disable sensitive-field masking; pilot exceptions must be explicit role/permission assignments.
 
 **Timebox**: 1 day  
 **Priority**: P0  
