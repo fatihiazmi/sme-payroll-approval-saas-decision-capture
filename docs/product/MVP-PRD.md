@@ -48,7 +48,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Maintain a structured append-only audit timeline for payroll lifecycle, sensitive access, export/download, and denied sensitive/lifecycle actions; audit logs must not store raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
 - Enforce sensitive salary/bank visibility as a mandatory default-masked server-side authorization policy, not a tenant/customer feature flag (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
-- Support accountant-ready payroll journal preview/export with practical company-level payroll mapping buckets, while keeping a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`).
+- Support accountant-ready payroll journal preview/export with practical company-level payroll mapping buckets, while keeping a future path to full chart-of-accounts/COA integration (`DEC-2026-05-18-0039-practical-journal-mapping-with-future-coa-path`) and enforcing controlled balanced journal preview before export (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`).
 
 ### Non-Goals
 
@@ -57,6 +57,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Full statutory payroll engine for EPF/KWSP, SOCSO/PERKESO, EIS, PCB/MTD on day one unless pilot scope requires it.
 - Direct statutory portal submission.
 - Full accounting system, GL, AP, AR, bank reconciliation, financial statements, or month-end close engine.
+- Full accounting journal engine features such as manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, branch/entity consolidation, or ledger posting.
 - Native bank reconciliation.
 - Deep third-party integrations beyond import/export in MVP.
 - Customer- or tenant-configurable feature flag to disable sensitive salary/bank masking.
@@ -137,8 +138,12 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Mappings are company-scoped, versioned enough for audit, editable only by authorized Owner / Approver or Payment / Journal users, and changes are audit-logged.
    - Journal preview/export must block when required mappings are missing, inactive, or invalid.
    - The model keeps a future path to full COA/accounting-system mapping by storing stable mapping bucket keys separately from account code labels; full GL/COA management, accounting package sync, and complex cost allocation remain out of MVP.
-   - Preview payroll journal lines for salary expense, allowances, OT, employer statutory costs, deductions/payables, net salary payable, statutory payable, and optional cost centre/department.
-   - Export CSV/XLSX/PDF for accountant handoff.
+   - Journal preview uses the accepted controlled balanced preview rule (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`): display debit and credit lines with account code, description, debit/credit side, amount, source mapping bucket, and payroll run version.
+   - Preview/export must block when required mappings are missing, inactive, invalid, or when total debits do not equal total credits; imbalance reasons and amounts are shown before export.
+   - Preview values are tied to the payroll run version: draft/status-appropriate totals are used before approval where permitted, and the approved run version is used after approval/payment handoff. Refreshing a preview must recalculate against the latest valid run version for the current state.
+   - Sensitive totals and line details follow the server-side sensitive-field policy; unauthorized users see masked/omitted amounts or are denied, and denied attempts are audit-logged.
+   - Export CSV/XLSX/PDF for accountant handoff uses the previewed balanced version.
+   - Manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, entity consolidation, and ledger posting are out of MVP.
 
 10. **RBAC, tenancy, and PDPA-aware controls**
     - MVP RBAC uses fixed role bundles with an explicit permission matrix: Owner / Approver, Payroll Operator, Payment / Journal User, Auditor / Read-only Reviewer, and Platform Admin.
@@ -154,7 +159,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 ### Explicitly Out of MVP
 
 - Full payroll statutory calculation engine unless narrowed for a pilot.
-- Full GL/accounting ledger, full chart-of-accounts/COA management, AP/AR, bank reconciliation, financial statements.
+- Full GL/accounting ledger, full chart-of-accounts/COA management, AP/AR, bank reconciliation, financial statements, manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, entity consolidation, and ledger posting.
 - Attendance device integrations, HRIS integrations, accounting API integrations, banking API integrations.
 - Claims approval workflow, leave workflow, scheduling, employee self-service portal.
 - Multi-level enterprise approval matrix, e-signature workflow, auditor portal.

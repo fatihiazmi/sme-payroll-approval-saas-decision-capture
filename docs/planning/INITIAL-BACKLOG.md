@@ -429,15 +429,20 @@ Technical risk: Accounting mappings differ by company; MVP should support simple
 
 ### PAY-021: Preview payroll journal entries
 
+**Accepted scope:** Controlled balanced payroll journal preview tied to payroll run version (`DEC-2026-05-18-0050-controlled-balanced-journal-preview`).
+
 **As a** payment/journal user, **I want to** preview journal entries for a payroll run, **so that** I can check accounting impact before export.
 
 **Acceptance Criteria**:
-- **Given** a payroll run has payroll totals and account mappings, **When** I preview the journal, **Then** debit and credit lines are displayed with account code, description, and amount.
-- **Given** debits and credits do not balance, **When** the preview is shown, **Then** the imbalance is highlighted and export is blocked.
-- **Given** the payroll run changes, **When** I refresh the preview, **Then** the journal values reflect the latest approved or draft totals according to run status.
+- **Given** a payroll run has payroll totals and active required PAY-020 account mappings, **When** I preview the journal, **Then** debit and credit lines are displayed with account code, description, debit/credit side, amount, source mapping bucket, and payroll run version.
+- **Given** required mappings are missing, inactive, or invalid, **When** I request preview or export, **Then** the system blocks preview/export and lists the affected mapping buckets.
+- **Given** total debits and total credits do not balance, **When** the preview is shown, **Then** the imbalance amount is highlighted and export is blocked.
+- **Given** the payroll run changes, **When** I refresh the preview, **Then** the journal values recalculate from the latest valid totals for the current run state: status-appropriate draft totals before approval where allowed, and the approved run version after approval/payment handoff.
+- **Given** a user lacks permission to view sensitive payroll/payment totals, **When** they request preview, **Then** line amounts are masked/omitted or access is denied according to the server-side sensitive-field policy, and denied attempts are audit-logged.
+- **Given** MVP scope boundaries, **When** journal preview is implemented, **Then** manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, branch/entity consolidation, direct GL ledger posting, and full accounting journal engine behavior are not exposed.
 
 **Story Points**: 5  
-**Dependencies**: PAY-007, PAY-020  
+**Dependencies**: PAY-007, PAY-016, PAY-018, PAY-020
 **Priority**: P1  
 **GitHub Issue**: Yes
 

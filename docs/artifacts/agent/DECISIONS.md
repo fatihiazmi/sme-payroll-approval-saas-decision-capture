@@ -292,3 +292,15 @@
 - Backend: Model stable mapping bucket keys separately from company account code/label values and block preview/export when required mappings are missing.
 - Security/Audit: Restrict mapping changes to authorized roles and audit create/update/denied attempts.
 ---
+
+
+### DEC-2026-05-18-0050-controlled-balanced-journal-preview — PAY-021 controlled balanced payroll journal preview
+**Date**: 2026-05-18T00:50:07+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: MVP previews balanced debit/credit journal lines from payroll totals and PAY-020 mappings; preview/export is blocked if mappings are missing/invalid or debits and credits do not balance; preview is tied to payroll run version and follows sensitive-field permissions.
+**Key argument**: A controlled balanced preview gives accountants a trustworthy handoff and prevents broken journal exports without expanding MVP into a full accounting journal engine.
+**Dissent**: None; manual journal adjustments, posting periods, reversal entries, accruals, multi-currency accounting, branch/entity consolidation, direct GL ledger posting, and full accounting journal engine behavior are deferred.
+**Actions**:
+- Product: Lock PAY-021 acceptance criteria to controlled balanced, version-bound, permission-filtered preview.
+- Backend: Generate preview lines from payroll totals plus active PAY-020 mappings and enforce debit/credit balance before export.
+- Security/Audit: Apply sensitive-field policy to preview/export and audit denied sensitive access attempts.
+---
