@@ -17,13 +17,13 @@ Each item includes:
 - **Question:** What stakeholders must answer or confirm.
 - **Why it matters:** Product, SaaS, compliance, architecture, or commercial impact.
 - **Proposed default decision:** A recommended default based on SaaS best practice and current SME Payroll Approval SaaS context.
-- **Review status:** All items are marked **Pending Review** until explicitly approved, changed, or rejected by decision makers.
+- **Review status:** All default recommendations were accepted by Nik on 2026-05-17T16:35:38+08:00.
 
 ---
 
 ## 2. Decision Status Legend
 
-- **Pending Review:** Proposed default exists but needs business, legal, security, or technical validation.
+- **Accepted:** Proposed default exists but needs business, legal, security, or technical validation.
 - **Accepted:** Decision approved for implementation.
 - **Changed:** Default was modified after review.
 - **Rejected:** Default was rejected and replaced by a different decision.
@@ -61,7 +61,7 @@ Current document status: **All decisions pending review.**
 - **SME company workspace:** Data ownership and operational boundary under one or more CoSec relationships.
 - Every sensitive business record must include `sme_company_id`; every CoSec-scoped operation must include `cosec_firm_id` and assignment checks.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -82,7 +82,7 @@ Current document status: **All decisions pending review.**
 
 Do not support concurrent multi-CoSec management in MVP unless a legal/commercial use case requires it.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -94,7 +94,7 @@ Do not support concurrent multi-CoSec management in MVP unless a legal/commercia
 
 **Proposed default decision:** Treat the **SME company as the data owner/controller for its company data**, the **CoSec as an authorized processor/service provider for assigned SMEs**, and **SME Payroll Approval SaaS as SaaS processor/sub-processor** depending on contract structure. SME Payroll Approval SaaS owns platform telemetry, aggregated anonymized metrics, and system audit metadata, subject to privacy policy.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -115,7 +115,7 @@ Do not support concurrent multi-CoSec management in MVP unless a legal/commercia
 
 Reserve **dedicated database/schema** for future enterprise/regulatory tiers.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -135,7 +135,7 @@ Reserve **dedicated database/schema** for future enterprise/regulatory tiers.
 
 Never trust client-supplied tenant IDs without authorization checks.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -152,7 +152,7 @@ Never trust client-supplied tenant IDs without authorization checks.
 - Read-only by default.
 - Full audit log visible to internal compliance and optionally customer admins.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -174,7 +174,7 @@ Never trust client-supplied tenant IDs without authorization checks.
 - **SME Staff:** upload/view permitted documents and tasks.
 - **External Auditor/Viewer:** time-limited read-only access.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -186,7 +186,7 @@ Never trust client-supplied tenant IDs without authorization checks.
 
 **Proposed default decision:** Require **explicit assignment** for all non-admin CoSec staff. CoSec Admins can view the full portfolio, but operational staff can only access assigned SME companies and assigned modules.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -204,7 +204,7 @@ Never trust client-supplied tenant IDs without authorization checks.
 - Data sensitivity grants extra restrictions.
 - Company status controls write access.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -225,7 +225,7 @@ Never trust client-supplied tenant IDs without authorization checks.
 
 Allow lower-risk document uploads and routine task updates without maker-checker.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -237,7 +237,7 @@ Allow lower-risk document uploads and routine task updates without maker-checker
 
 **Proposed default decision:** Use **service-scope consent** rather than arbitrary hiding. SME Admins approve the service relationship and data categories needed. CoSec users then access only categories required for subscribed services and assignment.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -261,7 +261,7 @@ Allow lower-risk document uploads and routine task updates without maker-checker
 
 Apply masking by default in UI and logs.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -279,7 +279,7 @@ Apply masking by default in UI and logs.
 - KMS-managed keys with per-environment separation at MVP.
 - Evaluate per-tenant keys for enterprise tier.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -302,7 +302,7 @@ Apply masking by default in UI and logs.
 
 Make customer-visible audit trails available to CoSec Admins and SME Admins with appropriate scoping.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -323,7 +323,7 @@ Make customer-visible audit trails available to CoSec Admins and SME Admins with
 
 Legal review required before launch.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -341,7 +341,7 @@ Legal review required before launch.
 
 Offer optional MFA for all other users in MVP, then move toward mandatory MFA for all admin users.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -353,7 +353,7 @@ Offer optional MFA for all other users in MVP, then move toward mandatory MFA fo
 
 **Proposed default decision:** Use **secure HTTP-only cookies** for browser sessions, short-lived access tokens, refresh rotation, server-side session registry, device/session management, and immediate revocation on password reset or role change. Avoid storing tokens in localStorage.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -372,7 +372,7 @@ Offer optional MFA for all other users in MVP, then move toward mandatory MFA fo
 
 Confirm with legal/commercial stakeholders.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -390,7 +390,7 @@ Confirm with legal/commercial stakeholders.
 - CoSec firm can either resell, pass through, bundle, or let SME Payroll Approval SaaS bill SMEs directly depending on partner agreement.
 - MVP should support direct SME billing first if simpler, but commercial reporting must show CoSec commission/partner attribution.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -402,7 +402,7 @@ Confirm with legal/commercial stakeholders.
 
 **Proposed default decision:** Keep **RM199/month per SME** as the published MVP base price, with annual discount and partner commission. Validate through CoSec and SME discovery interviews before public launch.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -432,7 +432,7 @@ Paid add-ons/tier upgrades:
 - White-label CoSec portal.
 - Dedicated data isolation / enterprise security.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -444,7 +444,7 @@ Paid add-ons/tier upgrades:
 
 **Proposed default decision:** Start with **25% recurring commission** on active paid SME subscriptions attributed to the CoSec partner, with tiered increases based on active SME count and retention quality. Revisit wholesale/bulk plans after pilot data.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -463,7 +463,7 @@ Paid add-ons/tier upgrades:
 
 Billing pauses only for formal cancellation, suspension, or failed payment grace expiry. Archived/historical companies are non-billable but read-only with retention limits.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -480,7 +480,7 @@ Billing pauses only for formal cancellation, suspension, or failed payment grace
 - Conversion checkpoint at day 21.
 - Data export and deletion options if not converting.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -500,7 +500,7 @@ Billing pauses only for formal cancellation, suspension, or failed payment grace
 
 Do not hard-enforce during early pilot; measure usage first, then calibrate limits.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -523,7 +523,7 @@ Do not hard-enforce during early pilot; measure usage first, then calibrate limi
 
 Add SME self-service onboarding after workflows stabilize.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -545,7 +545,7 @@ Add SME self-service onboarding after workflows stabilize.
 
 Optional after activation: historical documents, bank data, payroll data, transaction imports.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -564,7 +564,7 @@ Optional after activation: historical documents, bank data, payroll data, transa
 
 Defer deep accounting/payroll/bank integrations until after pilot usage validates need.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -584,7 +584,7 @@ Defer deep accounting/payroll/bank integrations until after pilot usage validate
 - For sensitive overwrites, require maker-checker approval.
 - Keep import audit log and rollback metadata.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -604,7 +604,7 @@ Defer deep accounting/payroll/bank integrations until after pilot usage validate
 
 Store consent version, timestamp, actor, IP, and accepted document versions.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -622,7 +622,7 @@ Store consent version, timestamp, actor, IP, and accepted document versions.
 - First compliance dashboard visible: same day.
 - First meaningful weekly portfolio report: within 7 days.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -640,7 +640,7 @@ Definition: number of active paid SME companies with at least one current compli
 
 Supporting metric: **Managed SMEs per active CoSec staff member** to measure CoSec productivity improvement.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -668,7 +668,7 @@ Supporting metric: **Managed SMEs per active CoSec staff member** to measure CoS
 - First OCR/extraction completed.
 - Compliance calendar generated.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -691,7 +691,7 @@ Supporting metric: **Managed SMEs per active CoSec staff member** to measure CoS
 - Support tickets per 100 SMEs.
 - Churn reason by CoSec and SME segment.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -714,7 +714,7 @@ Supporting metric: **Managed SMEs per active CoSec staff member** to measure CoS
 - Payment failure and recovery rate.
 - Revenue churn and net revenue retention.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -736,7 +736,7 @@ Supporting metric: **Managed SMEs per active CoSec staff member** to measure CoS
 - Audit log ingestion completeness.
 - Incident count and time to resolution.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -764,7 +764,7 @@ Supporting metric: **Managed SMEs per active CoSec staff member** to measure CoS
 
 Event properties must include non-sensitive IDs, tenant type, plan, role, and timestamps. Do not send PII, payroll, bank, or document contents to analytics tools.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -778,7 +778,7 @@ Event properties must include non-sensitive IDs, tenant type, plan, role, and ti
 
 **Proposed default decision:** Default to **no training on identifiable customer data**. Use customer data only to provide contracted services unless explicit opt-in is obtained. Allow aggregated, anonymized operational metrics for service improvement. Any model improvement dataset must be de-identified, access-controlled, and legally reviewed.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -795,7 +795,7 @@ Event properties must include non-sensitive IDs, tenant type, plan, role, and ti
 - Low-confidence outputs go to review queue.
 - All AI-derived fields preserve source, confidence, reviewer, timestamp, and correction history.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -815,7 +815,7 @@ Event properties must include non-sensitive IDs, tenant type, plan, role, and ti
 - New CoSec relationship can be invited/accepted.
 - Former CoSec may retain limited historical records only if legally/contractually required and explicitly scoped.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -836,7 +836,7 @@ Event properties must include non-sensitive IDs, tenant type, plan, role, and ti
 
 Formats: CSV/XLSX for structured data and original file format/PDF bundle for documents. Target export generation within 24 hours for normal accounts.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -856,7 +856,7 @@ Formats: CSV/XLSX for structured data and original file format/PDF bundle for do
 
 Premium tiers may include dedicated customer success, faster SLAs, and migration assistance.
 
-**Review status:** Pending Review
+**Review status:** Accepted — default recommendation approved by Nik on 2026-05-17T16:35:38+08:00
 
 ---
 
@@ -890,7 +890,7 @@ Before accepting these decisions, confirm:
 
 ## 14. Decision Register Summary
 
-All decisions are currently **Pending Review**:
+All decisions are currently **Accepted**:
 
 - DEC-SaaS-001: Hybrid tenant hierarchy.
 - DEC-SaaS-002: One active managing CoSec per SME at MVP; relationship history supported.

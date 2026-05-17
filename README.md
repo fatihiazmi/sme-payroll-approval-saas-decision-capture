@@ -6,6 +6,14 @@ The product direction being reviewed: a SaaS workflow for SME payroll verificati
 
 ---
 
+
+## Current Baseline
+
+Nik has accepted the default recommendations. The implementation baseline is captured here:
+
+- [Accepted Default Baseline](docs/baseline/ACCEPTED-DEFAULT-BASELINE.md)
+
+---
 # SME Payroll Approval SaaS — Master Decision Review Index
 
 **Purpose:** Single review entry point for expert interview + decision capture documents.
