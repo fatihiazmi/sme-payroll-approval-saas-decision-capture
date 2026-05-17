@@ -433,7 +433,9 @@ Every transition requires:
 
 - Source files used for payroll must be retained or referenced with hash/checksum.
 - Evidence item replacement is append-only and supersedes prior evidence rather than deleting it.
-- Audit timeline is append-only.
+- Audit timeline is structured and append-only (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
+- Corrections, returns, reopens, exports, proof uploads, sensitive reveals/downloads, and denied sensitive/lifecycle attempts append new audit events.
+- Audit events must store safe metadata, masked values, checksums, counts, reason codes, version IDs, and status transitions; they must not store raw full salary, bank account, identity, or unrestricted evidence contents.
 - Audit pack generation must be reproducible from stored versions.
 
 ### Security and Privacy

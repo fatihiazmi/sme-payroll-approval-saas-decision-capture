@@ -45,7 +45,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Enforce SME owner approval before payment export by default.
 - Capture payment export records and payment proof. MVP payment export is a controlled generic CSV for manual bank upload (`DEC-2026-05-17-2313-controlled-generic-payment-csv`); bank-specific formats and direct bank integration are deferred.
 - Generate a payroll audit evidence pack per payroll run.
-- Maintain append-only audit timeline for sensitive payroll actions.
+- Maintain a structured append-only audit timeline for payroll lifecycle, sensitive access, export/download, and denied sensitive/lifecycle actions; audit logs must not store raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
 - Enforce sensitive salary/bank visibility as a mandatory default-masked server-side authorization policy, not a tenant/customer feature flag (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
 - Support accountant-ready payroll journal preview/export without becoming the accounting ledger.
@@ -119,9 +119,12 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Upload payment proof linked to payroll run/payment batch.
    - Track exported by/at, approved snapshot used, file/version, and proof status.
 
-8. **Audit evidence pack**
+8. **Audit evidence pack and audit timeline**
    - Generate a ZIP evidence pack containing a human-readable PDF summary plus structured CSV/JSON attachments.
    - Include payroll summary, salary register according to permission, validation results, OT/exception resolutions, approval record, source file references, payment export/proof, statutory summaries/proof references, journal preview/export, reviewer notes, document index, and audit timeline.
+   - Maintain structured append-only audit events for company/user/role actions, payroll lifecycle actions, imports, edits, validations, exception decisions, approvals/returns, payment exports, payment proof uploads, evidence pack generation/download, sensitive data reveal/export/download, and denied sensitive/lifecycle attempts.
+   - Audit events record actor, company, payroll run, action, timestamp, run version, from/to status where applicable, source IP/user agent where available, and safe metadata/snapshot references.
+   - Audit events must not store raw full salary, bank account, identity, or unrestricted evidence contents; store masked values, references, checksums, counts, reason codes, and version IDs instead.
    - Evidence files are versioned, hashed, permissioned, retained for 7 years by default, and event-logged for generation/download.
 
 9. **Payroll journal preview/export**
@@ -153,6 +156,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - AI automation or AI analysis of payroll data.
 - Maybank/CIMB/bank-specific payment file formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, and encryption/signing of bank files.
 - Maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, and evidence redaction workflow.
+- Full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, and audit event redaction workflow.
 - Tenant-configurable custom role builder, custom permission editor, role templates marketplace, per-field custom permission editor, and per-tenant approval matrix builder. These are Phase 2+ evolution paths; MVP must only preserve the permission-key foundation.
 
 ---

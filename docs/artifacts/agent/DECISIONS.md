@@ -255,3 +255,16 @@
 - Security: Audit every sensitive reveal/export/download and denied sensitive access attempt; keep masking non-disableable by tenant/customer feature flags.
 **Out of MVP**: customer-configurable masking rules, field-by-field tenant configuration, temporary reveal request workflow, manager-by-department salary visibility, evidence redaction workflow, customer-controlled masking disablement.
 ---
+
+
+### DEC-2026-05-17-2341-structured-append-only-audit-timeline — PAY-018 structured append-only audit timeline
+**Date**: 2026-05-17T23:41:44+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Use a structured append-only audit timeline for payroll lifecycle, user/role, sensitive access, export/download, and denied sensitive/lifecycle events; do not store raw full salary, bank account, identity, or unrestricted evidence contents in audit logs.
+**Key argument**: Structured append-only events give traceability and evidence-pack reproducibility while avoiding sensitive-data leakage through logs.
+**Dissent**: None; full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold, and audit event redaction workflow are deferred.
+**Actions**:
+- Product: Update PRD, baseline, PAY-018 backlog, and GitHub issue with event coverage, metadata requirements, and out-of-MVP boundaries.
+- Tech Lead: Model audit events as append-only records with event type, actor, resource refs, run version/status transition, safe metadata, and checksum/version references.
+- Security: Prevent raw full salary/bank/identity/evidence contents in audit logs and require auditing of denied sensitive/lifecycle attempts.
+**Out of MVP**: full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, audit event redaction workflow, blockchain/notary-style attestation.
+---

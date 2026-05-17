@@ -48,7 +48,7 @@ Responsible for overtime, unusual payroll components, missing evidence, variance
 
 #### Evidence and Audit Pack
 
-Responsible for evidence checklist rules, document attachments, file hashes, event timeline, and reproducible audit pack generation.
+Responsible for evidence checklist rules, document attachments, file hashes, structured append-only audit event timeline, and reproducible audit pack generation. Audit events capture safe metadata and version/checksum references, not raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
 
 #### Payment and Export Handoff
 
@@ -230,6 +230,27 @@ These should be bought, reused, or kept thin behind adapters:
 - `OverdueApprovalProjection`
 
 **Integration style:** CQRS-style projection from workflow and exception events.
+
+
+### 3.6 Evidence and Audit Context
+
+**Purpose:** Owns append-only audit events, evidence file references, checksums, and reproducible evidence pack generation.
+
+**Primary language:** Audit Event, Event Type, Actor, Resource Reference, Payroll Run Version, Metadata Snapshot, Checksum, Evidence Pack, Denied Attempt, Sensitive Reveal, Export Event.
+
+**Key model:**
+
+- `AuditEvent`
+- `AuditEventType`
+- `AuditActor`
+- `AuditResourceRef`
+- `AuditMetadata`
+- `EvidenceFileRef`
+- `EvidencePack`
+
+**MVP audit rule:** Audit events are append-only. Corrections and supersessions add new events. Events must store safe metadata, masked values, checksums, counts, reason codes, and version IDs instead of raw full salary, bank account, identity, or unrestricted evidence contents.
+
+**Integration style:** Other contexts publish lifecycle, sensitive access, export/download, and denied-attempt events. Evidence and Audit stores the immutable timeline and serves chronological audit history to authorized users.
 
 ---
 

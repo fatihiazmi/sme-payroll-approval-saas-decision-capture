@@ -178,6 +178,25 @@ Recommended payroll lifecycle:
 
 ---
 
+## 14. Accepted Audit Timeline Decision
+
+**Decision:** Use a structured append-only audit timeline for PAY-018.
+
+**Decision ID:** `DEC-2026-05-17-2341-structured-append-only-audit-timeline`
+
+**Scope:**
+
+- Audit events are append-only; previous events are never edited or deleted by normal product workflows.
+- Corrections, supersessions, returns, reopens, evidence replacement, and permission changes create new audit events.
+- MVP records structured events for company creation, user invitation/manual creation, role assignment/change, payroll run creation, import preview, import commit, payroll row edit, validation run, exception review/resolution, submission, approval, return for correction, payment export, payment proof upload, evidence pack generation/download, sensitive data reveal/export/download, and denied sensitive/lifecycle attempts.
+- Each event records actor, company, payroll run/resource reference, action/event type, timestamp, run version where applicable, from/to status where applicable, source IP/user agent where available, and safe metadata.
+- Audit metadata must not store raw full salary, bank account, identity, or unrestricted evidence contents; use masked values, references, checksums, counts, reason codes, and version IDs.
+- Authorized audit history is displayed chronologically for the payroll run and included in the audit evidence pack.
+
+**Out of MVP:** full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, audit event redaction workflow, and blockchain/notary-style external attestation.
+
+---
+
 ## 8. Next Artifacts to Produce
 
 1. MVP PRD

@@ -364,12 +364,19 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 
 ### PAY-018: Record audit events for payroll lifecycle
 
-**As an** auditor, **I want to** see an audit trail of payroll actions, **so that** approval evidence is traceable.
+**As an** auditor, **I want to** see an append-only audit trail of payroll actions, **so that** approval evidence is traceable without exposing raw salary or bank data in logs.
+
+**Accepted Decision**: `DEC-2026-05-17-2341-structured-append-only-audit-timeline` — use a structured append-only audit timeline; do not store raw full salary, bank account, identity, or unrestricted evidence contents in audit logs.
 
 **Acceptance Criteria**:
-- **Given** a payroll run is created, imported, edited, validated, submitted, approved, returned, exported, or proof-uploaded, **When** the action completes, **Then** an audit event is recorded with actor, company, run, action, timestamp, and relevant metadata.
-- **Given** a user views audit history for a payroll run, **When** they are authorized, **Then** events are shown in chronological order.
-- **Given** audit events exist, **When** payroll row values later change, **Then** prior audit metadata snapshots remain unchanged.
+- **Given** a company is created, user is invited/manual-created, or role is assigned/changed, **When** the action completes, **Then** an audit event is recorded with actor, company, action, timestamp, target resource, and safe metadata.
+- **Given** a payroll run is created, import preview is created, import is committed, row is edited, validation runs, exception is reviewed/resolved, run is submitted, approved, returned, exported, proof-uploaded, evidence pack generated/downloaded, sensitive data revealed/exported/downloaded, or a sensitive/lifecycle action is denied, **When** the action completes or is denied, **Then** a structured audit event is appended.
+- **Given** an audit event is recorded for a payroll run, **When** metadata is stored, **Then** it includes actor, company, payroll run/resource reference, event type/action, timestamp, run version where applicable, from/to status where applicable, source IP/user agent where available, and safe metadata.
+- **Given** audit metadata references payroll values, bank details, identity details, payment proof, or evidence contents, **When** the audit event is stored, **Then** raw full salary, bank account, identity, or unrestricted evidence contents are not stored; masked values, checksums, counts, reason codes, and version IDs are stored instead.
+- **Given** a user views audit history for a payroll run, **When** they are authorized, **Then** events are shown in chronological order and sensitive metadata is masked according to the user's permissions.
+- **Given** audit events exist, **When** payroll row values, evidence files, role assignments, or payroll statuses later change, **Then** prior audit events remain unchanged and new correction/supersession events are appended.
+- **Given** an evidence pack is generated, **When** the audit timeline is included, **Then** it uses the append-only event history and references source versions/checksums needed to reproduce the pack.
+- **Given** MVP scope boundaries, **When** audit logging is implemented, **Then** full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, and audit event redaction workflow are not exposed.
 
 **Story Points**: 8  
 **Dependencies**: PAY-001, PAY-003, PAY-016  
