@@ -342,15 +342,20 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 
 ### PAY-017: Mask sensitive salary and bank data by role
 
-**As a** SME owner, **I want to** restrict visibility of salary and bank details, **so that** sensitive employee data is protected.
+**As a** SME owner, **I want to** restrict visibility of salary and bank details by default, **so that** sensitive employee data is protected unless an explicit permission allows reveal.
+
+**Accepted Decision**: `DEC-2026-05-17-2337-strict-sensitive-data-masking` — use strict default masking with explicit permission-based reveal; do not allow customer- or tenant-facing masking disablement.
 
 **Acceptance Criteria**:
-- **Given** a user lacks salary detail permission, **When** they view payroll rows, **Then** salary, deduction, and net pay amounts are masked or hidden.
-- **Given** a user lacks bank detail permission, **When** they view payroll rows or payment proof, **Then** bank account values are masked except for permitted last digits.
-- **Given** a user has Owner or Payroll Operator role, **When** they view payroll preparation screens, **Then** salary/payroll details are visible according to their company assignment and the reveal is auditable.
-- **Given** a user has Payment/Journal role, **When** they prepare payment export or journal workflow after approval, **Then** approved bank/payment details needed for that workflow are visible, while salary preparation details remain masked unless explicitly granted by role.
-- **Given** a user exports data, **When** the export is generated, **Then** only fields permitted for that role are included.
+- **Given** a user lacks salary detail permission, **When** they view payroll rows, summaries, approval screens, dashboards, exports, or evidence packs, **Then** salary, deduction, gross pay, and net pay amounts are masked or hidden according to the sensitive-field policy.
+- **Given** a user lacks bank detail permission, **When** they view payroll rows, payment export preview, payment proof, journal handoff, or evidence files, **Then** bank account values are masked except for permitted last digits or denied entirely where last-digit display is not safe.
+- **Given** a user has Owner / Approver or Payroll Operator role, **When** they view payroll preparation or approval screens for an assigned company, **Then** salary/payroll details are visible only where the permission matrix grants the relevant permission and the reveal is audit-logged.
+- **Given** a user has Payment / Journal User role, **When** they prepare payment export, upload proof, or preview/export journal workflow after approval, **Then** approved bank/payment details needed for that workflow are visible, while salary preparation details remain masked unless explicitly granted by role/permission.
+- **Given** a user has Auditor / Read-only Reviewer role, **When** they view payroll records, **Then** salary, bank, identity, payment proof, and evidence file details remain masked unless explicitly granted by permission.
+- **Given** any user exports, downloads, or generates evidence containing sensitive data, **When** the artifact is generated, **Then** only fields permitted for that user/company/workflow state are included and the reveal/export/download event is audit-logged.
+- **Given** a user lacks required sensitive-field permission, **When** they attempt reveal, export, evidence download, payment proof view, or API access, **Then** the system denies access server-side and records an audit event for sensitive denied attempts.
 - **Given** the application is configured for a tenant, **When** sensitive salary/bank masking is evaluated, **Then** masking cannot be disabled by a customer- or tenant-facing feature flag; access changes require explicit role/permission assignment and audit logging.
+- **Given** MVP scope boundaries, **When** sensitive masking is implemented, **Then** customer-configurable masking rules, field-by-field tenant configuration, temporary reveal request workflow, manager-by-department salary visibility, and evidence redaction workflow are not exposed.
 
 **Story Points**: 5  
 **Dependencies**: PAY-016, PAY-007, PAY-014  

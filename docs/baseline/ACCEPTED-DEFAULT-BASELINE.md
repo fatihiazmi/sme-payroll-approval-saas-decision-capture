@@ -158,6 +158,26 @@ Recommended payroll lifecycle:
 
 ---
 
+## 13. Accepted Sensitive Data Masking Decision
+
+**Decision:** Use strict default masking with explicit permission-based reveal for PAY-017.
+
+**Decision ID:** `DEC-2026-05-17-2337-strict-sensitive-data-masking`
+
+**Scope:**
+
+- Salary, deduction, net pay, bank account, identity, payment proof, and evidence file details are masked by default.
+- Reveal requires active company membership, company assignment where applicable, explicit permission key, valid workflow state, and server-side sensitive-field policy approval.
+- Owner / Approver and Payroll Operator can see salary/payroll data for preparation and approval where granted by the permission matrix.
+- Payment / Journal User can see approved bank/payment details only for payment export, proof upload, and journal handoff workflows.
+- Auditor / Read-only Reviewer sees masked data unless explicitly granted by role/permission.
+- Every sensitive reveal, export, download, and denied sensitive access attempt is audit-logged.
+- Customer- or tenant-facing feature flags must not disable masking.
+
+**Out of MVP:** customer-configurable masking rules, field-by-field tenant configuration, temporary reveal request workflow, manager-by-department salary visibility, evidence redaction workflow, and customer-controlled masking disablement.
+
+---
+
 ## 8. Next Artifacts to Produce
 
 1. MVP PRD

@@ -242,3 +242,16 @@
 - Backend/Security: Enforce server-side permission-key, company, state, and sensitive-field checks; audit sensitive/lifecycle denied attempts.
 **Out of MVP**: tenant-created custom roles, tenant-facing custom role builder UI, custom permission editor, role templates marketplace, per-field custom permission editor, complex multi-level approval matrix.
 ---
+
+
+### DEC-2026-05-17-2337-strict-sensitive-data-masking — PAY-017 strict sensitive salary and bank masking
+**Date**: 2026-05-17T23:37:29+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Use strict default masking with explicit permission-based reveal for salary, deductions, net pay, bank account, identity, payment proof, and evidence details; customer- or tenant-facing masking disablement is out of MVP.
+**Key argument**: Payroll salary and bank data are high-sensitivity PII, so default-deny masking with explicit server-side reveal is safer, clearer to test, and consistent with PAY-016 permission-key RBAC.
+**Dissent**: None; customer-configurable masking rules, field-by-field tenant configuration, temporary reveal request workflow, and manager-by-department salary visibility are deferred.
+**Actions**:
+- Product: Update PRD, baseline, PAY-017 backlog, and GitHub issue with strict default masking and out-of-MVP boundaries.
+- Backend: Enforce sensitive-field policy server-side across UI DTOs, APIs, exports, evidence packs, payment proof, and journal handoff.
+- Security: Audit every sensitive reveal/export/download and denied sensitive access attempt; keep masking non-disableable by tenant/customer feature flags.
+**Out of MVP**: customer-configurable masking rules, field-by-field tenant configuration, temporary reveal request workflow, manager-by-department salary visibility, evidence redaction workflow, customer-controlled masking disablement.
+---

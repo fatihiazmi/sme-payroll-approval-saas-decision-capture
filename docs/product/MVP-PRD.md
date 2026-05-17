@@ -47,7 +47,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Generate a payroll audit evidence pack per payroll run.
 - Maintain append-only audit timeline for sensitive payroll actions.
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
-- Enforce sensitive salary/bank visibility as a mandatory server-side authorization policy, not a tenant/customer feature flag.
+- Enforce sensitive salary/bank visibility as a mandatory default-masked server-side authorization policy, not a tenant/customer feature flag (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
 - Support accountant-ready payroll journal preview/export without becoming the accounting ledger.
 
 ### Non-Goals
@@ -135,7 +135,9 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
     - MVP supports both email invitations and Service Provider Admin-created user records for controlled onboarding; manual users must be scoped to company roles and require account activation/password setup before access.
     - Users restricted by tenant, assigned company, role, explicit permission key, resource state, and sensitive-field policy.
     - Authorization must be enforced server-side for UI, API, exports, evidence access, approval actions, and sensitive-field reveal; UI hiding is convenience only.
-    - Audit logs for sensitive view/export/edit/approval/evidence actions and denied attempts.
+    - Salary, deduction, net pay, bank account, identity, payment proof, and evidence file details are default-masked unless an explicit permission grants reveal for the current company, workflow state, and use case.
+    - Owner / Approver and Payroll Operator may see salary data for preparation/approval; Payment / Journal User may see approved bank/payment data only for export/proof/journal work; Auditor / Read-only Reviewer sees masked data unless explicitly granted.
+    - Audit logs for sensitive reveal/export/download/edit/approval/evidence actions and denied attempts.
     - MFA required for privileged roles and strongly encouraged for all approvers.
 
 ### Explicitly Out of MVP

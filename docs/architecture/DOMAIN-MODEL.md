@@ -107,6 +107,7 @@ These should be bought, reused, or kept thin behind adapters:
 - Platform-support access to payroll data requires reason capture and an audit event.
 - If a permission key is not granted by the matrix, the action is denied by default.
 - `CustomRoleDefinition` is intentionally deferred; the MVP model must not expose tenant-defined roles but must avoid hardcoding permissions in a way that blocks future custom role bundles.
+- Sensitive salary, deduction, net pay, bank account, identity, payment proof, and evidence fields are default-masked; reveal/export/download requires explicit permission-key evaluation and audit logging (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
 
 ### 3.2 Payroll Workflow Context — Core
 

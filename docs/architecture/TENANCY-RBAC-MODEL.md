@@ -105,8 +105,11 @@ Sensitive fields include salary, bank account, identity number, deductions, stat
 
 Controls:
 
-- Mask sensitive fields by default where full value is not required.
-- Require explicit permission for full salary/bank/evidence visibility.
+- Mask sensitive fields by default, including salary, deductions, net pay, bank account, identity references, payment proof, and evidence files.
+- Reveal requires active company membership, company assignment where applicable, explicit permission key, valid workflow state, and server-side sensitive-field policy approval (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
+- Owner / Approver and Payroll Operator may see salary data for preparation and approval where granted by the permission matrix.
+- Payment / Journal User may see approved bank/payment data only for payment export, proof upload, and journal handoff workflows.
+- Auditor / Read-only Reviewer sees masked data unless explicitly granted by role/permission.
 - Log every sensitive field reveal/export/download.
 - Audit denied attempts for sensitive or lifecycle-changing actions.
 - Never include sensitive values in application logs.
