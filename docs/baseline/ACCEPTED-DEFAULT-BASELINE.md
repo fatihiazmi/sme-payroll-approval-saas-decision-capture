@@ -61,6 +61,7 @@ Primary wedge:
 - Use logical tenant isolation for MVP with strict authorization and audit controls.
 - Restrict service-provider staff to assigned SMEs only.
 - Sensitive salary, bank, identity, and payroll evidence fields require explicit permission and audit logging.
+- Salary visibility defaults to Owner + Payroll Operator; bank/payment visibility defaults to Owner + Payment/Journal role for approved payment workflows; customer/tenant feature flags must not disable masking.
 - MFA should be mandatory for privileged users and strongly encouraged/required for sensitive roles.
 - Customer data must not be used to train AI models by default.
 

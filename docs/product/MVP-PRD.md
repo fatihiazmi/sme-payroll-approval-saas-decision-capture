@@ -47,6 +47,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Generate a payroll audit evidence pack per payroll run.
 - Maintain append-only audit timeline for sensitive payroll actions.
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
+- Enforce sensitive salary/bank visibility as a mandatory server-side authorization policy, not a tenant/customer feature flag.
 - Support accountant-ready payroll journal preview/export without becoming the accounting ledger.
 
 ### Non-Goals
@@ -58,6 +59,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Full accounting system, GL, AP, AR, bank reconciliation, financial statements, or month-end close engine.
 - Native bank reconciliation.
 - Deep third-party integrations beyond import/export in MVP.
+- Customer- or tenant-configurable feature flag to disable sensitive salary/bank masking.
 - AI training on customer payroll data.
 - Replacing human approval, accountant judgment, or statutory/legal responsibility.
 

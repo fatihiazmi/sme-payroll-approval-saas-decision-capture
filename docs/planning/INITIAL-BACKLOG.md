@@ -275,8 +275,8 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 
 **Acceptance Criteria**:
 - **Given** a user has Owner role, **When** they access payroll features, **Then** they can invite users, view sensitive payroll data, approve runs, export payments, and view audit evidence.
-- **Given** a user has Payroll Operator role, **When** they access payroll features, **Then** they can create, import, edit, validate, and submit runs but cannot approve payment.
-- **Given** a user has Finance role, **When** they access payroll features, **Then** they can view approved payment data and export/upload proof but cannot change payroll rows or approve runs.
+- **Given** a user has Payroll Operator role, **When** they access payroll features, **Then** they can create, import, edit, validate, submit runs, and view salary/payroll details needed for preparation, but cannot approve payment.
+- **Given** a user has Finance or Payment/Journal role, **When** they access payroll features, **Then** they can view approved bank/payment data and export/upload proof but cannot view salary details beyond payment totals, change payroll rows, or approve runs.
 - **Given** a user lacks a required permission, **When** they attempt that action through UI or API, **Then** the action is denied.
 
 **Story Points**: 8  
@@ -291,7 +291,10 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 **Acceptance Criteria**:
 - **Given** a user lacks salary detail permission, **When** they view payroll rows, **Then** salary, deduction, and net pay amounts are masked or hidden.
 - **Given** a user lacks bank detail permission, **When** they view payroll rows or payment proof, **Then** bank account values are masked except for permitted last digits.
+- **Given** a user has Owner or Payroll Operator role, **When** they view payroll preparation screens, **Then** salary/payroll details are visible according to their company assignment and the reveal is auditable.
+- **Given** a user has Payment/Journal role, **When** they prepare payment export or journal workflow after approval, **Then** approved bank/payment details needed for that workflow are visible, while salary preparation details remain masked unless explicitly granted by role.
 - **Given** a user exports data, **When** the export is generated, **Then** only fields permitted for that role are included.
+- **Given** the application is configured for a tenant, **When** sensitive salary/bank masking is evaluated, **Then** masking cannot be disabled by a customer- or tenant-facing feature flag; access changes require explicit role/permission assignment and audit logging.
 
 **Story Points**: 5  
 **Dependencies**: PAY-016, PAY-007, PAY-014  
