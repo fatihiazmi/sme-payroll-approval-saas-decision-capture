@@ -214,3 +214,21 @@ Recommended payroll lifecycle:
 - Full EPF/SOCSO/EIS/PCB/employer contribution/cost-centre breakdown remains deferred unless a pilot requires it.
 - Sensitive salary/payment amounts remain subject to role-based masking.
 
+## 9. Accepted Payroll Validation Checklist Decision
+
+**Decision:** For MVP, use practical payroll/payment readiness checks rather than only basic field checks or full statutory/finance validation.
+
+**Mandatory checks:**
+
+- required employee identifier
+- required employee name
+- duplicate employee identifier
+- valid numeric pay fields
+- non-negative pay values
+- gross pay consistency
+- net pay consistency
+- missing bank name/account when net pay > 0
+- rows missing payment reference when payment export is expected
+- rows with blocking issues count must be zero before submission
+
+**Scope boundary:** MVP validation is deterministic payroll/payment readiness validation. Full statutory contribution calculation, PCB/MTD validation, employer contribution validation, cost-centre accounting validation, and bank-specific file validation remain out of MVP unless a pilot explicitly requires them.

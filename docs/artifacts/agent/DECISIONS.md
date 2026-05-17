@@ -125,3 +125,15 @@
 - Backend: Add/derive `PayrollRunSummary` totals from payroll rows and validation issue state.
 - Security: Apply salary/payment masking to monetary totals while keeping non-sensitive counts/issue indicators visible.
 ---
+
+
+### DEC-2026-05-17-2026-validation-checklist — MVP payroll validation checklist
+**Date**: 2026-05-17T20:26:33+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Use practical payroll/payment readiness checks for MVP validation: required employee identifier, required employee name, duplicate employee identifier, valid numeric pay fields, non-negative pay values, gross pay consistency, net pay consistency, missing bank name/account when net pay > 0, rows missing payment reference when payment export is expected, and zero blocking issue count before submission.
+**Key argument**: This gives enough protection against bad payroll/payment rows before owner approval while avoiding the larger scope of full statutory and finance validation.
+**Dissent**: More work than basic field/numeric validation, but still bounded because statutory contribution/PCB validation, cost-centre accounting validation, employer contribution validation, and bank-specific file validation remain outside MVP.
+**Actions**:
+- Product: Update PAY-008 acceptance criteria and PRD validation scope.
+- Backend: Implement deterministic validation rules with row reference, field, severity, rule code, and suggested action.
+- QA: Verify blocking findings prevent review/approval submission until the latest report has zero blocking issues.
+---

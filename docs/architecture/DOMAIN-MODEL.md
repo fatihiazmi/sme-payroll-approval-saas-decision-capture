@@ -118,9 +118,9 @@ These should be bought, reused, or kept thin behind adapters:
 
 ### 3.3 Payroll Import and Validation Context
 
-**Purpose:** Converts source input into normalized payroll run data and findings.
+**Purpose:** Converts source input into normalized payroll run data and findings, using the accepted practical payroll/payment readiness checklist for MVP.
 
-**Primary language:** Import Batch, Source File, Import Mapping, Validation Finding, Blocking Issue, Warning, Payroll Component, Employee Payroll Snapshot.
+**Primary language:** Import Batch, Source File, Import Mapping, Validation Finding, Blocking Issue, Warning, Validation Rule, Payment Readiness, Payroll Component, Employee Payroll Snapshot.
 
 **Key model:**
 
@@ -133,10 +133,13 @@ These should be bought, reused, or kept thin behind adapters:
 - `TemplateColumn`
 - `ValidationReport`
 - `ValidationFinding`
+- `ValidationRuleSet`
 
 **MVP import template columns:** `employee_identifier`, `employee_name`, `ic_or_passport_last4`, `department`, `basic_pay`, `allowances`, `deductions`, `overtime_amount`, `net_pay`, `bank_name`, `bank_account`, `payment_reference`, `remarks`.
 
 **MVP import commitment rule:** Uploaded files first create an `ImportPreview` with row-level validation findings; payroll rows are committed to a Draft `PayrollRun` only after explicit confirmation and only when no blocking errors remain.
+
+**MVP validation checklist:** required employee identifier, required employee name, duplicate employee identifier, valid numeric pay fields, non-negative pay values, gross pay consistency, net pay consistency, missing bank name/account when net pay > 0, rows missing payment reference when payment export is expected, and zero blocking issue count before submission.
 
 **Integration style:** Anti-corruption layer for spreadsheet formats and future external payroll/HR systems. Emits validation results into Payroll Workflow.
 
@@ -412,12 +415,16 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - `ValidationSeverity`
 - `AffectedRecordRef`
 - `FindingMessageCode`
+- `ValidationRuleCode`
+- `ValidationReportVersion`
 
 **Invariants:**
 
 - A report is immutable after being attached to a payroll run state transition.
-- Blocking findings prevent `ReadyForReview`.
+- Blocking findings prevent `ReadyForReview` and submission for SME approval.
+- The latest validation report determines readiness; prior reports remain retained for audit traceability.
 - Findings reference domain concepts, not raw spreadsheet cells only.
+- Full statutory contribution/PCB validation is outside the MVP rule set unless a pilot explicitly adds it.
 
 ### 6.4 Aggregate: ExceptionCase
 

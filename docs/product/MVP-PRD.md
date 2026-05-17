@@ -86,7 +86,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Manual payroll row add/edit is allowed only while the payroll run is in Draft / Imported; after validation/review/approval starts, edits require returning/reopening the run to Draft / Imported with an audit reason.
    - Payroll components for salary, allowance, deduction, unpaid leave, OT, bonus/commission, and approved claims totals.
    - Payroll run summary shows employee count, basic pay total, allowances total, overtime total, gross pay total, deductions total, net pay total, payment-ready total, and rows with issues count.
-   - Validation report for missing fields, unsupported categories, duplicate employees, invalid bank details, or inconsistent totals.
+   - Validation report uses the accepted practical payroll/payment readiness checklist: required employee identifier, required employee name, duplicate employee identifier, valid numeric pay fields, non-negative pay values, gross pay consistency, net pay consistency, missing bank name/account when net pay > 0, rows missing payment reference when payment export is expected, and zero blocking issue count before submission.
 
 4. **Verification checklist**
    - Configurable payroll readiness checklist.
@@ -179,7 +179,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 
 1. Processor creates payroll run for company and period.
 2. Processor imports employee/payroll data or enters it manually.
-3. System validates required fields, components, bank details, statutory summary fields, and evidence checklist.
+3. System validates required employee identifiers/names, duplicate identifiers, numeric/non-negative pay values, gross/net pay consistency, payment readiness fields, and evidence checklist.
 4. Payroll run moves to Validation Issues or Ready for Review.
 
 ### 2. OT and exception review

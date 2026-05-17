@@ -160,9 +160,10 @@ Technical risk: Validation must be explainable and deterministic; hidden rules o
 **As a** payroll operator, **I want to** run a validation checklist, **so that** payroll issues are found before owner approval.
 
 **Acceptance Criteria**:
-- **Given** a payroll run has rows, **When** I run validation, **Then** the system checks required employee fields, non-negative pay values, net pay consistency, duplicate employee identifiers, and missing bank details.
-- **Given** validation finds issues, **When** results are shown, **Then** each issue includes row reference, field, severity, and suggested action.
-- **Given** validation has blocking errors, **When** I submit for approval, **Then** the system prevents submission.
+- **Given** a payroll run has rows, **When** I run validation, **Then** the system checks required employee identifier, required employee name, duplicate employee identifier, valid numeric pay fields, non-negative pay values, gross pay consistency, net pay consistency, missing bank name/account when net pay > 0, and missing payment reference when payment export is expected.
+- **Given** validation finds issues, **When** results are shown, **Then** each issue includes row reference, field, severity, rule code, and suggested action.
+- **Given** validation has blocking errors, **When** I submit for review/approval, **Then** the system prevents submission until rows with blocking issues count is zero.
+- **Given** validations run multiple times for the same payroll run, **When** a new validation report is generated, **Then** the report is timestamped/versioned and the latest report determines readiness.
 
 **Story Points**: 8  
 **Dependencies**: PAY-005, PAY-006  
