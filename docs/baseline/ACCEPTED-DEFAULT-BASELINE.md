@@ -36,7 +36,7 @@ Primary wedge:
 - Role-based access control with assignment boundaries
 - Audit logging for sensitive payroll actions
 - Sensitive field controls for salary and bank details
-- Basic dashboards for payroll readiness and approval status
+- Owner analytics dashboard for payroll readiness, approval status, urgency, trends, variance, cashflow forecast, and advisory risk/AI alerts (`DEC-2026-05-18-0059-owner-analytics-dashboard`)
 
 ### Deferred from MVP
 
@@ -46,7 +46,7 @@ Primary wedge:
 - Bank reconciliation
 - Invoice processing
 - Advanced finance automation
-- AI training on customer payroll data
+- AI training on customer payroll data; PAY-023 advisory dashboard alerts do not permit customer payroll data training by default
 - Deep third-party integrations beyond import/export unless required for pilot
 
 ---
@@ -66,7 +66,7 @@ Primary wedge:
 - Sensitive salary, bank, identity, and payroll evidence fields require explicit permission and audit logging.
 - Salary visibility defaults to Owner + Payroll Operator; bank/payment visibility defaults to Owner + Payment/Journal role for approved payment workflows; customer/tenant feature flags must not disable masking.
 - MFA should be mandatory for privileged users and strongly encouraged/required for sensitive roles.
-- Customer data must not be used to train AI models by default.
+- Customer data must not be used to train AI models by default. PAY-023 AI/risk alerts are advisory dashboard signals only, not automatic payroll decisions.
 
 ---
 
@@ -131,7 +131,7 @@ Recommended payroll lifecycle:
 - If the current payroll run version differs from the submitted approval snapshot, approval is blocked until the latest submitted snapshot is viewed.
 - Sensitive totals and row details remain protected by role and sensitive-field policy.
 
-**Out of MVP:** full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, owner-side editing, and AI risk scoring.
+**Out of MVP for the approval page:** full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, evidence file previewer, and owner-side editing. PAY-023 owns owner dashboard analytics/risk scope.
 
 ---
 
@@ -271,6 +271,26 @@ Recommended payroll lifecycle:
 - Evidence packs reference the exported file/checksum/version where available.
 
 **Out of MVP:** Xero/QuickBooks/SQL Accounting/AutoCount-specific formats, direct accounting API sync, posting into GL, multi-format export builder, and package-specific validation rules.
+
+---
+
+## 19. Accepted Owner Analytics Dashboard Decision
+
+**Decision:** Use analytics dashboard scope for PAY-023.
+
+**Decision ID:** `DEC-2026-05-18-0059-owner-analytics-dashboard`
+
+**Scope:**
+
+- Owner dashboard shows assigned-company payroll runs grouped by Draft, Pending Approval, Approved, Payment Exported, Payment Proof Uploaded, and Closed / Archived.
+- Each item shows status, pay period, pay date, days until pay date, employee count, net total where permitted, blocking issue count, pending owner action, latest return/comment, proof/evidence status, and quick link to approval/detail page.
+- Dashboard includes charts, monthly trends, variance analytics, cashflow forecast, and advisory risk/AI alerts.
+- Urgent items appear first: overdue/near pay date, pending owner action, blocking issues, missing proof/evidence.
+- Sensitive totals follow role/permission masking. Denied access is audit-logged.
+- AI/risk alerts are advisory only. They cannot approve, reject, edit, or replace human/accountant judgment.
+- Customer payroll data is not used to train AI models by default.
+
+**Out of MVP:** auto-approval, automatic payroll changes, AI-generated statutory/accounting advice, external BI warehouse, customizable dashboard builder, and mobile push notification engine.
 
 ---
 

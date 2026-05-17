@@ -316,3 +316,15 @@
 - Backend: Generate CSV artifact from preview version and store checksum/format/version metadata.
 - Security/Audit: Apply sensitive-field policy and audit export/denied attempts.
 ---
+
+
+### DEC-2026-05-18-0059-owner-analytics-dashboard — PAY-023 owner analytics dashboard
+**Date**: 2026-05-18T00:59:59+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 3
+**Decision**: MVP owner dashboard includes analytics: status groups, urgency ordering, charts, monthly trends, variance analytics, cashflow forecast, and advisory risk/AI alerts.
+**Key argument**: Nik wants a stronger owner dashboard, not just a status list; analytics help owners spot urgent and unusual payroll before pay day.
+**Dissent**: Scope risk accepted. Guardrail: alerts are advisory only, sensitive data is masked by permission, and customer payroll data is not used for AI model training by default.
+**Actions**:
+- Product: Lock PAY-023 acceptance criteria to analytics dashboard scope and increase story points to 8.
+- Backend/UI: Build dashboard read model with assigned-company scope, deterministic urgency ranking, trend/variance/forecast cards, and risk alerts.
+- Security/Audit: Apply sensitive-field policy to totals/charts/alerts and audit denied access.
+---

@@ -716,7 +716,36 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Proof upload after closure requires reopen or append-only post-close evidence policy.
 - Proof containing bank details is sensitive and must be access logged.
 
-### 6.12 Aggregate: ServiceProviderTenant
+### 6.12 Aggregate: OwnerDashboardSnapshot
+
+**Identity:** `OwnerDashboardSnapshotId`
+
+**Purpose:** Permission-filtered owner dashboard read model for payroll status, urgency, analytics, forecast, and advisory risk/AI alerts, accepted by `DEC-2026-05-18-0059-owner-analytics-dashboard`.
+
+**Entities:**
+
+- `DashboardPayrollRunItem`
+- `DashboardTrendSeries`
+- `DashboardRiskAlert`
+- `DashboardForecastCard`
+
+**Value objects:**
+
+- `DashboardScope`
+- `UrgencyRank`
+- `VarianceMetric`
+- `RiskAlertType`
+- `MaskedDashboardValue`
+
+**Invariants:**
+
+- Dashboard data is scoped to assigned companies and server-side permissions.
+- Sensitive totals, trends, forecasts, and alerts must be masked/omitted before rendering when permission is missing.
+- Urgency ordering must be deterministic and based on pay date, pending owner action, blocking issue severity, and missing proof/evidence.
+- Risk/AI alerts are advisory signals only; they cannot mutate payroll state or replace owner/accountant judgment.
+- Customer payroll data must not be used for AI model training by default.
+
+### 6.13 Aggregate: ServiceProviderTenant
 
 **Identity:** `ServiceProviderTenantId`
 
@@ -741,7 +770,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Privileged role changes must be audited.
 - Disabled memberships cannot approve, export, or view sensitive data.
 
-### 6.13 Aggregate: SmeCompany
+### 6.14 Aggregate: SmeCompany
 
 **Identity:** `SmeCompanyId`
 
@@ -817,6 +846,8 @@ Events are past-tense facts. They should be written via an outbox in the same tr
 - `AuditPackGenerated`
 - `SensitivePayrollDataViewed`
 - `SensitivePayrollDataExported`
+- `OwnerDashboardViewed`
+- `DashboardRiskAlertGenerated`
 
 ### Export and Payment Events
 

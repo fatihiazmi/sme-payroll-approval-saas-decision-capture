@@ -62,7 +62,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Deep third-party integrations beyond import/export in MVP.
 - Customer- or tenant-configurable feature flag to disable sensitive salary/bank masking.
 - Legal hold workflow, auto-purge engine, auditor portal, external e-signature/certification, evidence redaction workflow, and tamper-proof external notarization for evidence packs.
-- AI training on customer payroll data.
+- AI training on customer payroll data. PAY-023 may show dashboard AI/risk alerts, but customer payroll data must not be used for model training by default.
 - Replacing human approval, accountant judgment, or statutory/legal responsibility.
 
 ---
@@ -74,7 +74,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 1. **Multi-company workspace**
    - Provider tenant and multiple SME company workspaces.
    - MVP company workspaces are created by Service Provider Admin users; SME owner self-service registration is deferred.
-   - Company/payroll-period dashboard with status, blockers, pending approver, exception count, and evidence completeness.
+   - Company/payroll-period dashboard with status, blockers, pending approver, exception count, evidence completeness, owner analytics, variance trends, cashflow forecast, and risk/AI alerts (`DEC-2026-05-18-0059-owner-analytics-dashboard`).
 
 2. **Payroll run setup and lifecycle**
    - Create/import payroll run by company and pay period; MVP displays a simple month/year label while storing explicit `period_start`, `period_end`, and `pay_date`.
@@ -158,6 +158,13 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
     - Audit logs for sensitive reveal/export/download/edit/approval/evidence actions and denied attempts.
     - MFA required for privileged roles and strongly encouraged for all approvers.
 
+11. **Owner analytics dashboard**
+    - Owner dashboard uses the accepted analytics dashboard rule (`DEC-2026-05-18-0059-owner-analytics-dashboard`): show assigned-company payroll runs grouped by status with pay period, pay date, days until pay date, employee count, net total, blocking issue count, pending owner action, latest return/comment, proof/evidence status, charts, monthly trends, variance analytics, cashflow forecast, and risk/AI alerts.
+    - Dashboard data is permission-scoped by company assignment and sensitive-field policy; salary/net totals are masked or denied when permission is missing.
+    - Urgent items are sorted first by overdue/near pay date, pending owner action, blocking issue severity, and missing proof/evidence.
+    - AI/risk alerts are advisory only. They do not approve, reject, edit, or replace human/accountant judgment.
+    - Customer payroll data is not used to train AI models by default.
+
 ### Explicitly Out of MVP
 
 - Full payroll statutory calculation engine unless narrowed for a pilot.
@@ -166,9 +173,9 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Claims approval workflow, leave workflow, scheduling, employee self-service portal.
 - Multi-level enterprise approval matrix, e-signature workflow, auditor portal.
 - Line-by-line approval annotations, chat thread per payroll correction, multi-round dispute workflow, formal rejection letter/PDF, and owner-side payroll editing.
-- Full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, and AI risk scoring.
+- Full approval pack PDF on the approval page, full employee-by-employee drilldown on the same page, and evidence file previewer. PAY-023 owns analytics/risk dashboard scope.
 - Native mobile apps.
-- AI automation or AI analysis of payroll data.
+- AI automation that replaces human approval or statutory/accountant judgment; AI/risk alerts in PAY-023 are advisory only and must not approve, reject, or change payroll automatically.
 - Maybank/CIMB/bank-specific payment file formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, and encryption/signing of bank files.
 - Maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, and evidence redaction workflow.
 - Full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, and audit event redaction workflow.
@@ -194,7 +201,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 
 - **Goal:** Approve payroll confidently before money moves.
 - **Pain:** Receives unclear summaries and must trust back-and-forth messages.
-- **MVP needs:** Simple approval snapshot, key totals, exception summary, variance vs previous run, reject/request-change flow.
+- **MVP needs:** Simple approval snapshot, key totals, exception summary, variance vs previous run, analytics/risk dashboard, pay-date urgency, cashflow forecast, and reject/request-change flow.
 
 ### 4. Service-Provider Admin
 

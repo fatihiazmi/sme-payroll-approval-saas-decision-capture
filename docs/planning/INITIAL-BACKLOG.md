@@ -12,7 +12,7 @@ Accepted MVP baseline:
 - Audit evidence pack and timeline.
 - Journal preview/export.
 - RBAC, audit logs, sensitive salary/bank controls.
-- Basic dashboards.
+- Owner analytics dashboard and payroll operator work queue.
 
 Explicitly deferred:
 - Full ERP/accounting suite.
@@ -259,7 +259,7 @@ Technical risk: Approval records must be immutable enough for audit evidence whi
 - **Given** I am authorized to decide, **When** the summary is decision-ready, **Then** I can choose Approve, Return for correction, or View details.
 - **Given** I am not authorized to view sensitive payroll totals, **When** I open the summary, **Then** sensitive totals/actions are masked or denied according to role policy and the access attempt is audit-logged.
 
-**Out of MVP**: full approval pack PDF, full employee-by-employee drilldown on the same page, variance analytics dashboard, evidence file previewer, owner-side editing, AI risk scoring.
+**Out of MVP for the approval page**: full approval pack PDF, full employee-by-employee drilldown on the same page, evidence file previewer, owner-side editing. PAY-023 owns owner dashboard analytics/risk scope.
 
 **Story Points**: 5  
 **Dependencies**: PAY-007, PAY-008, PAY-009, PAY-010, PAY-011, PAY-012, PAY-016, PAY-018  
@@ -471,15 +471,22 @@ Technical risk: Dashboard counts must reflect permission scope and payroll statu
 
 ### PAY-023: Show owner payroll approval dashboard
 
-**As a** SME owner, **I want to** see payroll runs awaiting my approval, **so that** I can act before pay day.
+**Accepted scope:** Owner analytics dashboard with charts, trends, variance, cashflow forecast, and advisory risk/AI alerts (`DEC-2026-05-18-0059-owner-analytics-dashboard`).
+
+**As a** SME owner, **I want to** see payroll status, urgency, trends, and risk signals, **so that** I can act before pay day and spot unusual payroll movement.
 
 **Acceptance Criteria**:
-- **Given** I am a company owner, **When** I open the dashboard, **Then** I see payroll runs grouped by Draft, Pending Approval, Approved, and Paid Evidence Uploaded.
-- **Given** one or more runs are Pending Approval, **When** I view the dashboard, **Then** each run shows period, pay date, employee count, net total, and days until pay date.
-- **Given** I select a dashboard item, **When** I click it, **Then** I am taken to the payroll run approval or detail page.
+- **Given** I am a company owner, **When** I open the dashboard, **Then** I see only assigned-company payroll runs grouped by Draft, Pending Approval, Approved, Payment Exported, Payment Proof Uploaded, and Closed / Archived.
+- **Given** payroll runs exist, **When** I view the dashboard, **Then** each item shows status, pay period, pay date, days until pay date, employee count, net total where permitted, blocking issue count, pending owner action, latest return/comment, proof/evidence status, and link to approval/detail page.
+- **Given** multiple runs need attention, **When** the dashboard loads, **Then** urgent items appear first by overdue/near pay date, pending owner action, blocking issue severity, and missing proof/evidence.
+- **Given** current and historical payroll runs exist, **When** I view analytics, **Then** I see charts for monthly payroll total trend, employee count trend, net pay variance vs previous run, exception count trend, evidence/proof completion, and upcoming cashflow/pay-date forecast.
+- **Given** unusual movement exists, **When** risk/AI alerts are calculated, **Then** the dashboard shows advisory alerts such as high variance, sudden employee count change, unresolved blocking issues, missing evidence, approaching pay date, or missing payment proof.
+- **Given** a user lacks salary/payment permission, **When** dashboard totals, charts, variance, forecast, or alerts include sensitive values, **Then** values are masked/omitted or access is denied according to server-side sensitive-field policy, and denied attempts are audit-logged.
+- **Given** AI/risk alerts are shown, **When** the owner acts, **Then** alerts remain advisory only and cannot approve, reject, edit, or replace human/accountant judgment.
+- **Given** MVP scope boundaries, **When** dashboard analytics are implemented, **Then** auto-approval, automatic payroll changes, AI-generated statutory/accounting advice, external BI warehouse, customizable dashboard builder, and mobile push notification engine are not exposed.
 
-**Story Points**: 5  
-**Dependencies**: PAY-003, PAY-011, PAY-015, PAY-016  
+**Story Points**: 8  
+**Dependencies**: PAY-003, PAY-007, PAY-008, PAY-009, PAY-011, PAY-012, PAY-015, PAY-016, PAY-018
 **Priority**: P1  
 **GitHub Issue**: Yes
 
@@ -625,7 +632,7 @@ Suggested first batch:
 22. PAY-021 — Preview payroll journal entries — P1 — 5 pts
 23. PAY-022 — Export payroll journal CSV — P1 — 3 pts
 24. PAY-019 — Generate audit evidence pack — P1 — 8 pts
-25. PAY-023 — Show owner payroll approval dashboard — P1 — 5 pts
+25. PAY-023 — Show owner payroll approval dashboard — P1 — 8 pts
 26. PAY-024 — Show payroll operator work queue — P1 — 3 pts
 27. SPIKE-002 — Confirm evidence pack format and retention expectation — P1
 
