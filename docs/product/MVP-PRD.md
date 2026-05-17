@@ -103,6 +103,8 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 6. **SME owner approval**
    - Approval request with locked payroll snapshot, exception summary, net payment total, variance summary, and comments.
    - Submission to owner requires practical approval-readiness: latest validation report has zero blocking issues, blocking OT exceptions are resolved or explicitly escalated, required pre-approval evidence placeholders/checklist items are present or formally waived, payroll totals snapshot is generated, sensitive salary/bank access is checked server-side, and submission audit event is recorded.
+   - Owner approval requires an authorized SME approver, unchanged run version since submission, visible locked totals/exception/evidence summary, and explicit acceptance of an approval statement.
+   - Approval event records approver, timestamp, run version, totals snapshot, exception summary, evidence readiness, approval statement version, and access context.
    - Approve/reject/request changes.
    - Recalculation after approval invalidates approval or requires re-approval.
    - Payment export blocked until approval unless logged override permission is used.
@@ -196,9 +198,9 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 ### 3. SME owner approval
 
 1. System sends approval request to SME approver.
-2. Approver reviews locked payroll snapshot, total payment amount, variance, exceptions, and notes.
-3. Approver approves, rejects, or requests changes.
-4. Approval locks the approved snapshot; later recalculation requires re-approval.
+2. Approver reviews locked payroll snapshot, total payment amount, variance, exceptions, evidence readiness, and notes.
+3. Approver accepts an explicit approval statement and approves, or rejects/requests changes.
+4. Approval locks the approved run version and approval statement version; later recalculation requires re-submission and re-approval.
 
 ### 4. Payment export and proof capture
 

@@ -211,9 +211,11 @@ Technical risk: Approval records must be immutable enough for audit evidence whi
 **As a** SME owner, **I want to** approve a payroll run, **so that** finance can proceed with payment export.
 
 **Acceptance Criteria**:
-- **Given** I am an owner and the payroll run is Pending Approval, **When** I approve the run, **Then** the status changes to Approved and approval timestamp is recorded.
-- **Given** I approve the run, **When** the audit timeline is viewed, **Then** the approval event includes approver, timestamp, totals snapshot, and reviewed exception status.
-- **Given** I am not authorized to approve, **When** I attempt approval, **Then** the action is denied and no status change occurs.
+- **Given** I am an authorized SME approver and the payroll run is Pending SME Approval, **When** I open the approval screen, **Then** I see a locked payroll totals snapshot, exception summary, evidence readiness, run version, and approval statement.
+- **Given** the payroll run version has changed since owner submission, **When** I attempt approval, **Then** the system blocks approval and requires re-submission of the latest run version.
+- **Given** I accept the approval statement and approve the unchanged run version, **When** approval succeeds, **Then** the status changes to Approved for Payment.
+- **Given** I approve the run, **When** the audit timeline is viewed, **Then** the approval event includes approver, timestamp, run version, totals snapshot, exception summary, evidence readiness, approval statement version, and access context.
+- **Given** I am not authorized to approve, **When** I attempt approval, **Then** the action is denied, no status change occurs, and the denied attempt is audit-logged.
 
 **Story Points**: 5  
 **Dependencies**: PAY-010, PAY-016, PAY-018  

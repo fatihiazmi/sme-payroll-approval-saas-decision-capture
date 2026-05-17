@@ -264,3 +264,19 @@ Recommended payroll lifecycle:
 - submission audit event is recorded
 
 **Scope boundary:** MVP submission does not require full internal reviewer/manager sign-off or a complete generated approval pack before owner submission. Those controls can be added later if pilot customers require maker-checker governance.
+
+## 12. Accepted Owner Approval Strength Decision
+
+**Decision:** For MVP, owner approval uses an explicit approval statement with a locked payroll snapshot rather than a simple approve button or formal digital signing flow.
+
+**Approval requirements:**
+
+- authorized SME approver
+- payroll run is Pending SME Approval
+- run version is unchanged since submission
+- owner sees locked totals, exception, and evidence summary
+- owner accepts an explicit approval statement
+- approval event records approver, timestamp, run version, totals snapshot, exception summary, evidence readiness, approval statement version, and access context
+- status changes to Approved for Payment
+
+**Scope boundary:** MVP owner approval does not require OTP/MFA step-up, e-signature certificate generation, or dual approver countersignature unless pilot customers explicitly require formal signing controls.

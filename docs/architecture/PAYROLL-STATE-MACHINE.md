@@ -104,11 +104,11 @@ Allowed SME decisions:
 
 Exit condition:
 
-- authorized SME approver approves or rejects.
+- authorized SME approver approves the unchanged submitted run version after accepting the approval statement, or rejects/requests correction.
 
 ### `ApprovedForPayment`
 
-SME has approved payroll. Payroll amounts and review facts are locked for normal editing. Payment/export artifacts may now be generated.
+SME has approved a specific submitted payroll run version with an explicit approval statement. Payroll amounts, approval statement version, and review facts are locked for normal editing. Payment/export artifacts may now be generated.
 
 Exit condition:
 
@@ -205,7 +205,7 @@ Rules:
 
 - `PendingSmeApproval` → `ApprovedForPayment`
   - Trigger: `ApprovePayroll`
-  - Guard: actor is authorized SME approver; approval statement accepted; run version unchanged since submission
+  - Guard: actor is authorized SME approver; payroll run is Pending SME Approval; run version unchanged since submission; locked totals/exception/evidence summary displayed; approval statement accepted
   - Actor: SME owner/admin/authorized approver
   - Event: `PayrollRunApprovedForPayment`
 

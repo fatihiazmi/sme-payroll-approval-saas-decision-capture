@@ -339,6 +339,8 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - `EmployeeSnapshotRef`
 - `ActorRef`
 - `ApprovalDecision`
+- `ApprovalStatementVersion`
+- `AccessContext`
 - `TransitionReason`
 - `Version`
 
@@ -366,6 +368,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - Only one active non-void payroll run should exist per SME company/payroll period/payroll cycle.
 - Payroll amounts cannot be exported before SME approval.
 - `SubmitForSmeApproval` requires approval-readiness: latest validation report has zero blocking issues, blocking OT exceptions are resolved or explicitly escalated, required pre-approval evidence placeholders/checklist items are present or formally waived, payroll totals snapshot is generated, sensitive salary/bank access is checked server-side, and submission audit event is recorded.
+- `ApprovePayrollForPayment` requires an authorized SME approver, `PendingSmeApproval` status, unchanged run version since submission, visible locked totals/exception/evidence summary, and accepted approval statement.
 - Payroll lines cannot be changed after `ReadyForReview`, `OtExceptionReview`, or `PendingSmeApproval` except through the controlled return/reopen correction path.
 - Every state transition must include actor, timestamp, prior state, next state, command, and reason where required.
 - Sensitive data access is not authorized by the aggregate; it must be checked by Tenant and Access before loading/displaying sensitive fields and before creating owner submission snapshots.

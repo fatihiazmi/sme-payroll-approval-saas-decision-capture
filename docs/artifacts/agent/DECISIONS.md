@@ -161,3 +161,15 @@
 - Backend: Enforce submission guards server-side and record validation, exception, evidence, totals snapshot, authorization, and audit facts.
 - QA: Verify owner submission is blocked when any required readiness condition fails.
 ---
+
+
+### DEC-2026-05-17-2246-owner-approval-locked-snapshot — MVP owner approval with locked snapshot
+**Date**: 2026-05-17T22:46:32+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Owner approval requires an authorized SME approver, Pending SME Approval status, unchanged run version since submission, visible locked totals/exception/evidence summary, explicit approval statement acceptance, and an approval event recording approver, timestamp, run version, totals snapshot, exception summary, evidence readiness, approval statement version, and access context.
+**Key argument**: This makes approval auditable and attributable to a specific payroll version without expanding MVP into formal digital signing.
+**Dissent**: More work than a simple approve button, but still avoids OTP/MFA step-up, e-signature certificates, and dual approver countersignature in MVP.
+**Actions**:
+- Product: Update PAY-011 acceptance criteria and PRD owner approval scope.
+- Backend: Enforce unchanged run version and authorized SME approver before approving for payment.
+- Audit/Security: Record approval statement version, access context, and denied unauthorized approval attempts.
+---
