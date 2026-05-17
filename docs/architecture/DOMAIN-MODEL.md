@@ -82,7 +82,7 @@ These should be bought, reused, or kept thin behind adapters:
 
 **Purpose:** Defines who can operate on which SME company and which sensitive payroll fields/actions they may access.
 
-**Primary language:** Platform Account, Service Provider Tenant, SME Company Workspace, Membership, Assignment, Role, Permission Policy, Sensitive Field Access, Break-Glass Access.
+**Primary language:** Platform Account, Service Provider Tenant, SME Company Workspace, Membership, Company Assignment, Role Code, Fixed Role Bundle, Permission Key, Permission Matrix, Role Grant, Permission Policy, Sensitive Field Access, Break-Glass Access.
 
 **Key model:**
 
@@ -91,10 +91,22 @@ These should be bought, reused, or kept thin behind adapters:
 - `SmeServiceRelationship`
 - `Membership`
 - `CompanyAssignment`
+- `RoleCode`
+- `FixedRoleBundle`
+- `PermissionKey`
+- `PermissionMatrix`
 - `RoleGrant`
+- `CompanyScopedGrant`
 - `PermissionPolicy`
 
-**Integration style:** Open host service for authorization decisions. Other contexts ask: “Can actor X perform action Y on resource Z within company C?”
+**Integration style:** Open host service for authorization decisions. Other contexts ask: “Can actor X perform action Y on resource Z within company C?” MVP authorization evaluates stable permission keys derived from fixed role bundles; application code must not rely only on role-name checks (`DEC-2026-05-17-2331-fixed-mvp-rbac-permission-matrix`).
+
+**Authorization invariants:**
+
+- Every permission grant is scoped to one company unless it is a platform-support permission.
+- Platform-support access to payroll data requires reason capture and an audit event.
+- If a permission key is not granted by the matrix, the action is denied by default.
+- `CustomRoleDefinition` is intentionally deferred; the MVP model must not expose tenant-defined roles but must avoid hardcoding permissions in a way that blocks future custom role bundles.
 
 ### 3.2 Payroll Workflow Context — Core
 

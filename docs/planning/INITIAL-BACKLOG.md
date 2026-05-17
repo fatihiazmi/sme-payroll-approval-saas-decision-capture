@@ -318,18 +318,27 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 
 ### PAY-016: Enforce role-based access to payroll actions
 
-**As a** SME owner, **I want to** control user permissions by role, **so that** only authorized users can view, prepare, approve, or export payroll.
+**As a** SME owner, **I want to** control user permissions by fixed role bundles, **so that** only authorized users can view, prepare, approve, export, or audit payroll while the product can evolve to custom roles later.
+
+**Accepted Decision**: `DEC-2026-05-17-2331-fixed-mvp-rbac-permission-matrix` — MVP uses fixed role bundles plus an explicit permission matrix; future custom role builder is deferred but enabled by stable permission-key design.
 
 **Acceptance Criteria**:
-- **Given** a user has Owner role, **When** they access payroll features, **Then** they can invite users, view sensitive payroll data, approve runs, export payments, and view audit evidence.
-- **Given** a user has Payroll Operator role, **When** they access payroll features, **Then** they can create, import, edit, validate, submit runs, and view salary/payroll details needed for preparation, but cannot approve payment.
-- **Given** a user has Finance or Payment/Journal role, **When** they access payroll features, **Then** they can view approved bank/payment data and export/upload proof but cannot view salary details beyond payment totals, change payroll rows, or approve runs.
-- **Given** a user lacks a required permission, **When** they attempt that action through UI or API, **Then** the action is denied.
+- **Given** the MVP RBAC model, **When** roles are configured, **Then** only fixed MVP role bundles are available: Owner / Approver, Payroll Operator, Payment / Journal User, Auditor / Read-only Reviewer, and Platform Admin.
+- **Given** a user has multiple real-world responsibilities, **When** roles are assigned, **Then** the user may hold multiple fixed roles within the same company.
+- **Given** a user has Owner / Approver role, **When** they access payroll features, **Then** they can invite users, assign fixed company roles, view authorized sensitive payroll data, approve runs, return runs for correction, export payments where permitted, and view audit evidence.
+- **Given** a user has Payroll Operator role, **When** they access payroll features, **Then** they can create runs, import rows, edit draft rows, run validation, resolve issues, and submit runs but cannot approve payment or export payment files.
+- **Given** a user has Payment / Journal User role, **When** they access payment and accounting handoff features, **Then** they can view approved payment data, export approved payment files, upload payment proof, and preview/export journal handoff but cannot change payroll rows or approve runs.
+- **Given** a user has Auditor / Read-only Reviewer role, **When** they access payroll records, **Then** they can view permitted audit timeline/evidence records while salary, bank, and evidence files remain masked or denied unless explicitly permitted.
+- **Given** any payroll action is requested, **When** authorization is evaluated, **Then** the system checks company membership, company assignment, permission key, payroll run state, and sensitive-field policy server-side.
+- **Given** a user lacks a required permission, **When** they attempt the action through UI or API, **Then** the action is denied and sensitive or lifecycle-changing denied attempts are audit-logged.
+- **Given** future custom roles are deferred, **When** MVP is implemented, **Then** no tenant-facing custom role builder, custom permission editor, or per-field custom permission editor is exposed.
+- **Given** future evolution is expected, **When** roles are implemented, **Then** fixed roles are represented as bundles of stable permission keys rather than scattered hardcoded role-name checks.
 
 **Story Points**: 8  
 **Dependencies**: PAY-001, PAY-002  
 **Priority**: P0  
 **GitHub Issue**: Yes
+
 
 ### PAY-017: Mask sensitive salary and bank data by role
 

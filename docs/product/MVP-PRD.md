@@ -130,10 +130,12 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Export CSV/XLSX/PDF for accountant handoff.
 
 10. **RBAC, tenancy, and PDPA-aware controls**
-    - Provider Admin, Payroll Manager/Reviewer, Payroll Processor, SME Approver, SME Viewer.
+    - MVP RBAC uses fixed role bundles with an explicit permission matrix: Owner / Approver, Payroll Operator, Payment / Journal User, Auditor / Read-only Reviewer, and Platform Admin.
+    - Permissions are represented as stable permission keys so the model can evolve into tenant-defined custom roles later without rewriting authorization logic (`DEC-2026-05-17-2331-fixed-mvp-rbac-permission-matrix`).
     - MVP supports both email invitations and Service Provider Admin-created user records for controlled onboarding; manual users must be scoped to company roles and require account activation/password setup before access.
-    - Users restricted by tenant, assigned company, role, and sensitive-field permissions.
-    - Audit logs for sensitive view/export/edit/approval/evidence actions.
+    - Users restricted by tenant, assigned company, role, explicit permission key, resource state, and sensitive-field policy.
+    - Authorization must be enforced server-side for UI, API, exports, evidence access, approval actions, and sensitive-field reveal; UI hiding is convenience only.
+    - Audit logs for sensitive view/export/edit/approval/evidence actions and denied attempts.
     - MFA required for privileged roles and strongly encouraged for all approvers.
 
 ### Explicitly Out of MVP
@@ -149,6 +151,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - AI automation or AI analysis of payroll data.
 - Maybank/CIMB/bank-specific payment file formats, direct bank API, payment status reconciliation, multi-bank batch splitting, automatic payment release, and encryption/signing of bank files.
 - Maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, and evidence redaction workflow.
+- Tenant-configurable custom role builder, custom permission editor, role templates marketplace, per-field custom permission editor, and per-tenant approval matrix builder. These are Phase 2+ evolution paths; MVP must only preserve the permission-key foundation.
 
 ---
 

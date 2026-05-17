@@ -135,6 +135,29 @@ Recommended payroll lifecycle:
 
 ---
 
+
+## 12. Accepted RBAC Scope Decision
+
+**Decision:** Use fixed MVP roles with an explicit permission matrix for PAY-016, while designing the authorization model so it can evolve into a future custom role builder.
+
+**Decision ID:** `DEC-2026-05-17-2331-fixed-mvp-rbac-permission-matrix`
+
+**Scope:**
+
+- Fixed MVP role bundles only: Owner / Approver, Payroll Operator, Payment / Journal User, Auditor / Read-only Reviewer, and Platform Admin.
+- Users may hold multiple fixed roles within one company when real SME staffing overlaps.
+- Every grant is company-scoped unless it is an operational platform-support permission, and platform-support access requires reason and audit logging.
+- Authorization checks must use stable permission keys, not informal role-name checks scattered through application code.
+- Sensitive salary, bank, identity, evidence, export, approval, and audit-pack access remains default-deny unless the permission matrix grants it.
+- UI hiding is not a security boundary; UI and API paths must both call the same server-side authorization policy.
+- Lifecycle-changing and sensitive denied attempts must be audit-logged.
+
+**Future evolution guardrail:** Fixed roles are stored as role bundles over stable permission keys so Phase 2+ can add tenant-defined custom roles without rewriting payroll workflow, export, evidence, or sensitive-field authorization logic.
+
+**Out of MVP:** tenant-created custom roles, tenant-facing custom role builder UI, custom permission editor, role templates marketplace, per-field custom permission editor, complex multi-level approval matrix, and customer-controlled disabling of sensitive-data masking.
+
+---
+
 ## 8. Next Artifacts to Produce
 
 1. MVP PRD

@@ -229,3 +229,16 @@
 - Security Auditor: Enforce file type/size validation, malware-scan placeholder/status, permission checks, and audit denied attempts.
 **Out of MVP**: maker-checker proof verification, OCR bank receipt reading, automatic bank reconciliation, bank payment success validation, multiple proof approval workflow, evidence redaction workflow.
 ---
+
+
+### DEC-2026-05-17-2331-fixed-mvp-rbac-permission-matrix — PAY-016 fixed MVP RBAC with future custom-role path
+**Date**: 2026-05-17T23:31:47+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2 with Option 3 evolution path
+**Decision**: MVP RBAC uses fixed role bundles with an explicit permission matrix; future tenant-defined custom role builder is deferred, but fixed roles must be implemented as bundles of stable permission keys so custom roles can be added later without rewriting authorization logic.
+**Key argument**: Fixed roles keep MVP safe, understandable, and testable, while stable permission keys prevent an architectural dead end when customers later need custom role definitions.
+**Dissent**: None; custom role builder UI, tenant-created roles, and custom permission editor are explicitly out of MVP.
+**Actions**:
+- Product: Update PRD, baseline, PAY-016 backlog, and GitHub issue with fixed role bundles plus future custom-role guardrail.
+- Tech Lead: Model `FixedRoleBundle`, `PermissionKey`, `PermissionMatrix`, and company-scoped `RoleGrant`; avoid scattered role-name authorization checks.
+- Backend/Security: Enforce server-side permission-key, company, state, and sensitive-field checks; audit sensitive/lifecycle denied attempts.
+**Out of MVP**: tenant-created custom roles, tenant-facing custom role builder UI, custom permission editor, role templates marketplace, per-field custom permission editor, complex multi-level approval matrix.
+---
