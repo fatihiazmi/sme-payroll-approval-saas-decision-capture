@@ -145,9 +145,9 @@ These should be bought, reused, or kept thin behind adapters:
 
 ### 3.4 Exception Review Context
 
-**Purpose:** Manages OT, variance, missing evidence, unsupported employee/category, and unusual component exceptions.
+**Purpose:** Manages OT, variance, missing evidence, unsupported employee/category, and unusual component exceptions. MVP OT review uses a practical SME review set rather than a full attendance/payroll-rule engine.
 
-**Primary language:** Exception Case, OT Exception, Severity, Resolution, Reviewer Note, Required Action, Exception Queue.
+**Primary language:** Exception Case, OT Exception, Exception Type, Severity, Resolution, Reviewer Note, Required Action, Exception Queue, Evidence Reference.
 
 **Key model:**
 
@@ -156,7 +156,9 @@ These should be bought, reused, or kept thin behind adapters:
 - `ExceptionResolution`
 - `OvertimeEvidenceRef`
 
-**Integration style:** Customer/supplier relationship with Payroll Workflow; Payroll Workflow cannot advance beyond exception review while blocking exception cases remain unresolved.
+**MVP OT exception types:** excessive OT above configured threshold, missing OT evidence, public holiday/rest day mismatch, employee not OT-eligible, unusual multiplier, and manual override.
+
+**Integration style:** Customer/supplier relationship with Payroll Workflow; Payroll Workflow cannot advance beyond exception review while blocking exception cases remain unresolved unless a blocking case is explicitly escalated to SME approval.
 
 ### 3.5 Evidence and Audit Context
 
@@ -282,7 +284,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 ### Exception Review Language
 
 - **Exception Case:** A review item requiring human action before payroll can proceed.
-- **OT Exception:** Exception related to overtime eligibility, hours, multiplier, missing evidence, or day type.
+- **OT Exception:** Exception related to overtime eligibility, amount/threshold, multiplier, missing evidence, public holiday/rest day mismatch, or manual override.
 - **Severity:** Risk level used to prioritize review: info, warning, blocking, critical.
 - **Resolution:** Reviewer decision and reason that closes or escalates an exception.
 - **Reviewer Note:** Human explanation retained in the audit timeline.
@@ -445,11 +447,14 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - `PayrollImpactAmount`
 - `RequiredAction`
 - `ResolutionReason`
+- `EvidenceReference`
+- `ReviewerDecision`
 
 **Invariants:**
 
-- Blocking exception cases must be resolved before SME approval submission.
-- Resolution requires actor, timestamp, decision, and reason.
+- Blocking exception cases must be resolved before SME approval submission unless explicitly escalated to SME approval.
+- Resolution requires actor, timestamp, decision, note, and reason.
+- MVP OT rules are deterministic review flags, not statutory/legal interpretation or full attendance/shift-rule calculation.
 - If an exception is waived, waiver reason and authority are mandatory.
 - Critical exceptions may require reviewer approval separate from processor action.
 

@@ -232,3 +232,20 @@ Recommended payroll lifecycle:
 - rows with blocking issues count must be zero before submission
 
 **Scope boundary:** MVP validation is deterministic payroll/payment readiness validation. Full statutory contribution calculation, PCB/MTD validation, employer contribution validation, cost-centre accounting validation, and bank-specific file validation remain out of MVP unless a pilot explicitly requires them.
+
+## 10. Accepted OT Exception Review Decision
+
+**Decision:** For MVP, use a practical SME OT review set rather than threshold-only checks or a full attendance/payroll-rule engine.
+
+**Initial exception types:**
+
+- excessive OT above configured threshold
+- missing OT evidence
+- public holiday/rest day mismatch
+- employee not OT-eligible
+- unusual multiplier
+- manual override
+
+**Required review data:** affected employee, exception type, reason, severity, payroll impact amount, required action, reviewer decision, reviewer note, timestamp, and evidence reference if available.
+
+**Scope boundary:** MVP OT exception review is an approval-confidence workflow, not a full attendance/shift-rule engine. Deep attendance matching, leave integration, statutory/legal interpretation, and complex shift policy calculation remain out of MVP unless a pilot explicitly requires them.

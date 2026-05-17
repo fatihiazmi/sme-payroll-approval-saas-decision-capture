@@ -175,9 +175,11 @@ Technical risk: Validation must be explainable and deterministic; hidden rules o
 **As a** SME owner, **I want to** see overtime exceptions separately, **so that** I can focus on unusual overtime before approving payroll.
 
 **Acceptance Criteria**:
-- **Given** a payroll run contains overtime amounts, **When** I open the overtime exception view, **Then** rows with overtime above the configured threshold are listed.
-- **Given** an overtime exception exists, **When** I mark it reviewed with a note, **Then** the review status, reviewer, note, and timestamp are saved.
-- **Given** unreviewed overtime exceptions exist, **When** I attempt to approve the payroll run, **Then** the system warns me and requires explicit confirmation or completion according to company setting.
+- **Given** a payroll run contains overtime amounts, **When** OT exception review runs, **Then** the system flags excessive OT above configured threshold, missing OT evidence, public holiday/rest day mismatch, employee not OT-eligible, unusual multiplier, and manual override.
+- **Given** an overtime exception is listed, **When** I open the exception, **Then** I can see affected employee, exception type, reason, severity, payroll impact amount, required action, and evidence reference if available.
+- **Given** an overtime exception exists, **When** I resolve it, **Then** I can accept, reject, adjust, request evidence, or escalate to SME approval with reviewer, note, decision, and timestamp saved.
+- **Given** blocking overtime exceptions remain unresolved, **When** I attempt to submit the payroll run for SME approval, **Then** the system prevents submission unless the exception has been explicitly escalated to SME approval.
+- **Given** OT exceptions are resolved or escalated, **When** the payroll run proceeds, **Then** all exception decisions are included in the audit timeline and later evidence pack.
 
 **Story Points**: 5  
 **Dependencies**: PAY-007, PAY-008  

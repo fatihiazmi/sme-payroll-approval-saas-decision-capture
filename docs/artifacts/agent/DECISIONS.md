@@ -137,3 +137,15 @@
 - Backend: Implement deterministic validation rules with row reference, field, severity, rule code, and suggested action.
 - QA: Verify blocking findings prevent review/approval submission until the latest report has zero blocking issues.
 ---
+
+
+### DEC-2026-05-17-2115-ot-exception-review — MVP overtime exception review scope
+**Date**: 2026-05-17T21:15:11+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Use the practical SME OT review set for MVP: excessive OT above configured threshold, missing OT evidence, public holiday/rest day mismatch, employee not OT-eligible, unusual multiplier, and manual override.
+**Key argument**: This gives SME owners and payroll reviewers enough visibility into unusual overtime before approval without expanding MVP into a full attendance, leave, shift-rule, or statutory/legal interpretation engine.
+**Dissent**: More complex than a simple threshold-only exception view, but still bounded because deep attendance matching, leave integration, and complex shift policy calculation remain outside MVP.
+**Actions**:
+- Product: Update PAY-009 acceptance criteria and PRD OT exception scope.
+- Backend: Model deterministic OT exception types with severity, payroll impact, required action, and evidence reference.
+- QA: Verify unresolved blocking OT exceptions prevent SME approval submission unless explicitly escalated with reviewer note and audit trail.
+---

@@ -94,9 +94,11 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Conditional evidence for OT, attendance, claims, bonus/commission, joiner/resignation, or material changes.
 
 5. **OT exception review**
-   - OT exception queue with affected employee, reason, severity, payroll impact, and required action.
-   - Initial exception types: missing evidence, excessive OT, public holiday/rest day mismatch, employee not OT-eligible, unusual multiplier, manual override.
+   - OT exception queue with affected employee, exception type, reason, severity, payroll impact, required action, and evidence reference if available.
+   - Initial exception types: excessive OT above configured threshold, missing OT evidence, public holiday/rest day mismatch, employee not OT-eligible, unusual multiplier, manual override.
    - Reviewer decision: accept, reject, adjust, request evidence, or escalate to SME approval.
+   - Blocking OT exceptions prevent SME approval submission unless explicitly escalated to SME approval with reviewer note and audit trail.
+   - MVP does not implement a full attendance, shift-rule, leave, or statutory/legal interpretation engine.
 
 6. **SME owner approval**
    - Approval request with locked payroll snapshot, exception summary, net payment total, variance summary, and comments.
