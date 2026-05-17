@@ -224,15 +224,24 @@ Technical risk: Approval records must be immutable enough for audit evidence whi
 
 ### PAY-012: Owner returns payroll run for correction
 
-**As a** SME owner, **I want to** return a payroll run with comments, **so that** payroll staff can correct issues before approval.
+**As a** SME owner, **I want to** return a payroll run with a structured reason and comment, **so that** payroll staff know exactly what must be corrected before approval.
+
+**Accepted Decision:** `DEC-2026-05-17-2258-owner-return-structured-correction`
 
 **Acceptance Criteria**:
-- **Given** a payroll run is Pending Approval, **When** I return it for correction with a required comment, **Then** the status changes to Changes Requested.
-- **Given** a run has Changes Requested status, **When** the payroll operator opens it, **Then** the owner comment is visible and editing is allowed.
-- **Given** the run is resubmitted, **When** the audit timeline is viewed, **Then** both the return comment and resubmission event are preserved.
+- **Given** a payroll run is Pending SME Approval, **When** an authorized SME approver returns it for correction, **Then** the approver must select a return reason category and enter a required comment.
+- **Given** a valid return reason category and comment are submitted, **When** the return succeeds, **Then** the status changes to Reopened / Correction Required and the submitted approval snapshot is invalidated.
+- **Given** a run is Reopened / Correction Required, **When** the payroll operator opens it, **Then** the owner return reason category and comment are visible and payroll correction editing is allowed.
+- **Given** payroll data is corrected after return, **When** the correction is saved, **Then** the payroll run version increments and the run must pass validation/review and be re-submitted before approval.
+- **Given** the audit timeline is viewed, **When** return/correction/resubmission events exist, **Then** the return reason, owner comment, actor, timestamp, prior submitted version, correction event, new run version, and resubmission event are preserved.
+- **Given** the actor is not authorized or the run is not Pending SME Approval, **When** return is attempted, **Then** the action is denied, no status change occurs, and the denied attempt is audit-logged.
+
+**MVP return reason categories**: Wrong amount, Missing employee, OT issue, Bank detail issue, Missing evidence, Other.
+
+**Out of MVP**: line-by-line annotation, chat thread per correction, multi-round dispute workflow, formal rejection letter/PDF, owner editing payroll directly.
 
 **Story Points**: 3  
-**Dependencies**: PAY-010, PAY-018  
+**Dependencies**: PAY-010, PAY-016, PAY-018  
 **Priority**: P0  
 **GitHub Issue**: Yes
 

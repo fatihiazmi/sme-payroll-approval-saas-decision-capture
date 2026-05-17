@@ -78,6 +78,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Create/import payroll run by company and pay period; MVP displays a simple month/year label while storing explicit `period_start`, `period_end`, and `pay_date`.
    - Support baseline lifecycle: Draft / Imported → Validation Issues → Ready for Review → OT / Exception Review → Pending SME Approval → Approved for Payment → Payment Exported → Payment Proof Uploaded → Closed / Archived.
    - Controlled Reopened / Correction Required path with mandatory reason and audit trail.
+   - Owner return-for-correction uses the accepted structured correction rule (`DEC-2026-05-17-2258-owner-return-structured-correction`): only an authorized SME approver can return a Pending SME Approval run; return requires one reason category plus a required comment; return invalidates the submitted approval snapshot; correction creates a new payroll run version that must be revalidated/reviewed and re-submitted before approval.
 
 3. **Payroll data import / manual entry**
    - Employee master import or manual entry.
@@ -139,6 +140,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Attendance device integrations, HRIS integrations, accounting API integrations, banking API integrations.
 - Claims approval workflow, leave workflow, scheduling, employee self-service portal.
 - Multi-level enterprise approval matrix, e-signature workflow, auditor portal.
+- Line-by-line approval annotations, chat thread per payroll correction, multi-round dispute workflow, formal rejection letter/PDF, and owner-side payroll editing.
 - Native mobile apps.
 - AI automation or AI analysis of payroll data.
 

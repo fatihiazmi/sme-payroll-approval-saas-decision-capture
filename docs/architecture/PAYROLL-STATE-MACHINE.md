@@ -100,11 +100,11 @@ Provider-side review is complete and the payroll run awaits authorized SME appro
 Allowed SME decisions:
 
 - approve for payment;
-- reject/return for correction.
+- return for correction with a structured reason category and required comment.
 
 Exit condition:
 
-- authorized SME approver approves the unchanged submitted run version after accepting the approval statement, or rejects/requests correction.
+- authorized SME approver approves the unchanged submitted run version after accepting the approval statement, or returns/requests correction with reason category and comment.
 
 ### `ApprovedForPayment`
 
@@ -146,8 +146,9 @@ Rules:
 
 - reason is mandatory;
 - authorization is mandatory;
-- previous approvals/exports/proofs are retained;
-- corrected version must pass validation/review/approval again according to policy.
+- for owner return from Pending SME Approval, reason must be one MVP return reason category plus a required owner comment (`DEC-2026-05-17-2258-owner-return-structured-correction`);
+- previous submitted approval snapshots, approvals, exports, and proofs are retained/superseded, not deleted;
+- corrected version increments the payroll run version and must pass validation/review/approval again according to policy.
 
 ---
 
@@ -210,10 +211,10 @@ Rules:
   - Event: `PayrollRunApprovedForPayment`
 
 - `PendingSmeApproval` → `ReopenedCorrectionRequired`
-  - Trigger: `RejectPayrollApproval` or `RequestCorrection`
-  - Guard: rejection/correction reason provided
-  - Actor: SME approver or authorized provider reviewer
-  - Event: `PayrollApprovalRejected`
+  - Trigger: `ReturnPayrollForCorrection`
+  - Guard: actor is authorized SME approver; run is Pending SME Approval; return reason category selected; owner comment provided; current submitted version recorded for invalidation/supersession
+  - Actor: SME owner/admin/authorized approver
+  - Event: `PayrollReturnedForCorrection`
 
 - `ApprovedForPayment` → `PaymentExported`
   - Trigger: `GeneratePaymentExport`
@@ -312,7 +313,7 @@ stateDiagram-v2
   OtExceptionReview --> PendingSmeApproval: SubmitForSmeApproval\n[all blocking exceptions resolved]
 
   PendingSmeApproval --> ApprovedForPayment: ApprovePayroll\n[authorized SME approver]
-  PendingSmeApproval --> ReopenedCorrectionRequired: Reject/RequestCorrection\n[reason required]
+  PendingSmeApproval --> ReopenedCorrectionRequired: ReturnPayrollForCorrection\n[reason category + comment required]
 
   ApprovedForPayment --> PaymentExported: GeneratePaymentExport
   PaymentExported --> PaymentProofUploaded: UploadPaymentProof
@@ -364,6 +365,7 @@ Every transition requires:
 - SME approval requires an authorized SME-side approver, not only a service-provider processor.
 - Approval must bind to a specific payroll run version and approval summary.
 - If payroll data changes after submission, prior SME approval request is invalidated.
+- Owner return-for-correction requires the run to be Pending SME Approval, an authorized SME approver, one MVP return reason category, a required owner comment, and audit capture of the prior submitted version (`DEC-2026-05-17-2258-owner-return-structured-correction`).
 
 #### Export Guards
 
@@ -466,6 +468,20 @@ Side effects:
 - enables payment/export actions;
 - updates portfolio dashboard projection.
 
+### `ReturnPayrollForCorrection`
+
+Emits:
+
+- `PayrollReturnedForCorrection`
+
+Side effects:
+
+- records structured return reason category and required owner comment;
+- invalidates/supersedes the submitted approval snapshot;
+- creates correction work for the payroll operator;
+- notifies payroll operator/reviewer;
+- logs actor, timestamp, prior submitted run version, reason category, and comment.
+
 ### `GeneratePaymentExport`
 
 Emits:
@@ -539,7 +555,7 @@ Prefer command-oriented endpoints over generic status patching:
 - `POST /payroll-runs/{id}/start-exception-review`
 - `POST /payroll-runs/{id}/submit-for-approval`
 - `POST /payroll-runs/{id}/approve`
-- `POST /payroll-runs/{id}/reject`
+- `POST /payroll-runs/{id}/return-for-correction`
 - `POST /payroll-runs/{id}/payment-exports`
 - `POST /payroll-runs/{id}/payment-proofs`
 - `POST /payroll-runs/{id}/close`

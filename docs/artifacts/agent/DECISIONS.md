@@ -173,3 +173,17 @@
 - Backend: Enforce unchanged run version and authorized SME approver before approving for payment.
 - Audit/Security: Record approval statement version, access context, and denied unauthorized approval attempts.
 ---
+
+
+### DEC-2026-05-17-2258-owner-return-structured-correction — PAY-012 owner return for correction scope
+**Date**: 2026-05-17T22:58:19+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: 4/0/0
+**Decision**: Use structured owner return-for-correction with mandatory reason category and required owner comment for MVP.
+**Key argument**: Structured reasons give payroll operators and audit trail enough clarity without overbuilding line-level dispute tooling for MVP.
+**Dissent**: None
+**Actions**:
+- Sprint Planner: Update PAY-012 backlog and GitHub issue acceptance criteria.
+- Domain Expert: Keep owner return limited to Pending SME Approval and require re-submission after correction.
+- Tech Lead: Model return as a controlled transition that invalidates the submitted approval snapshot and increments version after correction.
+- Security Auditor: Preserve denied/unauthorized return attempts and sensitive correction events in audit logging.
+**Out of MVP**: line-by-line annotation, chat thread per correction, multi-round dispute workflow, formal rejection letter/PDF, owner editing payroll directly.
+---

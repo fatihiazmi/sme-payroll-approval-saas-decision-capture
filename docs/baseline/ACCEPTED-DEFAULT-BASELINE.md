@@ -97,7 +97,27 @@ Recommended payroll lifecycle:
 
 ---
 
-## 6. Next Artifacts to Produce
+
+## 6. Accepted Owner Return / Correction Decision
+
+**Decision:** For MVP, owner return-for-correction uses a structured reason category plus a required comment, not free-text only and not line-level annotation.
+
+**Decision ID:** `DEC-2026-05-17-2258-owner-return-structured-correction`
+
+**Scope:**
+
+- Return is allowed only from Pending SME Approval by an authorized SME approver.
+- Return requires one reason category: Wrong amount, Missing employee, OT issue, Bank detail issue, Missing evidence, or Other.
+- Return requires an owner comment and changes the run to Reopened / Correction Required.
+- Return invalidates the submitted approval snapshot; corrections create a new payroll run version.
+- The corrected run must pass validation/review and be re-submitted before approval.
+- Audit trail must preserve return reason, owner comment, actor, timestamp, prior submitted version, correction event, new run version, and resubmission event.
+
+**Out of MVP:** line-by-line annotation, chat thread per correction, multi-round dispute workflow, formal rejection letter/PDF, and owner editing payroll directly.
+
+---
+
+## 7. Next Artifacts to Produce
 
 1. MVP PRD
 2. Domain model and ubiquitous language
@@ -108,13 +128,13 @@ Recommended payroll lifecycle:
 
 ---
 
-## 7. Source Decision Documents
+## 8. Source Decision Documents
 
 - `docs/decision-capture/payroll-cosec-workflow.md`
 - `docs/decision-capture/finance-audit-evidence.md`
 - `docs/decision-capture/saas-product-architecture.md`
 
-## 8. Accepted Payment Export Decision
+## 9. Accepted Payment Export Decision
 
 **Decision:** For MVP, export a configurable generic CSV payment file after payroll approval, then require manual payment proof upload.
 
