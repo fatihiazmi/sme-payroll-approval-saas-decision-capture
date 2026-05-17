@@ -96,8 +96,9 @@ Technical risk: Imported spreadsheets may vary across SMEs; the MVP must support
 **As a** payroll operator, **I want to** download a standard payroll template, **so that** I can prepare data in the expected format.
 
 **Acceptance Criteria**:
-- **Given** I am on a Draft payroll run, **When** I download the import template, **Then** the file contains required columns for employee identifier, employee name, basic pay, allowances, deductions, overtime amount, bank name, bank account, and net pay.
-- **Given** the template is downloaded, **When** I open it, **Then** required columns are present with sample guidance rows or column notes.
+- **Given** I am on a Draft payroll run, **When** I download the import template, **Then** the file contains required columns for `employee_identifier`, `employee_name`, `ic_or_passport_last4`, `department`, `basic_pay`, `allowances`, `deductions`, `overtime_amount`, `net_pay`, `bank_name`, `bank_account`, `payment_reference`, and `remarks`.
+- **Given** the template is downloaded, **When** I open it, **Then** required columns are present with sample guidance rows or column notes that explain formats, required/optional status, and examples.
+- **Given** the template includes identity data, **When** sample guidance is shown, **Then** it asks for only `ic_or_passport_last4` and not full IC/passport numbers.
 
 **Story Points**: 2  
 **Dependencies**: PAY-003  

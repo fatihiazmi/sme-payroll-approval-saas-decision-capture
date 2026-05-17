@@ -77,3 +77,15 @@
 - Backend: Model PayrollPeriod with display label, `period_start`, `period_end`, and `pay_date`.
 - Domain: Enforce uniqueness by company and explicit period/cycle, allowing correction run types only when permitted.
 ---
+
+
+### DEC-2026-05-17-1903-import-template — MVP payroll import template columns
+**Date**: 2026-05-17T19:03:05+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Use the recommended practical MVP payroll import template with columns for employee identification, department, payroll amounts, payment details, payment reference, and remarks; do not use a minimal payroll-only template or a full employee/payroll master template for MVP.
+**Key argument**: These columns are enough to support payroll approval, payment export, and audit/evidence review without expanding MVP into a full HRIS or statutory payroll master import.
+**Dissent**: Privacy guardrail: collect only `ic_or_passport_last4` for disambiguation, not full IC/passport numbers in the import template.
+**Actions**:
+- Product: Update PAY-004 acceptance criteria and PRD scope with the practical MVP columns.
+- Backend: Treat the import template as a versioned contract and validate required columns before row parsing.
+- Security: Avoid full IC/passport collection in the template and audit import/download events where sensitive payroll data is involved.
+---

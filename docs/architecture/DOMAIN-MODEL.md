@@ -124,8 +124,12 @@ These should be bought, reused, or kept thin behind adapters:
 - `ImportBatch`
 - `SourceFile`
 - `ImportMapping`
+- `ImportTemplate`
+- `TemplateColumn`
 - `ValidationReport`
 - `ValidationFinding`
+
+**MVP import template columns:** `employee_identifier`, `employee_name`, `ic_or_passport_last4`, `department`, `basic_pay`, `allowances`, `deductions`, `overtime_amount`, `net_pay`, `bank_name`, `bank_account`, `payment_reference`, `remarks`.
 
 **Integration style:** Anti-corruption layer for spreadsheet formats and future external payroll/HR systems. Emits validation results into Payroll Workflow.
 

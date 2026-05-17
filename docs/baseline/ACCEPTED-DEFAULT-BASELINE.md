@@ -125,3 +125,32 @@ Recommended payroll lifecycle:
 - Record exporter, timestamp, row count, and exported total in the audit timeline.
 - Do not build direct bank integration or bank-specific file formats in MVP.
 - Expand to specific Malaysian bank formats after pilot validation.
+
+---
+
+## 9. Accepted Payroll Import Template Decision
+
+**Decision:** For MVP, use the practical payroll/payment/evidence import template rather than a minimal payroll-only template or a full employee/payroll master template.
+
+**Required columns:**
+
+- `employee_identifier`
+- `employee_name`
+- `ic_or_passport_last4`
+- `department`
+- `basic_pay`
+- `allowances`
+- `deductions`
+- `overtime_amount`
+- `net_pay`
+- `bank_name`
+- `bank_account`
+- `payment_reference`
+- `remarks`
+
+**Scope:**
+
+- Include enough fields for payroll approval, payment export, and evidence review.
+- Use `ic_or_passport_last4` only for disambiguation; do not request full IC/passport number in the MVP template.
+- Defer full employee master import, statutory calculation input depth, and HRIS-style employee profiles.
+
