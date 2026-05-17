@@ -110,9 +110,11 @@ Technical risk: Imported spreadsheets may vary across SMEs; the MVP must support
 **As a** payroll operator, **I want to** import payroll rows from the template, **so that** I do not need to enter every employee manually.
 
 **Acceptance Criteria**:
-- **Given** I have a Draft payroll run, **When** I upload a valid template file, **Then** payroll rows are created with imported pay, deduction, overtime, bank, and net pay values.
-- **Given** the uploaded file is missing required columns, **When** import is attempted, **Then** no payroll rows are saved and the missing columns are shown.
-- **Given** some rows contain invalid numeric values, **When** import is attempted, **Then** valid rows are not committed and row-level validation errors are displayed.
+- **Given** I have a Draft payroll run, **When** I upload a valid template file, **Then** the system validates the file and shows an import preview before saving rows to the payroll run.
+- **Given** the preview has no blocking errors, **When** I confirm the import, **Then** payroll rows are created with imported pay, deduction, overtime, bank, and net pay values.
+- **Given** the uploaded file is missing required columns, **When** validation runs, **Then** the preview blocks confirmation and shows the missing columns.
+- **Given** some rows contain invalid numeric, identity, duplicate, or bank/payment values, **When** validation runs, **Then** the preview shows row-level errors and blocks confirmation until the file is corrected.
+- **Given** I view the preview, **When** I cancel instead of confirming, **Then** no payroll rows are committed to the payroll run.
 
 **Story Points**: 8  
 **Dependencies**: PAY-004  

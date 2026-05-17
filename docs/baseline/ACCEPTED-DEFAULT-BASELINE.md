@@ -154,3 +154,24 @@ Recommended payroll lifecycle:
 - Use `ic_or_passport_last4` only for disambiguation; do not request full IC/passport number in the MVP template.
 - Defer full employee master import, statutory calculation input depth, and HRIS-style employee profiles.
 
+---
+
+## 10. Accepted Payroll Import Error Handling Decision
+
+**Decision:** For MVP, payroll import uses a two-step preview then confirm flow.
+
+**Flow:**
+
+1. Payroll operator uploads the template file.
+2. System validates required columns and row values.
+3. System shows an import preview with valid rows, row-level errors, totals, and blocking issues.
+4. Payroll operator confirms the import only when there are no blocking errors.
+5. System commits payroll rows to the Draft payroll run after confirmation.
+
+**Scope:**
+
+- Missing required columns block confirmation.
+- Invalid numeric, identity, duplicate, or bank/payment values block confirmation.
+- Canceling the preview commits nothing.
+- Partial import is deferred; the MVP prioritizes clear user review and audit-safe commitment.
+

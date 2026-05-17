@@ -122,6 +122,8 @@ These should be bought, reused, or kept thin behind adapters:
 **Key model:**
 
 - `ImportBatch`
+- `ImportPreview`
+- `ImportPreviewRow`
 - `SourceFile`
 - `ImportMapping`
 - `ImportTemplate`
@@ -130,6 +132,8 @@ These should be bought, reused, or kept thin behind adapters:
 - `ValidationFinding`
 
 **MVP import template columns:** `employee_identifier`, `employee_name`, `ic_or_passport_last4`, `department`, `basic_pay`, `allowances`, `deductions`, `overtime_amount`, `net_pay`, `bank_name`, `bank_account`, `payment_reference`, `remarks`.
+
+**MVP import commitment rule:** Uploaded files first create an `ImportPreview` with row-level validation findings; payroll rows are committed to a Draft `PayrollRun` only after explicit confirmation and only when no blocking errors remain.
 
 **Integration style:** Anti-corruption layer for spreadsheet formats and future external payroll/HR systems. Emits validation results into Payroll Workflow.
 

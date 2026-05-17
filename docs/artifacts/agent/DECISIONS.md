@@ -89,3 +89,15 @@
 - Backend: Treat the import template as a versioned contract and validate required columns before row parsing.
 - Security: Avoid full IC/passport collection in the template and audit import/download events where sensitive payroll data is involved.
 ---
+
+
+### DEC-2026-05-17-2000-import-preview — MVP payroll import error handling
+**Date**: 2026-05-17T20:00:05+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 3
+**Decision**: Use a two-step payroll import flow for MVP: upload template, validate and show an import preview with valid rows/errors/totals, then commit rows only after explicit user confirmation and only when no blocking errors remain.
+**Key argument**: Preview-before-commit gives payroll operators visibility into what will be imported while preventing silent partial payroll data and preserving an audit-safe commit point.
+**Dissent**: More implementation work than all-or-nothing validation, but PAY-005 remains within 8 points because the preview is limited to validation results, totals, and confirm/cancel behavior.
+**Actions**:
+- Product: Update PAY-005 acceptance criteria to require preview, confirmation, row-level errors, and cancel-without-commit behavior.
+- Backend: Model import preview as a validation artifact and commit payroll rows only after confirmation.
+- UX: Show valid/error row counts, blocking errors, and calculated totals before confirmation.
+---
