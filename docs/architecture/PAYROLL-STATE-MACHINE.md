@@ -392,6 +392,7 @@ Every transition requires:
 
 - A payroll run belongs to exactly one SME company.
 - A payroll run covers exactly one payroll period/cycle.
+- A payroll run displays a month/year label but stores explicit `period_start`, `period_end`, and `pay_date`; the explicit date range is authoritative for audit and uniqueness.
 - Only one active non-void payroll run should exist for the same company/period/cycle.
 
 ### Data Integrity

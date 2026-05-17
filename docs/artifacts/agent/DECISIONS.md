@@ -66,3 +66,14 @@
 - Backend: Model pending_activation users and multi-role company memberships.
 - Security: Audit invite, manual creation, activation, and role assignment events.
 ---
+
+### DEC-2026-05-17-1853-payroll-period — MVP payroll run period model
+**Date**: 2026-05-17T18:53:59+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 3
+**Decision**: MVP shows a month/year payroll period label but stores explicit , , and  fields; monthly payroll defaults to calendar month dates while explicit dates remain authoritative.
+**Key argument**: This preserves simple monthly UX for Malaysian SME payroll while keeping audit-accurate date ranges and future support for non-monthly cycles.
+**Dissent**: None.
+**Actions**:
+- Product: Update PAY-003 acceptance criteria to include label plus explicit dates.
+- Backend: Model PayrollPeriod with display label, , , and .
+- Domain: Enforce uniqueness by company and explicit period/cycle, allowing correction run types only when permitted.
+---

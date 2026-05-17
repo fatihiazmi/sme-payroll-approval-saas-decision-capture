@@ -77,9 +77,10 @@ Technical risk: Tenant isolation must be enforced consistently across all payrol
 **As a** payroll operator, **I want to** create a payroll run for a specific pay period, **so that** payroll can be prepared and approved as a controlled batch.
 
 **Acceptance Criteria**:
-- **Given** I have payroll operator access, **When** I create a payroll run with month, year, pay date, and company, **Then** the run is created in Draft status.
+- **Given** I have payroll operator access, **When** I create a payroll run with company, month/year label, `period_start`, `period_end`, and `pay_date`, **Then** the run is created in Draft status.
+- **Given** the company uses monthly payroll, **When** I choose a month/year label, **Then** the system defaults `period_start` and `period_end` to the calendar month while allowing explicit stored dates for audit/future flexibility.
 - **Given** a payroll run already exists for the same company and period, **When** I create another run for that period, **Then** the system prevents duplication unless I choose a permitted correction run type.
-- **Given** a run is created, **When** I view the run list, **Then** I can see period, pay date, status, gross total, net total, and last updated time.
+- **Given** a run is created, **When** I view the run list, **Then** I can see the month/year label, period date range, pay date, status, gross total, net total, and last updated time.
 
 **Story Points**: 3  
 **Dependencies**: PAY-001  

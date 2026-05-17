@@ -243,7 +243,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 ### Payroll Workflow Language
 
 - **Payroll Run:** One payroll cycle for one SME company and one payroll period. It is the aggregate that moves through the approval lifecycle.
-- **Payroll Period:** The month/date range covered by a payroll run.
+- **Payroll Period:** The user-facing month/year label plus explicit `period_start`, `period_end`, and `pay_date` covered by a payroll run.
 - **Draft / Imported:** Payroll data exists but is not yet clean enough for review.
 - **Validation Issues:** The run has blocking validation findings requiring correction.
 - **Ready for Review:** Required validation checks have passed; reviewers can assess exceptions.
@@ -314,6 +314,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - `SmeCompanyId`
 - `ServiceProviderTenantId`
 - `PayrollPeriod`
+- `PayDate`
 - `PayrollRunStatus`
 - `Money`
 - `CurrencyCode`
@@ -345,6 +346,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 **Core invariants:**
 
 - A payroll run belongs to exactly one SME company and one payroll period.
+- A payroll period stores a display month/year label plus explicit `period_start`, `period_end`, and `pay_date`; monthly payroll defaults to the calendar month but the stored dates are authoritative.
 - Only one active non-void payroll run should exist per SME company/payroll period/payroll cycle.
 - Payroll amounts cannot be exported before SME approval.
 - Payroll lines cannot be changed after `ApprovedForPayment` except through `ReopenedCorrectionRequired`.

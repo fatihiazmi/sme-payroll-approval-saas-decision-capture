@@ -59,6 +59,7 @@ Primary wedge:
   - SME company workspace
 - MVP company workspaces are created by Service Provider Admin users; SME owner self-service registration is deferred to Phase 2.
 - Every request must carry explicit tenant and company context.
+- Payroll runs display a month/year label for MVP usability but store explicit `period_start`, `period_end`, and `pay_date` for audit and future non-monthly cycles.
 - Use logical tenant isolation for MVP with strict authorization and audit controls.
 - Restrict service-provider staff to assigned SMEs only.
 - MVP user onboarding supports both email invites and Service Provider Admin manual user creation; manually created users remain pending until activation/password setup and all role assignments are company-scoped and audited.

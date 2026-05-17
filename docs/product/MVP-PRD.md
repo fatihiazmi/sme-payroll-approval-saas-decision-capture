@@ -75,7 +75,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Company/payroll-period dashboard with status, blockers, pending approver, exception count, and evidence completeness.
 
 2. **Payroll run setup and lifecycle**
-   - Create/import payroll run by company and pay period.
+   - Create/import payroll run by company and pay period; MVP displays a simple month/year label while storing explicit `period_start`, `period_end`, and `pay_date`.
    - Support baseline lifecycle: Draft / Imported → Validation Issues → Ready for Review → OT / Exception Review → Pending SME Approval → Approved for Payment → Payment Exported → Payment Proof Uploaded → Closed / Archived.
    - Controlled Reopened / Correction Required path with mandatory reason and audit trail.
 
