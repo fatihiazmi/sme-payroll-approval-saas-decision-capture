@@ -385,14 +385,19 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 
 ### PAY-019: Generate audit evidence pack
 
+**Accepted scope:** Versioned, permission-filtered ZIP evidence pack with PDF summary plus structured CSV/JSON attachments (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`).
+
 **As an** SME owner, **I want to** generate an evidence pack for an approved payroll run, **so that** I can answer audit or management questions later.
 
 **Acceptance Criteria**:
-- **Given** a payroll run is Approved or Paid Evidence Uploaded, **When** I generate the evidence pack, **Then** the pack includes run summary, approval record, validation results, overtime reviews, export record, payment proof reference, and audit timeline.
-- **Given** the evidence pack is generated, **When** the file is created, **Then** it is a ZIP containing a PDF summary plus CSV/JSON evidence attachments.
-- **Given** I lack audit evidence permission, **When** I request an evidence pack, **Then** the request is denied.
-- **Given** the evidence pack is generated, **When** I download it, **Then** the file name includes company identifier, pay period, and generation timestamp.
-- **Given** an evidence pack is generated, **When** the pack record is saved, **Then** the system stores file hash, generator, timestamp, sensitivity markers, and a default retention-until date of 7 years after generation.
+- **Given** a payroll run is Approved for Payment, Payment Exported, Payment Proof Uploaded, or Closed / Archived, **When** an authorized user generates the evidence pack, **Then** the system creates a versioned ZIP containing a PDF summary plus structured CSV/JSON evidence attachments.
+- **Given** the evidence pack is generated, **When** contents are assembled, **Then** the pack includes run summary, approval record, validation results, overtime/exception reviews, export record, payment proof reference, journal preview/export where available, document index, source artifact/version references, and append-only audit timeline.
+- **Given** evidence pack contents include salary, bank, identity, payment proof, or evidence file data, **When** the pack is generated, **Then** server-side sensitive-field policy masks, omits, or replaces unauthorized details with safe references/checksums according to the requester's permissions.
+- **Given** I lack audit evidence permission, **When** I request an evidence pack, **Then** the request is denied and the denied attempt is audit-logged.
+- **Given** the evidence pack is generated, **When** I download it, **Then** the file name includes company identifier, pay period, payroll run version or pack version, and generation timestamp.
+- **Given** an evidence pack is generated, **When** the pack record is saved, **Then** the system stores payroll run version, pack version, file hash/checksum, generator, timestamp, sensitivity markers, document index, source artifact/version references, and a default retention-until date of 7 years after generation.
+- **Given** evidence pack generation or download succeeds, **When** the action completes, **Then** a structured audit event is appended with actor, company, payroll run, pack version, timestamp, action, and safe metadata.
+- **Given** MVP scope boundaries, **When** evidence pack features are implemented, **Then** legal hold workflow, automatic purge engine, auditor portal, external e-signature/certification, evidence redaction workflow, and tamper-proof external notarization are not exposed.
 
 **Story Points**: 8  
 **Dependencies**: PAY-009, PAY-011, PAY-014, PAY-015, PAY-018  

@@ -31,7 +31,7 @@ Primary wedge:
 - Payroll run status lifecycle
 - SME owner approval before payment
 - Payment export/proof upload
-- Payroll evidence pack and audit timeline: ZIP evidence pack with PDF summary plus CSV/JSON attachments, retained for 7 years by default
+- Payroll evidence pack and audit timeline: versioned, permission-filtered ZIP evidence pack with PDF summary plus CSV/JSON attachments, retained for 7 years by default (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`)
 - Payroll journal preview/export, not a full accounting ledger
 - Role-based access control with assignment boundaries
 - Audit logging for sensitive payroll actions
@@ -194,6 +194,26 @@ Recommended payroll lifecycle:
 - Authorized audit history is displayed chronologically for the payroll run and included in the audit evidence pack.
 
 **Out of MVP:** full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, audit event redaction workflow, and blockchain/notary-style external attestation.
+
+---
+
+
+## 15. Accepted Evidence Pack Decision
+
+**Decision:** Use a versioned, permission-filtered ZIP evidence pack for PAY-019.
+
+**Decision ID:** `DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`
+
+**Scope:**
+
+- Evidence pack generation is available only for Approved for Payment, Payment Exported, Payment Proof Uploaded, or Closed / Archived payroll runs.
+- The generated file is a ZIP containing a PDF summary plus structured CSV/JSON attachments.
+- Pack contents include payroll run summary, approval record, validation results, OT/exception reviews, export record, payment proof reference, journal preview/export where available, document index, and append-only audit timeline.
+- Pack generation is server-side permission-filtered: salary, bank, identity, payment proof, and evidence contents follow the sensitive-field policy; unauthorized fields are masked, omitted, or represented by safe references/checksums.
+- Each pack record stores payroll run version, pack version, file hash/checksum, generator, timestamp, sensitivity markers, source artifact/version references, and `retention_until = generated_at + 7 years`.
+- Generation, denied generation, and download events are audit-logged.
+
+**Out of MVP:** legal hold workflow, automatic purge engine, auditor portal, external e-signature/certification, evidence redaction workflow, and tamper-proof external notarization.
 
 ---
 

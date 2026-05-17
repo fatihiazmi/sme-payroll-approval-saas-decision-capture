@@ -44,7 +44,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Highlight OT and payroll exceptions before SME approval.
 - Enforce SME owner approval before payment export by default.
 - Capture payment export records and payment proof. MVP payment export is a controlled generic CSV for manual bank upload (`DEC-2026-05-17-2313-controlled-generic-payment-csv`); bank-specific formats and direct bank integration are deferred.
-- Generate a payroll audit evidence pack per payroll run.
+- Generate a versioned, permission-filtered payroll audit evidence pack per approved/payable payroll run, packaged as ZIP with PDF summary plus structured CSV/JSON attachments and retained for 7 years by default (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`).
 - Maintain a structured append-only audit timeline for payroll lifecycle, sensitive access, export/download, and denied sensitive/lifecycle actions; audit logs must not store raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
 - Enforce sensitive salary/bank visibility as a mandatory default-masked server-side authorization policy, not a tenant/customer feature flag (`DEC-2026-05-17-2337-strict-sensitive-data-masking`).
@@ -60,6 +60,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Native bank reconciliation.
 - Deep third-party integrations beyond import/export in MVP.
 - Customer- or tenant-configurable feature flag to disable sensitive salary/bank masking.
+- Legal hold workflow, auto-purge engine, auditor portal, external e-signature/certification, evidence redaction workflow, and tamper-proof external notarization for evidence packs.
 - AI training on customer payroll data.
 - Replacing human approval, accountant judgment, or statutory/legal responsibility.
 
@@ -120,8 +121,11 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Track exported by/at, approved snapshot used, file/version, and proof status.
 
 8. **Audit evidence pack and audit timeline**
-   - Generate a ZIP evidence pack containing a human-readable PDF summary plus structured CSV/JSON attachments.
-   - Include payroll summary, salary register according to permission, validation results, OT/exception resolutions, approval record, source file references, payment export/proof, statutory summaries/proof references, journal preview/export, reviewer notes, document index, and audit timeline.
+   - Generate a versioned ZIP evidence pack containing a human-readable PDF summary plus structured CSV/JSON attachments (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`).
+   - Evidence pack generation is allowed only for approved/payable payroll run states: Approved for Payment, Payment Exported, Payment Proof Uploaded, or Closed / Archived.
+   - Include payroll summary, approval record, validation results, OT/exception resolutions, payment export record, payment proof reference, statutory summaries/proof references, journal preview/export, reviewer notes, document index, and audit timeline.
+   - The pack is permission-filtered at generation time: salary, bank, identity, payment proof, and evidence contents follow the same server-side sensitive-field policy as screens and exports; data the requester cannot access is masked, omitted, or represented by safe references/checksums.
+   - Store pack record metadata: payroll run version, pack version, generator, generation timestamp, file hash/checksum, sensitivity markers, document index, source artifact/version references, and `retention_until = generated_at + 7 years`.
    - Maintain structured append-only audit events for company/user/role actions, payroll lifecycle actions, imports, edits, validations, exception decisions, approvals/returns, payment exports, payment proof uploads, evidence pack generation/download, sensitive data reveal/export/download, and denied sensitive/lifecycle attempts.
    - Audit events record actor, company, payroll run, action, timestamp, run version, from/to status where applicable, source IP/user agent where available, and safe metadata/snapshot references.
    - Audit events must not store raw full salary, bank account, identity, or unrestricted evidence contents; store masked values, references, checksums, counts, reason codes, and version IDs instead.
@@ -228,9 +232,9 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 
 ### 5. Audit pack generation
 
-1. User generates audit pack for a payroll run.
-2. System packages payroll summaries, source files, exception decisions, approval history, exports, payment proof, journal preview/export, and audit timeline.
-3. Evidence pack is permissioned and reproducible for the payroll run version.
+1. Authorized user generates an evidence pack for an Approved for Payment, Payment Exported, Payment Proof Uploaded, or Closed / Archived payroll run.
+2. System packages a ZIP containing a PDF summary plus CSV/JSON attachments for payroll summaries, validation results, exception decisions, approval history, export records, payment proof references, journal preview/export, document index, and audit timeline.
+3. Evidence pack content is permission-filtered, reproducible for the payroll run version, hashed, retained for 7 years by default, and audit-logged for generation/download.
 
 ### 6. Reopen / correction path
 

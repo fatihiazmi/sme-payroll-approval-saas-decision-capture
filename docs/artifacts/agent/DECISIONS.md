@@ -268,3 +268,15 @@
 - Security: Prevent raw full salary/bank/identity/evidence contents in audit logs and require auditing of denied sensitive/lifecycle attempts.
 **Out of MVP**: full SIEM integration, tamper-evident blockchain-style audit chain, advanced audit search/reporting, legal hold workflow, audit event redaction workflow, blockchain/notary-style attestation.
 ---
+
+
+### DEC-2026-05-18-0033-versioned-permissioned-evidence-pack — PAY-019 versioned permission-filtered evidence pack
+**Date**: 2026-05-18T00:33:24+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Generate a versioned ZIP evidence pack for approved/payable payroll runs, containing a PDF summary plus structured CSV/JSON attachments, filtered by server-side sensitive-field permissions and retained for 7 years by default.
+**Key argument**: A ZIP pack gives SME owners, accountants, and auditors a practical human-readable and machine-readable evidence bundle without expanding MVP into legal hold, auditor portal, redaction, or notarization tooling.
+**Dissent**: Security guardrail: pack generation/download must be permission-checked and audit-logged; unauthorized salary, bank, identity, payment proof, or evidence contents must be masked, omitted, or represented only by safe references/checksums.
+**Actions**:
+- Product: Lock PAY-019 acceptance criteria to versioned ZIP pack, default 7-year retention, and explicit out-of-MVP evidence tooling.
+- Backend: Store pack version, run version, checksum, generator, sensitivity markers, source references, and retention-until metadata.
+- Security: Apply sensitive-field policy before packaging and audit generation, denied generation, and download events.
+---

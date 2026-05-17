@@ -48,7 +48,7 @@ Responsible for overtime, unusual payroll components, missing evidence, variance
 
 #### Evidence and Audit Pack
 
-Responsible for evidence checklist rules, document attachments, file hashes, structured append-only audit event timeline, and reproducible audit pack generation. Audit events capture safe metadata and version/checksum references, not raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`).
+Responsible for evidence checklist rules, document attachments, file hashes, structured append-only audit event timeline, and reproducible versioned ZIP evidence pack generation. Audit events capture safe metadata and version/checksum references, not raw full salary or bank values (`DEC-2026-05-17-2341-structured-append-only-audit-timeline`); evidence pack generation is permission-filtered, hashed, and retained for 7 years by default (`DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`).
 
 #### Payment and Export Handoff
 
@@ -182,7 +182,7 @@ These should be bought, reused, or kept thin behind adapters:
 
 **Purpose:** Maintains immutable evidence timeline and generates reproducible audit packs.
 
-**Primary language:** Evidence Item, Evidence Checklist, Audit Timeline, Audit Pack, Document Index, File Hash, Snapshot, Proof.
+**Primary language:** Evidence Item, Evidence Checklist, Audit Timeline, Evidence Pack, Audit Pack, Pack Version, Document Index, File Hash, Retention Until, Snapshot, Proof.
 
 **Key model:**
 
@@ -190,9 +190,13 @@ These should be bought, reused, or kept thin behind adapters:
 - `EvidenceItem`
 - `AuditTimelineEntry`
 - `AuditPack`
+- `AuditPackVersion`
+- `GeneratedArtifactRef`
+- `DocumentIndexEntry`
+- `RetentionUntil`
 - `DocumentReference`
 
-**Integration style:** Subscribes to domain events from Payroll Workflow, Import, Exception Review, and Export. It should append evidence/timeline facts, not mutate workflow state directly.
+**Integration style:** Subscribes to domain events from Payroll Workflow, Import, Exception Review, and Export. It should append evidence/timeline facts, not mutate workflow state directly. Evidence pack generation queries versioned artifacts through application services, applies authorization/sensitive-field policy before packaging, stores the pack record/checksum, and emits audit events for generation/download.
 
 ### 3.6 Export and Payment Handoff Context
 
@@ -236,7 +240,7 @@ These should be bought, reused, or kept thin behind adapters:
 
 **Purpose:** Owns append-only audit events, evidence file references, checksums, and reproducible evidence pack generation.
 
-**Primary language:** Audit Event, Event Type, Actor, Resource Reference, Payroll Run Version, Metadata Snapshot, Checksum, Evidence Pack, Denied Attempt, Sensitive Reveal, Export Event.
+**Primary language:** Audit Event, Event Type, Actor, Resource Reference, Payroll Run Version, Metadata Snapshot, Checksum, Evidence Pack, Pack Version, Retention Until, Document Index, Denied Attempt, Sensitive Reveal, Export Event.
 
 **Key model:**
 
@@ -247,6 +251,11 @@ These should be bought, reused, or kept thin behind adapters:
 - `AuditMetadata`
 - `EvidenceFileRef`
 - `EvidencePack`
+- `EvidencePackRecord`
+- `EvidencePackContentPolicy`
+- `RetentionUntil`
+
+**MVP evidence pack rule:** Evidence packs are versioned ZIP files generated only from approved/payable payroll run states. They contain a PDF summary plus CSV/JSON attachments, apply the same sensitive-field permission policy as screens/exports, store file hash/checksum and source artifact/version references, and default `retention_until` to 7 years after generation.
 
 **MVP audit rule:** Audit events are append-only. Corrections and supersessions add new events. Events must store safe metadata, masked values, checksums, counts, reason codes, and version IDs instead of raw full salary, bank account, identity, or unrestricted evidence contents.
 
@@ -542,7 +551,7 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 
 **Identity:** `AuditPackId`
 
-**Purpose:** Reproducible packaged evidence for one payroll run.
+**Purpose:** Reproducible packaged evidence for one payroll run, accepted by `DEC-2026-05-18-0033-versioned-permissioned-evidence-pack`.
 
 **Entities:**
 
@@ -554,14 +563,21 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 
 - `AuditPackVersion`
 - `GeneratedAt`
+- `GeneratedBy`
 - `FileHash`
 - `PackScope`
+- `SensitivityMarker`
+- `RetentionUntil`
+- `SourceArtifactRef`
 
 **Invariants:**
 
 - A generated audit pack must reference exact versions of artifacts/documents included.
+- Generation is allowed only for Approved for Payment, Payment Exported, Payment Proof Uploaded, or Closed / Archived payroll runs.
+- Pack content must be filtered by server-side permission and sensitive-field policy before ZIP/PDF/CSV/JSON artifacts are written.
 - Regenerating creates a new version; prior pack versions remain available subject to retention.
-- Audit pack generation must be logged as sensitive export if it includes payroll/bank data.
+- Pack metadata stores file hash/checksum, generator, timestamp, sensitivity markers, source references, and `retention_until = generated_at + 7 years`.
+- Audit pack generation, denied generation, and download must be logged as sensitive evidence/export events.
 
 ### 6.7 Aggregate: PaymentExport
 
@@ -869,7 +885,10 @@ classDiagram
   class AuditPack {
     +AuditPackId id
     +AuditPackVersion version
-    +generate()
+    +GeneratedAt generatedAt
+    +RetentionUntil retentionUntil
+    +FileHash fileHash
+    +generatePermissionFilteredZip()
   }
 
   ServiceProviderTenant "1" --> "many" Membership
