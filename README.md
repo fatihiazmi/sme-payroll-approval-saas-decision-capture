@@ -7,6 +7,17 @@ The product direction being reviewed: a SaaS workflow for SME payroll verificati
 ---
 
 
+
+## Next-Step Artifacts
+
+- [MVP PRD](docs/product/MVP-PRD.md)
+- [Domain Model](docs/architecture/DOMAIN-MODEL.md)
+- [Payroll State Machine](docs/architecture/PAYROLL-STATE-MACHINE.md)
+- [Tenancy and RBAC Model](docs/architecture/TENANCY-RBAC-MODEL.md)
+- [Initial Agile Backlog](docs/planning/INITIAL-BACKLOG.md)
+- [Prototype / Demo Flow Script](docs/prototype/DEMO-FLOW-SCRIPT.md)
+
+---
 ## Current Baseline
 
 Nik has accepted the default recommendations. The implementation baseline is captured here:

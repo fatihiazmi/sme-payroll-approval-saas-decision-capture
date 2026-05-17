@@ -1,0 +1,601 @@
+# Payroll Workflow State Machine — SME Payroll Approval SaaS
+
+**Status:** Draft architecture artifact  
+**Baseline source:** `docs/baseline/ACCEPTED-DEFAULT-BASELINE.md`  
+**Scope:** MVP payroll run lifecycle for multi-company payroll verification, OT/exception review, SME approval, payment export/proof, closure, and controlled correction.
+
+---
+
+## 1. State Machine Purpose
+
+The payroll workflow state machine protects the product’s core promise: every payroll run has a clear status, owner, next action, approval record, export trail, payment proof, and audit history.
+
+It intentionally models a **workflow and evidence system**, not a full ERP/accounting/statutory payroll engine.
+
+### Bounded Context and Aggregate Alignment
+
+- **Owning bounded context:** Payroll Workflow Context.
+- **Owning aggregate:** `PayrollRun` aggregate root.
+- **Collaborating bounded contexts:** Import and Validation, Exception Review, Evidence and Audit, Export and Payment Handoff, Tenant and Access, Portfolio Operations.
+- **Consistency boundary:** a state transition mutates one `PayrollRun` aggregate version and appends transition/audit events in the same transaction. Collaborating contexts react through domain events and projections.
+- **Do not model as:** generic task status, accounting period close, bank payment execution, or statutory filing status. Those may be related artifacts, but the lifecycle below is the payroll approval workflow lifecycle.
+
+---
+
+## 2. Payroll Run States
+
+### `DraftImported`
+
+Payroll run exists for a company/period. Data may have been manually entered or imported, but validation is not yet complete.
+
+Typical actors:
+
+- Service-provider payroll processor
+- SME staff uploading inputs
+- System import job
+
+Entry examples:
+
+- new payroll run created;
+- source file imported;
+- reopened correction has been applied and the run needs revalidation.
+
+Exit condition:
+
+- validation report generated.
+
+### `ValidationIssues`
+
+Validation found one or more blocking issues.
+
+Examples:
+
+- missing employee identifier;
+- negative or invalid amount;
+- payroll component not mapped;
+- missing bank/payment details where required;
+- unsupported employee category;
+- statutory readiness check failed;
+- source file row cannot be normalized.
+
+Exit condition:
+
+- all blocking validation issues corrected or waived by an authorized role.
+
+### `ReadyForReview`
+
+Payroll data has no blocking validation issues and is ready for provider-side review.
+
+Exit condition:
+
+- no exception review required, or exception review started.
+
+### `OtExceptionReview`
+
+The payroll run is under OT/exception review.
+
+Examples:
+
+- OT eligibility mismatch;
+- public holiday/rest day multiplier issue;
+- unusually high overtime;
+- missing attendance evidence;
+- high variance from previous period;
+- bonus/commission/claim requires approval evidence.
+
+Exit condition:
+
+- all blocking exception cases resolved or waived.
+
+### `PendingSmeApproval`
+
+Provider-side review is complete and the payroll run awaits authorized SME approval.
+
+Allowed SME decisions:
+
+- approve for payment;
+- reject/return for correction.
+
+Exit condition:
+
+- authorized SME approver approves or rejects.
+
+### `ApprovedForPayment`
+
+SME has approved payroll. Payroll amounts and review facts are locked for normal editing. Payment/export artifacts may now be generated.
+
+Exit condition:
+
+- payment export generated, or run reopened for correction.
+
+### `PaymentExported`
+
+Payment listing/file/report and/or payroll journal/statutory summaries have been exported after approval.
+
+Exit condition:
+
+- payment proof uploaded, or run reopened for correction.
+
+### `PaymentProofUploaded`
+
+Payment proof or approved placeholder has been attached.
+
+Exit condition:
+
+- required evidence checklist satisfied and run closed, or proof rejected/correction required.
+
+### `ClosedArchived`
+
+Payroll run is complete and retained as audit evidence. Routine edits are blocked.
+
+Exit condition:
+
+- controlled reopen for correction only.
+
+### `ReopenedCorrectionRequired`
+
+Controlled exception state for correcting a run after SME approval, export, proof upload, or closure.
+
+Rules:
+
+- reason is mandatory;
+- authorization is mandatory;
+- previous approvals/exports/proofs are retained;
+- corrected version must pass validation/review/approval again according to policy.
+
+---
+
+## 3. Transition Table
+
+### Main Path
+
+- `DraftImported` → `ValidationIssues`
+  - Trigger: `CompleteValidation`
+  - Guard: validation report has blocking findings
+  - Actor: system validation job or payroll processor
+  - Event: `PayrollValidationIssuesFound`
+
+- `DraftImported` → `ReadyForReview`
+  - Trigger: `CompleteValidation`
+  - Guard: validation report has no blocking findings
+  - Actor: system validation job or payroll processor
+  - Event: `PayrollRunMarkedReadyForReview`
+
+- `ValidationIssues` → `DraftImported`
+  - Trigger: `CorrectPayrollData`
+  - Guard: correction submitted or source data replaced
+  - Actor: payroll processor or authorized SME/provider user
+  - Event: `PayrollCorrectionApplied`
+
+- `ValidationIssues` → `ReadyForReview`
+  - Trigger: `ResolveValidationIssues`
+  - Guard: all blocking findings resolved or waived; latest validation report passes
+  - Actor: payroll processor/reviewer
+  - Event: `PayrollRunMarkedReadyForReview`
+
+- `ReadyForReview` → `OtExceptionReview`
+  - Trigger: `StartExceptionReview`
+  - Guard: exception rules found reviewable cases, or reviewer starts review manually
+  - Actor: payroll reviewer/manager or system
+  - Event: `PayrollExceptionReviewStarted`
+
+- `ReadyForReview` → `PendingSmeApproval`
+  - Trigger: `SubmitForSmeApproval`
+  - Guard: no blocking validation findings; no blocking exceptions; required pre-approval evidence present or waived
+  - Actor: payroll reviewer/manager
+  - Event: `PayrollSubmittedForSmeApproval`
+
+- `OtExceptionReview` → `ReadyForReview`
+  - Trigger: `CompleteExceptionReview`
+  - Guard: all blocking exceptions resolved/waived; reviewer decides another readiness check is needed
+  - Actor: payroll reviewer/manager
+  - Event: `PayrollExceptionReviewCompleted`
+
+- `OtExceptionReview` → `PendingSmeApproval`
+  - Trigger: `SubmitForSmeApproval`
+  - Guard: all blocking exceptions resolved/waived; validation still current; required pre-approval evidence present or waived
+  - Actor: payroll reviewer/manager
+  - Event: `PayrollSubmittedForSmeApproval`
+
+- `PendingSmeApproval` → `ApprovedForPayment`
+  - Trigger: `ApprovePayroll`
+  - Guard: actor is authorized SME approver; approval statement accepted; run version unchanged since submission
+  - Actor: SME owner/admin/authorized approver
+  - Event: `PayrollRunApprovedForPayment`
+
+- `PendingSmeApproval` → `ReopenedCorrectionRequired`
+  - Trigger: `RejectPayrollApproval` or `RequestCorrection`
+  - Guard: rejection/correction reason provided
+  - Actor: SME approver or authorized provider reviewer
+  - Event: `PayrollApprovalRejected`
+
+- `ApprovedForPayment` → `PaymentExported`
+  - Trigger: `GeneratePaymentExport`
+  - Guard: actor has export permission; run is approved; export template/mapping valid
+  - Actor: payroll manager/reviewer/authorized processor
+  - Event: `PaymentExportGenerated`
+
+- `PaymentExported` → `PaymentProofUploaded`
+  - Trigger: `UploadPaymentProof`
+  - Guard: proof document/reference provided; file passes storage/security checks
+  - Actor: SME admin, service-provider user, or authorized finance user
+  - Event: `PaymentProofSubmitted`
+
+- `PaymentProofUploaded` → `ClosedArchived`
+  - Trigger: `ClosePayrollRun`
+  - Guard: evidence checklist satisfied or waivers recorded; proof accepted or placeholder policy allows closure
+  - Actor: payroll manager/reviewer or authorized SME admin
+  - Event: `PayrollRunClosed`
+
+### Controlled Correction Path
+
+- `ApprovedForPayment` → `ReopenedCorrectionRequired`
+  - Trigger: `ReopenForCorrection`
+  - Guard: authorized actor; reason code/comment required; audit warning acknowledged
+  - Actor: payroll manager, SME approver, or privileged admin according to policy
+  - Event: `PayrollRunReopenedForCorrection`
+
+- `PaymentExported` → `ReopenedCorrectionRequired`
+  - Trigger: `ReopenForCorrection`
+  - Guard: authorized actor; reason required; export supersession required if corrected
+  - Actor: payroll manager, SME approver, or privileged admin
+  - Event: `PayrollRunReopenedForCorrection`
+
+- `PaymentProofUploaded` → `ReopenedCorrectionRequired`
+  - Trigger: `RejectProof` or `ReopenForCorrection`
+  - Guard: reason required; proof rejection/correction logged
+  - Actor: payroll manager, SME approver, or privileged admin
+  - Event: `PayrollRunReopenedForCorrection`
+
+- `ClosedArchived` → `ReopenedCorrectionRequired`
+  - Trigger: `ReopenClosedRun`
+  - Guard: privileged authorization; reason required; closed-run correction policy allows reopen
+  - Actor: payroll manager/admin plus SME approver if configured
+  - Event: `PayrollRunReopenedForCorrection`
+
+- `ReopenedCorrectionRequired` → `DraftImported`
+  - Trigger: `ApplyCorrection`
+  - Guard: correction touches payroll data/import data and requires revalidation
+  - Actor: payroll processor or authorized provider user
+  - Event: `PayrollCorrectionApplied`
+
+- `ReopenedCorrectionRequired` → `ValidationIssues`
+  - Trigger: `ApplyCorrectionAndValidate`
+  - Guard: correction applied but blocking validation remains
+  - Actor: payroll processor/system
+  - Event: `PayrollValidationIssuesFound`
+
+- `ReopenedCorrectionRequired` → `ReadyForReview`
+  - Trigger: `ApplyNonAmountCorrection`
+  - Guard: correction does not change approved payroll amounts and validation remains valid; policy allows review restart without full import
+  - Actor: payroll manager/reviewer
+  - Event: `PayrollCorrectionApplied`
+
+### Optional / Policy-Driven Transitions
+
+- `ApprovedForPayment` → `ClosedArchived`
+  - Trigger: `CloseWithoutPaymentExport`
+  - Guard: configured company policy allows no payment export; required evidence/waiver exists
+  - Event: `PayrollRunClosed`
+
+- `PaymentExported` → `ClosedArchived`
+  - Trigger: `CloseWithProofWaiver`
+  - Guard: proof placeholder/waiver authorized; evidence checklist satisfied
+  - Event: `PayrollRunClosed`
+
+These optional paths should be disabled by default unless pilot workflow confirms them.
+
+---
+
+## 4. Mermaid State Diagram
+
+```mermaid
+stateDiagram-v2
+  [*] --> DraftImported: Create/import payroll run
+
+  DraftImported --> ValidationIssues: CompleteValidation\n[blocking findings]
+  DraftImported --> ReadyForReview: CompleteValidation\n[no blocking findings]
+
+  ValidationIssues --> DraftImported: CorrectPayrollData
+  ValidationIssues --> ReadyForReview: ResolveValidationIssues\n[latest validation passes]
+
+  ReadyForReview --> OtExceptionReview: StartExceptionReview\n[exceptions exist or manual review]
+  ReadyForReview --> PendingSmeApproval: SubmitForSmeApproval\n[no blocking exceptions]
+
+  OtExceptionReview --> ReadyForReview: CompleteExceptionReview\n[recheck required]
+  OtExceptionReview --> PendingSmeApproval: SubmitForSmeApproval\n[all blocking exceptions resolved]
+
+  PendingSmeApproval --> ApprovedForPayment: ApprovePayroll\n[authorized SME approver]
+  PendingSmeApproval --> ReopenedCorrectionRequired: Reject/RequestCorrection\n[reason required]
+
+  ApprovedForPayment --> PaymentExported: GeneratePaymentExport
+  PaymentExported --> PaymentProofUploaded: UploadPaymentProof
+  PaymentProofUploaded --> ClosedArchived: ClosePayrollRun\n[evidence checklist satisfied]
+
+  ApprovedForPayment --> ReopenedCorrectionRequired: ReopenForCorrection\n[authorized + reason]
+  PaymentExported --> ReopenedCorrectionRequired: ReopenForCorrection\n[authorized + reason]
+  PaymentProofUploaded --> ReopenedCorrectionRequired: RejectProof/Reopen\n[authorized + reason]
+  ClosedArchived --> ReopenedCorrectionRequired: ReopenClosedRun\n[privileged + reason]
+
+  ReopenedCorrectionRequired --> DraftImported: ApplyCorrection\n[requires revalidation]
+  ReopenedCorrectionRequired --> ValidationIssues: ApplyCorrectionAndValidate\n[blocking findings]
+  ReopenedCorrectionRequired --> ReadyForReview: ApplyNonAmountCorrection\n[policy allows]
+
+  ClosedArchived --> [*]: Retained until archive/export/offboarding policy
+```
+
+---
+
+## 5. Transition Guards and Authorization Rules
+
+### Universal Guards
+
+Every transition requires:
+
+- authenticated actor or trusted system actor;
+- resolved `ServiceProviderTenantId` and `SmeCompanyId` where applicable;
+- authorization check against role, assignment, company status, and action policy;
+- optimistic concurrency check against current payroll run version;
+- audit metadata: actor, timestamp, command, prior state, next state, correlation ID;
+- reason when the transition is exceptional, destructive, privileged, or correction-related.
+
+### State-Specific Guards
+
+#### Validation Guards
+
+- Validation report must reference the current payroll run version.
+- Blocking findings prevent progression to review/approval.
+- Waived validation findings require authority and reason.
+
+#### Review Guards
+
+- Blocking exception cases prevent progression to SME approval.
+- Exception waivers require reason and role authority.
+- Critical exception resolution may require maker-checker if configured.
+
+#### Approval Guards
+
+- SME approval requires an authorized SME-side approver, not only a service-provider processor.
+- Approval must bind to a specific payroll run version and approval summary.
+- If payroll data changes after submission, prior SME approval request is invalidated.
+
+#### Export Guards
+
+- Payment export requires `ApprovedForPayment` or later state.
+- Export requires sensitive export permission and audit logging.
+- Export must record template/mapping version and checksum.
+
+#### Proof Guards
+
+- Payment proof must reference approved/exported payroll facts.
+- Proof file must pass storage/security checks.
+- Proof may be accepted, rejected, or superseded; it is not silently replaced.
+
+#### Closure Guards
+
+- Mandatory evidence checklist items must be satisfied or waived.
+- Closure must create final timeline entry.
+- Closed payroll run blocks routine edits and exports are controlled by read/export permissions.
+
+#### Reopen Guards
+
+- Reopen requires reason code/comment.
+- Reopen requires elevated authority or configured maker-checker.
+- Reopen after export/proof/closure marks existing generated artifacts as current or superseded according to correction impact.
+- Reopened payroll cannot skip back to closed without re-satisfying applicable guards.
+
+---
+
+## 6. Payroll Run Invariants
+
+### Identity and Uniqueness
+
+- A payroll run belongs to exactly one SME company.
+- A payroll run covers exactly one payroll period/cycle.
+- Only one active non-void payroll run should exist for the same company/period/cycle.
+
+### Data Integrity
+
+- Money values use fixed-precision integer minor units and currency; never floating point.
+- Payroll component lines must have valid component classification and statutory treatment flags.
+- Generated summaries, exports, and audit packs must store source version references.
+
+### Workflow Integrity
+
+- No transition may skip required validation before review/approval.
+- No unresolved blocking exception may reach SME approval.
+- No payment export may occur before SME approval.
+- No normal payroll amount edit is allowed after approval.
+- Corrections after approval require reopen and audit trail.
+
+### Evidence Integrity
+
+- Source files used for payroll must be retained or referenced with hash/checksum.
+- Evidence item replacement is append-only and supersedes prior evidence rather than deleting it.
+- Audit timeline is append-only.
+- Audit pack generation must be reproducible from stored versions.
+
+### Security and Privacy
+
+- Viewing/exporting salary, bank, statutory identifiers, and identity data requires explicit permission.
+- Sensitive data access and export are logged.
+- Service-provider staff must be assigned to the SME company unless they hold an authorized admin role.
+- Platform break-glass access is time-limited, reasoned, and audited.
+
+---
+
+## 7. Domain Commands and Events by Transition
+
+### `CompleteValidation`
+
+Emits one of:
+
+- `PayrollValidationCompleted`
+- `PayrollValidationIssuesFound`
+- `PayrollRunMarkedReadyForReview`
+
+### `SubmitForSmeApproval`
+
+Emits:
+
+- `PayrollSubmittedForSmeApproval`
+
+Side effects:
+
+- creates approval request;
+- notifies SME approver;
+- records approval summary/version.
+
+### `ApprovePayroll`
+
+Emits:
+
+- `PayrollRunApprovedForPayment`
+
+Side effects:
+
+- locks payroll amounts for normal editing;
+- records SME approval decision;
+- enables payment/export actions;
+- updates portfolio dashboard projection.
+
+### `GeneratePaymentExport`
+
+Emits:
+
+- `PaymentExportGenerated`
+- `PayrollPaymentExportRecorded`
+- optionally `PayrollJournalPreviewGenerated` or `StatutorySummaryExported`
+
+Side effects:
+
+- stores generated artifact checksum/version;
+- logs sensitive export;
+- updates audit timeline.
+
+### `UploadPaymentProof`
+
+Emits:
+
+- `PaymentProofSubmitted`
+- `PayrollPaymentProofUploaded`
+
+Side effects:
+
+- stores proof document reference;
+- updates evidence checklist;
+- logs sensitive document upload if applicable.
+
+### `ClosePayrollRun`
+
+Emits:
+
+- `PayrollRunClosed`
+- optionally `AuditPackGenerated` if closure generates final pack
+
+Side effects:
+
+- freezes routine workflow;
+- updates portfolio status to complete;
+- applies retention/archive policy.
+
+### `ReopenForCorrection`
+
+Emits:
+
+- `PayrollRunReopenedForCorrection`
+
+Side effects:
+
+- records reason and authority;
+- invalidates or supersedes approval/export/proof artifacts if correction affects them;
+- creates correction task;
+- notifies relevant reviewer/approver.
+
+---
+
+## 8. Implementation Notes
+
+### Recommended Persistence Pattern
+
+- Store current state on `payroll_run.status` for fast queries.
+- Store append-only `payroll_run_transition` records for workflow history.
+- Store domain events in an outbox table in the same transaction as state changes.
+- Use optimistic concurrency (`version`) to prevent approval/export against stale payroll data.
+
+### Recommended API Shape
+
+Prefer command-oriented endpoints over generic status patching:
+
+- `POST /payroll-runs/{id}/validate`
+- `POST /payroll-runs/{id}/mark-ready-for-review`
+- `POST /payroll-runs/{id}/start-exception-review`
+- `POST /payroll-runs/{id}/submit-for-approval`
+- `POST /payroll-runs/{id}/approve`
+- `POST /payroll-runs/{id}/reject`
+- `POST /payroll-runs/{id}/payment-exports`
+- `POST /payroll-runs/{id}/payment-proofs`
+- `POST /payroll-runs/{id}/close`
+- `POST /payroll-runs/{id}/reopen-for-correction`
+
+Avoid allowing clients to directly set `status`.
+
+### Recommended UI Language
+
+UI labels can be friendlier while mapping to explicit state codes:
+
+- `DraftImported`: Draft / Imported
+- `ValidationIssues`: Validation Issues
+- `ReadyForReview`: Ready for Review
+- `OtExceptionReview`: OT / Exception Review
+- `PendingSmeApproval`: Pending SME Approval
+- `ApprovedForPayment`: Approved for Payment
+- `PaymentExported`: Payment Exported
+- `PaymentProofUploaded`: Payment Proof Uploaded
+- `ClosedArchived`: Closed / Archived
+- `ReopenedCorrectionRequired`: Reopened / Correction Required
+
+---
+
+## 9. Mermaid Sequence: Happy Path
+
+```mermaid
+sequenceDiagram
+  participant Processor as Payroll Processor
+  participant Workflow as Payroll Workflow
+  participant Validation as Import & Validation
+  participant Reviewer as Payroll Reviewer
+  participant Approver as SME Approver
+  participant Export as Export & Payment Handoff
+  participant Evidence as Evidence & Audit
+
+  Processor->>Workflow: Create/import payroll run
+  Workflow-->>Evidence: PayrollRunCreated
+  Processor->>Validation: Complete validation
+  Validation-->>Workflow: Validation report: no blocking findings
+  Workflow-->>Evidence: PayrollRunMarkedReadyForReview
+  Reviewer->>Workflow: Start/complete exception review
+  Workflow-->>Evidence: PayrollExceptionReviewCompleted
+  Reviewer->>Workflow: Submit for SME approval
+  Workflow-->>Approver: Approval request
+  Approver->>Workflow: Approve payroll
+  Workflow-->>Evidence: PayrollRunApprovedForPayment
+  Workflow-->>Export: PayrollRunApprovedForPayment
+  Processor->>Export: Generate payment export
+  Export-->>Workflow: PaymentExportGenerated
+  Export-->>Evidence: Export artifact recorded
+  Processor->>Workflow: Upload payment proof
+  Workflow-->>Evidence: Payment proof attached
+  Reviewer->>Workflow: Close payroll run
+  Workflow-->>Evidence: PayrollRunClosed / audit pack ready
+```
+
+---
+
+## 10. Open Decisions
+
+- Which roles can waive validation issues, exception cases, and evidence requirements?
+- Should internal maker-checker be mandatory before SME approval or configurable by tenant?
+- Can payment proof be uploaded after closure as append-only evidence, or must closure be reopened?
+- Which statutory readiness failures are blocking for MVP?
+- Which payment/export templates are required for pilot, and which are Phase 2?
