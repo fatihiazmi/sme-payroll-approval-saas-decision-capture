@@ -244,6 +244,7 @@ Technical risk: Bank/payment file formats vary; MVP should use a configurable CS
 - **Given** a payroll run is Approved, **When** I export payment CSV, **Then** the file includes employee name, bank name, bank account, payment reference, and net pay amount.
 - **Given** a payroll run is not Approved, **When** I attempt payment export, **Then** the export is blocked.
 - **Given** payment export is generated, **When** the audit timeline is viewed, **Then** exporter, timestamp, and exported total are recorded.
+- **Given** the MVP export is generated, **When** I inspect the file, **Then** it uses the generic CSV format rather than a bank-specific integration format.
 
 **Story Points**: 5  
 **Dependencies**: PAY-011, PAY-018  
@@ -407,13 +408,15 @@ Technical risk: Dashboard counts must reflect permission scope and payroll statu
 
 These are not user stories but should be tracked as planning issues before implementation choices harden.
 
-### SPIKE-001: Confirm payment export format for first target bank(s)
+### SPIKE-001: Confirm payment export format for first target bank(s) — Resolved
 
 **Goal**: Decide whether MVP CSV needs a specific bank-compatible layout or a generic payment list.
 
 **Timebox**: 1–2 days  
 **Priority**: P0  
 **GitHub Issue**: Yes
+
+**SPIKE-001 decision:** Use a configurable generic CSV payment export for MVP, followed by manual payment proof upload. Do not build direct bank integration or bank-specific formats until after pilot validation.
 
 ### SPIKE-002: Confirm evidence pack format and retention expectation
 

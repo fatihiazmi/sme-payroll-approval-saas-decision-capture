@@ -109,3 +109,15 @@ Recommended payroll lifecycle:
 - `docs/decision-capture/payroll-cosec-workflow.md`
 - `docs/decision-capture/finance-audit-evidence.md`
 - `docs/decision-capture/saas-product-architecture.md`
+
+## 8. Accepted Payment Export Decision
+
+**Decision:** For MVP, export a configurable generic CSV payment file after payroll approval, then require manual payment proof upload.
+
+**Scope:**
+
+- Include employee name, bank name, bank account number, net pay amount, and payment reference.
+- Block export until the payroll run is approved.
+- Record exporter, timestamp, row count, and exported total in the audit timeline.
+- Do not build direct bank integration or bank-specific file formats in MVP.
+- Expand to specific Malaysian bank formats after pilot validation.

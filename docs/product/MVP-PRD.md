@@ -43,7 +43,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 - Support payroll import or manual entry sufficient for payroll verification and approval.
 - Highlight OT and payroll exceptions before SME approval.
 - Enforce SME owner approval before payment export by default.
-- Capture payment export records and payment proof.
+- Capture payment export records and payment proof. MVP payment export is a configurable generic CSV for manual bank upload; bank-specific formats and direct bank integration are deferred.
 - Generate a payroll audit evidence pack per payroll run.
 - Maintain append-only audit timeline for sensitive payroll actions.
 - Protect salary, bank, identity, and evidence data with role-based access and audit logging.
