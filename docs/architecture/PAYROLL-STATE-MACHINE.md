@@ -187,7 +187,7 @@ Rules:
 
 - `ReadyForReview` → `PendingSmeApproval`
   - Trigger: `SubmitForSmeApproval`
-  - Guard: no blocking validation findings; no blocking exceptions; required pre-approval evidence present or waived
+  - Guard: latest validation report has zero blocking issues; blocking OT/exceptions resolved or explicitly escalated; required pre-approval evidence placeholders/checklist items present or formally waived; payroll totals snapshot generated; sensitive salary/bank access checked server-side; submission audit event recorded
   - Actor: payroll reviewer/manager
   - Event: `PayrollSubmittedForSmeApproval`
 
@@ -199,7 +199,7 @@ Rules:
 
 - `OtExceptionReview` → `PendingSmeApproval`
   - Trigger: `SubmitForSmeApproval`
-  - Guard: all blocking exceptions resolved/waived; validation still current; required pre-approval evidence present or waived
+  - Guard: latest validation report has zero blocking issues; blocking OT/exceptions resolved or explicitly escalated; required pre-approval evidence placeholders/checklist items present or formally waived; payroll totals snapshot generated; sensitive salary/bank access checked server-side; submission audit event recorded
   - Actor: payroll reviewer/manager
   - Event: `PayrollSubmittedForSmeApproval`
 

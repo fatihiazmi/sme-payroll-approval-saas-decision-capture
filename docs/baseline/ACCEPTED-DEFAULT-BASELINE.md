@@ -249,3 +249,18 @@ Recommended payroll lifecycle:
 **Required review data:** affected employee, exception type, reason, severity, payroll impact amount, required action, reviewer decision, reviewer note, timestamp, and evidence reference if available.
 
 **Scope boundary:** MVP OT exception review is an approval-confidence workflow, not a full attendance/shift-rule engine. Deep attendance matching, leave integration, statutory/legal interpretation, and complex shift policy calculation remain out of MVP unless a pilot explicitly requires them.
+
+## 11. Accepted Owner Approval Submission Gate Decision
+
+**Decision:** For MVP, use a practical approval-readiness gate before a payroll run can be submitted to the SME owner.
+
+**Submission requirements:**
+
+- latest validation report has zero blocking issues
+- blocking OT exceptions are resolved or explicitly escalated to SME approval
+- required evidence placeholders/checklist items are present or formally waived
+- payroll totals snapshot is generated
+- sensitive salary/bank access is checked server-side
+- submission audit event is recorded
+
+**Scope boundary:** MVP submission does not require full internal reviewer/manager sign-off or a complete generated approval pack before owner submission. Those controls can be added later if pilot customers require maker-checker governance.

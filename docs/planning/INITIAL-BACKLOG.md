@@ -191,9 +191,11 @@ Technical risk: Validation must be explainable and deterministic; hidden rules o
 **As a** payroll operator, **I want to** submit a validated payroll run for approval, **so that** the owner can approve payment.
 
 **Acceptance Criteria**:
-- **Given** a Draft payroll run has no blocking validation errors, **When** I submit it, **Then** the run status changes to Pending Approval.
-- **Given** the run is Pending Approval, **When** payroll rows are viewed by the operator, **Then** editing controls are disabled.
-- **Given** submission occurs, **When** the audit timeline is viewed, **Then** the submitter, timestamp, validation result, and totals snapshot are recorded.
+- **Given** a payroll run is Ready for Review or OT / Exception Review, **When** I submit it for owner approval, **Then** the system requires the latest validation report to have zero blocking issues.
+- **Given** blocking OT exceptions exist, **When** I submit the payroll run for owner approval, **Then** the system blocks submission unless each blocking exception is resolved or explicitly escalated to SME approval with reviewer note.
+- **Given** required pre-approval evidence checklist items are missing, **When** I submit the payroll run for owner approval, **Then** the system blocks submission unless the missing item has an authorized waiver/placeholder.
+- **Given** the payroll run passes approval-readiness checks, **When** I submit it, **Then** the run status changes to Pending SME Approval and payroll row editing remains disabled.
+- **Given** submission occurs, **When** the audit timeline is viewed, **Then** the submitter, timestamp, latest validation result, exception readiness, evidence readiness, totals snapshot, run version, and sensitive salary/bank authorization check result are recorded.
 
 **Story Points**: 3  
 **Dependencies**: PAY-008, PAY-018  

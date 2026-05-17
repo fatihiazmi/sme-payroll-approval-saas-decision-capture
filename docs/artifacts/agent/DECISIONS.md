@@ -149,3 +149,15 @@
 - Backend: Model deterministic OT exception types with severity, payroll impact, required action, and evidence reference.
 - QA: Verify unresolved blocking OT exceptions prevent SME approval submission unless explicitly escalated with reviewer note and audit trail.
 ---
+
+
+### DEC-2026-05-17-2120-approval-submission-gate — MVP owner approval submission gate
+**Date**: 2026-05-17T21:20:42+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik: Option 2
+**Decision**: Use a practical approval-readiness gate before owner submission: latest validation report has zero blocking issues, blocking OT exceptions are resolved or explicitly escalated, required evidence placeholders/checklist items are present or formally waived, payroll totals snapshot is generated, sensitive salary/bank access is checked server-side, and submission audit event is recorded.
+**Key argument**: This preserves the product wedge as an approval/evidence control system rather than a loose submit button, while avoiding full maker-checker sign-off and pre-generated approval pack scope in MVP.
+**Dissent**: Heavier than validation-only submission, but still bounded because full internal reviewer sign-off and complete approval pack generation before submission remain outside MVP unless pilot customers require them.
+**Actions**:
+- Product: Update PAY-010 acceptance criteria and PRD approval-readiness scope.
+- Backend: Enforce submission guards server-side and record validation, exception, evidence, totals snapshot, authorization, and audit facts.
+- QA: Verify owner submission is blocked when any required readiness condition fails.
+---

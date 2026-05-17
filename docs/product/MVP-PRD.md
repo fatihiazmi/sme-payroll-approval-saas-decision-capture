@@ -102,6 +102,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 
 6. **SME owner approval**
    - Approval request with locked payroll snapshot, exception summary, net payment total, variance summary, and comments.
+   - Submission to owner requires practical approval-readiness: latest validation report has zero blocking issues, blocking OT exceptions are resolved or explicitly escalated, required pre-approval evidence placeholders/checklist items are present or formally waived, payroll totals snapshot is generated, sensitive salary/bank access is checked server-side, and submission audit event is recorded.
    - Approve/reject/request changes.
    - Recalculation after approval invalidates approval or requires re-approval.
    - Payment export blocked until approval unless logged override permission is used.
@@ -190,7 +191,7 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
 2. Reviewer opens exception queue and reviews severity, evidence, and payroll impact.
 3. Reviewer accepts, adjusts, rejects, requests evidence, or escalates.
 4. All decisions and notes are written to audit timeline.
-5. Payroll moves to Pending SME Approval when unresolved blocking exceptions are cleared or explicitly escalated.
+5. Payroll moves to Pending SME Approval only after validation, exception, evidence, totals snapshot, authorization, and submission audit checks pass.
 
 ### 3. SME owner approval
 

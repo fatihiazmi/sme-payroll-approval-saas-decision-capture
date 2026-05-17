@@ -365,9 +365,10 @@ Terms are scoped to the bounded context where they are used. Avoid leaking exter
 - A payroll period stores a display month/year label plus explicit `period_start`, `period_end`, and `pay_date`; monthly payroll defaults to the calendar month but the stored dates are authoritative.
 - Only one active non-void payroll run should exist per SME company/payroll period/payroll cycle.
 - Payroll amounts cannot be exported before SME approval.
-- Payroll lines cannot be changed after `ApprovedForPayment` except through `ReopenedCorrectionRequired`.
+- `SubmitForSmeApproval` requires approval-readiness: latest validation report has zero blocking issues, blocking OT exceptions are resolved or explicitly escalated, required pre-approval evidence placeholders/checklist items are present or formally waived, payroll totals snapshot is generated, sensitive salary/bank access is checked server-side, and submission audit event is recorded.
+- Payroll lines cannot be changed after `ReadyForReview`, `OtExceptionReview`, or `PendingSmeApproval` except through the controlled return/reopen correction path.
 - Every state transition must include actor, timestamp, prior state, next state, command, and reason where required.
-- Sensitive data access is not authorized by the aggregate; it must be checked by Tenant and Access before loading/displaying sensitive fields.
+- Sensitive data access is not authorized by the aggregate; it must be checked by Tenant and Access before loading/displaying sensitive fields and before creating owner submission snapshots.
 - Closing requires either payment proof uploaded or an explicit authorized proof waiver/placeholder, depending on configured evidence policy.
 - Reopening requires reason, authority, and audit event; previous approved/exported artifacts remain retained and are superseded, not deleted.
 
