@@ -33,3 +33,14 @@
 - Backend: Add matrix tests for Owner, Payroll Operator, Payment/Journal User, Auditor, and Platform Admin across salary, bank/payment, export, and audit pack endpoints.
 - Backend: Ensure raw salary/bank fields are never serialized or logged unless the policy grants the field and an audit event is written.
 ---
+
+### DEC-2026-05-17-1826-evidence-pack — MVP evidence pack format and retention
+**Date**: 2026-05-17T18:26:18+08:00 | **Project**: sme-payroll-approval-saas-decision-capture | **Vote**: Accepted by Nik
+**Decision**: Use a ZIP evidence pack for MVP containing a PDF summary plus structured CSV/JSON attachments and payment proof/reference files where available. Retain evidence packs and audit timeline records for 7 years by default.
+**Key argument**: ZIP gives both human-readable audit review and structured data for accountant/auditor/system use without overbuilding a full retention engine.
+**Dissent**: None; auto-purge, legal hold, and per-company retention configuration are deferred.
+**Actions**:
+- Product: Specify ZIP evidence pack contents in PRD/backlog.
+- Backend: Store evidence pack record with file hash, sensitivity markers, generator, timestamp, and retention-until date.
+- Security: Apply sensitive-field policy to generated pack and audit generation/download events.
+---

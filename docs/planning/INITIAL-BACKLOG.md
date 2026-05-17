@@ -321,8 +321,10 @@ Technical risk: Sensitive salary and bank data creates high privacy risk; access
 
 **Acceptance Criteria**:
 - **Given** a payroll run is Approved or Paid Evidence Uploaded, **When** I generate the evidence pack, **Then** the pack includes run summary, approval record, validation results, overtime reviews, export record, payment proof reference, and audit timeline.
+- **Given** the evidence pack is generated, **When** the file is created, **Then** it is a ZIP containing a PDF summary plus CSV/JSON evidence attachments.
 - **Given** I lack audit evidence permission, **When** I request an evidence pack, **Then** the request is denied.
 - **Given** the evidence pack is generated, **When** I download it, **Then** the file name includes company identifier, pay period, and generation timestamp.
+- **Given** an evidence pack is generated, **When** the pack record is saved, **Then** the system stores file hash, generator, timestamp, sensitivity markers, and a default retention-until date of 7 years after generation.
 
 **Story Points**: 8  
 **Dependencies**: PAY-009, PAY-011, PAY-014, PAY-015, PAY-018  
@@ -421,9 +423,11 @@ These are not user stories but should be tracked as planning issues before imple
 
 **SPIKE-001 decision:** Use a configurable generic CSV payment export for MVP, followed by manual payment proof upload. Do not build direct bank integration or bank-specific formats until after pilot validation.
 
-### SPIKE-002: Confirm evidence pack format and retention expectation
+### SPIKE-002: Confirm evidence pack format and retention expectation — Resolved
 
 **Goal**: Decide whether evidence pack should initially be PDF, ZIP of CSV/PDF files, or a web-only timeline export.
+
+**SPIKE-002 decision:** Use a ZIP evidence pack for MVP, containing a readable PDF summary plus structured CSV/JSON attachments and payment proof/reference files where available. Evidence packs and audit timeline records are retained for 7 years by default. MVP records the retention date and file hash; complex auto-purge, legal hold, and per-company retention engines are deferred.
 
 **Timebox**: 1 day  
 **Priority**: P1  

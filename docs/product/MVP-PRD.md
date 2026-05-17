@@ -106,8 +106,9 @@ Secondary target: individual SMEs with enough payroll complexity to need approva
    - Track exported by/at, approved snapshot used, file/version, and proof status.
 
 8. **Audit evidence pack**
-   - Generate payroll run evidence pack containing payroll summary, salary register, variance report, OT/exception resolutions, approval history, source files, payment export/proof, statutory summaries/proof references, journal preview/export, reviewer notes, document index, and audit timeline.
-   - Evidence files versioned, hashed, permissioned, and event-logged.
+   - Generate a ZIP evidence pack containing a human-readable PDF summary plus structured CSV/JSON attachments.
+   - Include payroll summary, salary register according to permission, validation results, OT/exception resolutions, approval record, source file references, payment export/proof, statutory summaries/proof references, journal preview/export, reviewer notes, document index, and audit timeline.
+   - Evidence files are versioned, hashed, permissioned, retained for 7 years by default, and event-logged for generation/download.
 
 9. **Payroll journal preview/export**
    - Limited accounting export mapping, not full chart of accounts.

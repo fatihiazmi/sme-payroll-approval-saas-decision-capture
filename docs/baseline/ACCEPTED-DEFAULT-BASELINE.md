@@ -31,7 +31,7 @@ Primary wedge:
 - Payroll run status lifecycle
 - SME owner approval before payment
 - Payment export/proof upload
-- Payroll evidence pack and audit timeline
+- Payroll evidence pack and audit timeline: ZIP evidence pack with PDF summary plus CSV/JSON attachments, retained for 7 years by default
 - Payroll journal preview/export, not a full accounting ledger
 - Role-based access control with assignment boundaries
 - Audit logging for sensitive payroll actions
